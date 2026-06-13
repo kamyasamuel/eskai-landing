@@ -31,7 +31,7 @@ This document gives an AI agent everything it needs to manage the Eskai landing 
 ### 2.1 Initial Setup (First Time)
 ```bash
 # Seed the database with an admin user + API key
-curl -X POST http://localhost:3000/api/seed \
+curl -X POST https://agent-eskai.eskaen.com/api/seed \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@eskai.com","password":"your-secure-password","name":"Admin Name"}'
 
@@ -40,7 +40,7 @@ curl -X POST http://localhost:3000/api/seed \
 
 ### 2.2 Getting JWT Token (For Admin Dashboard)
 ```bash
-curl -X POST http://localhost:3000/api/auth/login \
+curl -X POST https://agent-eskai.eskaen.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@eskai.com","password":"your-secure-password"}'
 # Response: { token: "eyJ...", user: { id, email, name, role } }
@@ -49,18 +49,18 @@ curl -X POST http://localhost:3000/api/auth/login \
 ### 2.3 Managing API Keys (JWT Required)
 ```bash
 # List existing keys
-curl http://localhost:3000/api/auth/keys \
+curl https://agent-eskai.eskaen.com/api/auth/keys \
   -H "Authorization: Bearer <jwt_token>"
 
 # Create a new key with specific scopes
-curl -X POST http://localhost:3000/api/auth/keys \
+curl -X POST https://agent-eskai.eskaen.com/api/auth/keys \
   -H "Authorization: Bearer <jwt_token>" \
   -H "Content-Type: application/json" \
   -d '{"name":"Marketing Analytics","scopes":["read:analytics","export"]}'
 # Response includes rawKey — SAVE IT
 
 # Revoke a key (safe rotation / compromise response)
-curl -X DELETE http://localhost:3000/api/auth/keys/<key_id> \
+curl -X DELETE https://agent-eskai.eskaen.com/api/auth/keys/<key_id> \
   -H "Authorization: Bearer <jwt_token>"
 ```
 
@@ -80,11 +80,11 @@ curl -X DELETE http://localhost:3000/api/auth/keys/<key_id> \
 
 ### 3.1 Viewing All Applications (Paginated)
 ```bash
-curl http://localhost:3000/api/v1/applications \
+curl https://agent-eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>"
 
 # With filters
-curl "http://localhost:3000/api/v1/applications?page=1&limit=20&sort=created_at&order=desc&status=pending&search=kamya&startDate=2025-01-01&endDate=2025-12-31" \
+curl "https://agent-eskai.eskaen.com/api/v1/applications?page=1&limit=20&sort=created_at&order=desc&status=pending&search=kamya&startDate=2025-01-01&endDate=2025-12-31" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
@@ -94,20 +94,20 @@ curl "http://localhost:3000/api/v1/applications?page=1&limit=20&sort=created_at&
 
 ### 3.2 Viewing a Single Application
 ```bash
-curl http://localhost:3000/api/v1/applications/<id> \
+curl https://agent-eskai.eskaen.com/api/v1/applications/<id> \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 ### 3.3 Updating Application Status / Adding Notes
 ```bash
 # Single update
-curl -X PATCH http://localhost:3000/api/v1/applications/<id> \
+curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications/<id> \
   -H "Authorization: Bearer esk_<key>" \
   -H "Content-Type: application/json" \
   -d '{"status":"approved","notes":"Great fit for early access. Follow up via email."}'
 
 # Bulk update (process multiple at once)
-curl -X PATCH http://localhost:3000/api/v1/applications \
+curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>" \
   -H "Content-Type: application/json" \
   -d '[{"id":"uuid-1","status":"approved"},{"id":"uuid-2","status":"rejected","notes":"Not the right fit"}]'
@@ -117,7 +117,7 @@ curl -X PATCH http://localhost:3000/api/v1/applications \
 
 ### 3.4 Deleting an Application
 ```bash
-curl -X DELETE http://localhost:3000/api/v1/applications/<id> \
+curl -X DELETE https://agent-eskai.eskaen.com/api/v1/applications/<id> \
   -H "Authorization: Bearer esk_<key>"
 ```
 Requires `admin` scope. Soft-deletes by setting status to `deleted`.
@@ -128,7 +128,7 @@ Requires `admin` scope. Soft-deletes by setting status to `deleted`.
 
 ### 4.1 Analytics Dashboard
 ```bash
-curl "http://localhost:3000/api/v1/analytics?startDate=2025-01-01&endDate=2025-12-31&limit=10" \
+curl "https://agent-eskai.eskaen.com/api/v1/analytics?startDate=2025-01-01&endDate=2025-12-31&limit=10" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
@@ -164,7 +164,7 @@ curl "http://localhost:3000/api/v1/analytics?startDate=2025-01-01&endDate=2025-1
 
 ### 4.2 System Statistics
 ```bash
-curl http://localhost:3000/api/v1/stats \
+curl https://agent-eskai.eskaen.com/api/v1/stats \
   -H "Authorization: Bearer esk_<key>"
 ```
 
@@ -191,12 +191,12 @@ curl http://localhost:3000/api/v1/stats \
 
 ```bash
 # Export applications as CSV (for Google Sheets / Excel)
-curl "http://localhost:3000/api/v1/export?type=applications&format=csv" \
+curl "https://agent-eskai.eskaen.com/api/v1/export?type=applications&format=csv" \
   -H "Authorization: Bearer esk_<key>" \
   -o eskai-applications.csv
 
 # Export analytics as JSON
-curl "http://localhost:3000/api/v1/export?type=analytics&format=json" \
+curl "https://agent-eskai.eskaen.com/api/v1/export?type=analytics&format=json" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
@@ -503,20 +503,20 @@ Nginx reverse proxy forwarding `/` → `localhost:3000` with:
 
 ### 12.1 "How many new applications came in this week?"
 ```bash
-curl "http://localhost:3000/api/v1/applications?status=pending&sort=created_at&order=desc&startDate=$(date -d '7 days ago' +%Y-%m-%d)" \
+curl "https://agent-eskai.eskaen.com/api/v1/applications?status=pending&sort=created_at&order=desc&startDate=$(date -d '7 days ago' +%Y-%m-%d)" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 ### 12.2 "Show me traffic sources"
 ```bash
-curl "http://localhost:3000/api/v1/analytics?limit=20" \
+curl "https://agent-eskai.eskaen.com/api/v1/analytics?limit=20" \
   -H "Authorization: Bearer esk_<key>"
 # → Check `topReferrers` array
 ```
 
 ### 12.3 "Export all applicants for CRM import"
 ```bash
-curl "http://localhost:3000/api/v1/export?type=applications&format=csv" \
+curl "https://agent-eskai.eskaen.com/api/v1/export?type=applications&format=csv" \
   -H "Authorization: Bearer esk_<key>" \
   -o applicants-$(date +%F).csv
 ```
@@ -524,31 +524,31 @@ curl "http://localhost:3000/api/v1/export?type=applications&format=csv" \
 ### 12.4 "Has anyone from Kenya applied?"
 ```bash
 # Search via applications endpoint
-curl "http://localhost:3000/api/v1/applications?search=kenya" \
+curl "https://agent-eskai.eskaen.com/api/v1/applications?search=kenya" \
   -H "Authorization: Bearer esk_<key>"
 # Or check geo analytics
-curl "http://localhost:3000/api/v1/analytics" \
+curl "https://agent-eskai.eskaen.com/api/v1/analytics" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 ### 12.5 "Rotate an API key that might be compromised"
 ```bash
 # 1. Create new key
-curl -X POST http://localhost:3000/api/auth/keys \
+curl -X POST https://agent-eskai.eskaen.com/api/auth/keys \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{"name":"New Production Key","scopes":["read:applications","read:analytics"]}'
 # 2. Note the rawKey from response
 # 3. Deploy new key to apps
 # 4. Revoke old key
-curl -X DELETE http://localhost:3000/api/auth/keys/<old_key_id> \
+curl -X DELETE https://agent-eskai.eskaen.com/api/auth/keys/<old_key_id> \
   -H "Authorization: Bearer <jwt>"
 ```
 
 ### 12.6 "Approve multiple applicants at once"
 ```bash
 # Fetch pending list first, then bulk approve
-curl -X PATCH http://localhost:3000/api/v1/applications \
+curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>" \
   -H "Content-Type: application/json" \
   -d '[
@@ -560,14 +560,14 @@ curl -X PATCH http://localhost:3000/api/v1/applications \
 
 ### 12.7 "Check overall system health"
 ```bash
-curl http://localhost:3000/api/v1/stats \
+curl https://agent-eskai.eskaen.com/api/v1/stats \
   -H "Authorization: Bearer esk_<key>"
 # → Check: pending backlog, DB size, API usage trends
 ```
 
 ### 12.8 "How is the site performing today?"
 ```bash
-curl "http://localhost:3000/api/v1/analytics?startDate=$(date +%Y-%m-%d)" \
+curl "https://agent-eskai.eskaen.com/api/v1/analytics?startDate=$(date +%Y-%m-%d)" \
   -H "Authorization: Bearer esk_<key>"
 # → Check dailyViews for today, totalPageViews
 ```
@@ -578,17 +578,17 @@ curl "http://localhost:3000/api/v1/analytics?startDate=$(date +%Y-%m-%d)" \
 
 ```bash
 # Quick health check (no auth needed — just hit any endpoint without key)
-curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/v1/applications
+curl -s -o /dev/null -w "%{http_code}" https://agent-eskai.eskaen.com/api/v1/applications
 # → Should return 401 (Missing auth)
 
 # Valid request
-curl -s http://localhost:3000/api/v1/applications \
+curl -s https://agent-eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>" | jq '.pagination'
 
 # Rate limit test (first 100 succeed, then 429)
 for i in $(seq 1 101); do
   curl -s -o /dev/null -w "%{http_code} " \
-    http://localhost:3000/api/v1/applications \
+    https://agent-eskai.eskaen.com/api/v1/applications \
     -H "Authorization: Bearer esk_<key>"
 done
 # → Expect 429 on the 101st request
