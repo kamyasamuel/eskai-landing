@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowRight, Cpu, Shield, Smartphone, HardDrive } from "lucide-react"
+import Image from "next/image"
 
 export default function Hero() {
   return (
@@ -65,6 +66,17 @@ export default function Hero() {
           {/* Right — Visual */}
           <div className="hidden lg:flex items-center justify-center animate-float">
             <div className="relative">
+              {/* Logo watermark */}
+              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-10 pointer-events-none">
+                <Image
+                  src="/logo.svg"
+                  alt=""
+                  width={128}
+                  height={128}
+                  aria-hidden="true"
+                />
+              </div>
+
               {/* Main card */}
               <div className="w-[420px] rounded-2xl glass border border-dark-700/50 p-6 space-y-4">
                 {/* Terminal header */}

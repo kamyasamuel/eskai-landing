@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Menu, X, Cpu } from "lucide-react"
+import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 const navLinks = [
   { label: "How It Works", href: "#how-it-works" },
@@ -19,11 +20,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-emerald-600 flex items-center justify-center group-hover:shadow-lg group-hover:shadow-brand-500/25 transition-all duration-300">
-              <Cpu className="w-4 h-4 text-white" />
-            </div>
+            <Image
+              src="/logo-white.svg"
+              alt="Eskai logo"
+              width={32}
+              height={32}
+              className="rounded-lg group-hover:shadow-lg group-hover:shadow-brand-500/25 transition-all duration-300"
+            />
             <span className="text-lg font-bold text-white">
-              <span className="text-brand-400">E</span>skai
+              <span className="text-brand-400">e</span>skai
             </span>
           </a>
 

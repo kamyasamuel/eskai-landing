@@ -438,13 +438,11 @@ eskai-landing/
 DB_PATH=data/eskai.db
 
 # Security
-JWT_SECRET=your-256-bit-secret
+JWT_SECRET=uo6Vk7KGgutzbAlMaDSnjvNH7HZtshcYiXbQbPZCriY=
 
 # Server (if needed)
-PORT=3000
+PORT=80
 ```
-
-> ⚠️ `JWT_SECRET` must be changed in production. The dev default is `eskai-dev-secret-change-in-production`.
 
 ### Setup
 ```bash

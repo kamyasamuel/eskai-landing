@@ -1,6 +1,7 @@
 "use client"
 
-import { Cpu, Heart } from "lucide-react"
+import { Heart } from "lucide-react"
+import Image from "next/image"
 
 export default function Footer() {
   return (
@@ -10,11 +11,15 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-500 to-emerald-600 flex items-center justify-center">
-                <Cpu className="w-3.5 h-3.5 text-white" />
-              </div>
+              <Image
+                src="/logo-white.svg"
+                alt="Eskai logo"
+                width={28}
+                height={28}
+                className="rounded-lg"
+              />
               <span className="text-lg font-bold text-white">
-                <span className="text-brand-400">E</span>skai
+                <span className="text-brand-400">e</span>skai
               </span>
             </div>
             <p className="text-sm text-dark-400 max-w-md leading-relaxed">
