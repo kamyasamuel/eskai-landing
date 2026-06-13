@@ -47,6 +47,6 @@ RUN mkdir -p /app/data
 ENV NODE_ENV=production
 ENV DB_PATH=/app/data/eskai.db
 
-EXPOSE 3000
+EXPOSE 80
 
-CMD ["node_modules/.bin/next", "start"]
+CMD ["node_modules/.bin/next", "start", "-p", "80"]
