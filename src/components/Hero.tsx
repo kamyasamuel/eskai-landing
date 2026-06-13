@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight, Sparkles, Shield, Brain } from "lucide-react"
+import { ArrowRight, Cpu, Shield, Smartphone, HardDrive } from "lucide-react"
 
 export default function Hero() {
   return (
@@ -10,60 +10,54 @@ export default function Hero() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full blur-[128px]" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[128px]" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left — Text */}
-          <div className="space-y-8 animate-fade-in">
+          <div className="space-y-6 animate-fade-in">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-sm text-brand-300 border border-brand-800/30">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Built by a founder, for founders</span>
+              <Cpu className="w-3.5 h-3.5" />
+              <span>Self-hosted · Runs on $35 ARM hardware</span>
             </div>
 
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
               Your{" "}
-              <span className="text-gradient">AI Business</span>
+              <span className="text-gradient">Self-Hosted</span>
               <br />
-              <span className="text-gradient">Operating System</span>
+              <span className="text-gradient">AI Agent</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-xl text-dark-400 leading-relaxed max-w-xl">
-              Eskai is the first AI that{" "}
-              <span className="text-dark-200 font-medium">knows who you are</span>,{" "}
-              <span className="text-dark-200 font-medium">watches your operations</span>,{" "}
-              <span className="text-dark-200 font-medium">executes your tasks</span>, and{" "}
-              <span className="text-dark-200 font-medium">thinks about your business</span>{" "}
-              while you sleep. Self-aware. Autonomous. Strategic.
+            <p className="text-base sm:text-lg text-dark-300 leading-relaxed max-w-lg">
+              An autonomous AI agent that runs on your own hardware. No cloud, no data leaks, no recurring bills.
             </p>
 
             {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href="#apply"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold transition-all duration-200 glow hover:glow-sm"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-sm sm:text-base text-white font-semibold transition-all duration-200 glow hover:glow-sm"
               >
                 Get Early Access
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#how-it-works"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl glass glass-hover text-dark-200 font-semibold transition-all duration-200"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl glass glass-hover text-sm sm:text-base text-dark-200 font-semibold transition-all duration-200"
               >
                 How It Works
               </a>
             </div>
 
             {/* Trust indicators */}
-            <div className="flex items-center gap-6 text-sm text-dark-500 pt-4">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-dark-400 pt-2">
               <span className="flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-brand-500" />
-                Self-hosted option
+                Your data stays on your hardware
               </span>
               <span className="flex items-center gap-1.5">
-                <Brain className="w-4 h-4 text-brand-500" />
-                150+ integrated tools
+                No recurring compute costs
               </span>
             </div>
           </div>
@@ -126,13 +120,13 @@ export default function Hero() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-dark-600">
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <div className="w-5 h-8 rounded-full border border-dark-700 flex items-start justify-center p-1.5">
-            <div className="w-1 h-2 rounded-full bg-dark-500 animate-bounce" />
-          </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-dark-600">
+        <span className="text-xs uppercase tracking-widest">Scroll</span>
+        <div className="w-5 h-8 rounded-full border border-dark-700 flex items-start justify-center p-1.5">
+          <div className="w-1 h-2 rounded-full bg-dark-500 animate-bounce" />
         </div>
       </div>
     </section>

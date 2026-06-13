@@ -23,21 +23,29 @@ export default function Navbar() {
               <Cpu className="w-4 h-4 text-white" />
             </div>
             <span className="text-lg font-bold text-white">
-              Eskai
+              <span className="text-brand-400">E</span>skai
             </span>
           </a>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm text-dark-400 hover:text-brand-400 transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const colors: Record<string, string> = {
+                "How It Works": "hover:text-brand-400",
+                "Features": "hover:text-blue-400",
+                "Pricing": "hover:text-green-400",
+                "Apply": "hover:text-yellow-300",
+              }
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm text-dark-400 ${colors[link.label] || "hover:text-brand-400"} transition-colors duration-200`}
+                >
+                  {link.label}
+                </a>
+              )
+            })}
             <a
               href="#apply"
               className="text-sm px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium transition-all duration-200 glow-sm"
@@ -60,20 +68,28 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden border-t border-dark-800/50 bg-dark-900/95 backdrop-blur-xl">
           <div className="px-4 py-4 space-y-3">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="block text-sm text-dark-400 hover:text-brand-400 transition-colors py-2"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const colors: Record<string, string> = {
+                "How It Works": "hover:text-brand-400",
+                "Features": "hover:text-blue-400",
+                "Pricing": "hover:text-green-400",
+                "Apply": "hover:text-yellow-300",
+              }
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className={`block text-sm text-dark-400 ${colors[link.label] || "hover:text-brand-400"} transition-colors py-2`}
+                >
+                  {link.label}
+                </a>
+              )
+            })}
             <a
               href="#apply"
               onClick={() => setOpen(false)}
-              className="block text-center px-4 py-3 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium transition-all"
+              className="block w-fit mx-auto px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium transition-all"
             >
               Get Early Access
             </a>

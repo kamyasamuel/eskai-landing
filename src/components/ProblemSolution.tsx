@@ -1,37 +1,47 @@
 "use client"
 
-import { Bot, Zap, Search, Shield, RefreshCw, Users } from "lucide-react"
+import { Bot, Zap, Search, Shield, RefreshCw, Users, Cloud, Smartphone } from "lucide-react"
 
 const painPoints = [
   {
     icon: Bot,
     problem: "AI gives you answers but doesn't do the work",
-    solution: "Eskai executes — sends emails, edits files, runs code, queries databases, deploys infrastructure",
+    solution: <>Eskai <span className="text-green-400">executes</span> — sends emails, edits files, runs code, queries databases, deploys infrastructure</>,
   },
   {
     icon: Zap,
     problem: "You juggle 15 tools that don't talk to each other",
-    solution: "Eskai connects 150+ capabilities in one unified interface with persistent context",
+    solution: <>Eskai connects <span className="text-brand-400">150+ capabilities</span> in one unified interface with <span className="text-blue-400">persistent context</span></>,
   },
   {
     icon: Search,
     problem: "Every conversation starts from zero — no memory, no context",
-    solution: "Eskai remembers everything — facts, sessions, projects, relationships, preferences",
+    solution: <>Eskai remembers <span className="text-brand-400">everything</span> — facts, sessions, projects, relationships, preferences</>,
   },
   {
     icon: Shield,
     problem: "Your business has no system for tracking what gets done",
-    solution: "Eskai's Business Command Center tracks directives, actors, outcomes, and strategy",
+    solution: <>Eskai's <span className="text-yellow-300">Business Command Center</span> tracks directives, actors, outcomes, and strategy</>,
   },
   {
     icon: RefreshCw,
     problem: "You make decisions without enough data",
-    solution: "Eskai's Dream Cycle synthesizes operations into strategic insights overnight",
+    solution: <>Eskai's <span className="text-blue-400">Dream Cycle</span> synthesizes operations into <span className="text-green-400">strategic insights</span> overnight</>,
   },
   {
     icon: Users,
     problem: "You can't afford a full operations team",
-    solution: "Eskai Business at $99/month does the work of a $3,000/month operations manager",
+    solution: <><span className="text-brand-400">Eskai Business</span> at <span className="text-green-400">$35/month</span> does the work of a $3,000/month operations manager</>,
+  },
+  {
+    icon: Cloud,
+    problem: "Cloud AI costs thousands even before you get value",
+    solution: <>Eskai runs on <span className="text-yellow-300">your own hardware</span> — Raspberry Pi, tablet, or phone. <span className="text-green-400">$10/month software only.</span></>,
+  },
+  {
+    icon: Smartphone,
+    problem: "Your data goes to third-party servers you don't control",
+    solution: <><span className="text-green-400">Self-hosted</span> by design. Your data, your device, your privacy. <span className="text-brand-400">Zero data</span> leaves your hardware.</>,
   },
 ]
 
@@ -65,14 +75,19 @@ export default function ProblemSolution() {
                 className="group rounded-xl glass glass-hover p-6 space-y-4 animate-slide-up"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
-                <div className="w-10 h-10 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:bg-brand-500/20 transition-all duration-300">
-                  <Icon className="w-5 h-5 text-brand-400" />
+                {/* Problem — icon inline with label */}
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center shrink-0 group-hover:bg-brand-500/20 transition-all duration-300">
+                    <Icon className="w-5 h-5 text-brand-400" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs uppercase tracking-wider text-red-400/80 mb-1">Problem</div>
+                    <p className="text-dark-200 font-medium">{item.problem}</p>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-xs uppercase tracking-wider text-red-400/80 mb-1">Problem</div>
-                  <p className="text-dark-200 font-medium">{item.problem}</p>
-                </div>
+
                 <div className="h-px bg-gradient-to-r from-brand-500/20 via-brand-500/10 to-transparent" />
+
                 <div>
                   <div className="text-xs uppercase tracking-wider text-green-400/80 mb-1">Solution</div>
                   <p className="text-dark-300">{item.solution}</p>

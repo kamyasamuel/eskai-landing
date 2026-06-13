@@ -3,10 +3,10 @@
 import { Quote, TrendingUp, Target, Clock, CheckCircle } from "lucide-react"
 
 const stats = [
-  { icon: CheckCircle, label: "Directives Completed", value: "87%" },
-  { icon: TrendingUp, label: "Strategy Cycles Run", value: "2 dream cycles" },
-  { icon: Target, label: "Marketing Assets", value: "20 posts + 16 scripts" },
-  { icon: Clock, label: "Delivery Time", value: "Under 24 hours" },
+  { icon: CheckCircle, label: "Directives Completed", value: "87%", color: "text-green-400" },
+  { icon: TrendingUp, label: "Strategy Cycles Run", value: "2 dream cycles", color: "text-blue-400" },
+  { icon: Target, label: "Marketing Assets", value: "20 posts + 16 scripts", color: "text-yellow-300" },
+  { icon: Clock, label: "Delivery Time", value: "Under 24 hours", color: "text-brand-400" },
 ]
 
 export default function CaseStudy() {
@@ -23,8 +23,8 @@ export default function CaseStudy() {
             Built by a founder, for founders
           </h2>
           <p className="text-dark-400 text-lg">
-            Eskai wasn&apos;t built in a lab. It was built running a real business — BioThrive.
-            Here&apos;s what Eskai delivered in its first week working alongside Kamya.
+            Eskai wasn't built in a lab. It was built running a real business — <span className="text-brand-400">BioThrive</span>.
+            Here's what Eskai delivered in its first week working alongside Kamya.
           </p>
         </div>
 
@@ -38,7 +38,7 @@ export default function CaseStudy() {
                 className="text-center glass rounded-xl p-6 space-y-2"
               >
                 <Icon className="w-6 h-6 text-brand-400 mx-auto" />
-                <div className="text-2xl font-bold text-white">{stat.value}</div>
+                <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
                 <div className="text-sm text-dark-400">{stat.label}</div>
               </div>
             )
@@ -51,20 +51,20 @@ export default function CaseStudy() {
           <div className="space-y-6 text-dark-300 leading-relaxed">
             <p className="text-lg font-medium text-dark-100">
               &ldquo;I defined my business, assigned roles to my team, issued directives, and within
-              24 hours Eskai had produced a complete marketing content plan — 20 X posts,
-              16 TikTok scripts, a 4-week calendar, and a KPI framework — formatted in a
-              professional DOCX with proper tables and sent directly to my email.&rdquo;
+              <span className="text-green-400"> 24 hours</span> Eskai had produced a complete marketing content plan — <span className="text-yellow-300">20 X posts</span>,
+              <span className="text-yellow-300"> 16 TikTok scripts</span>, a <span className="text-blue-400">4-week calendar</span>, and a <span className="text-brand-400">KPI framework</span> — formatted in a
+              professional <span className="text-green-400">DOCX</span> with proper tables and sent directly to my email.&rdquo;
             </p>
             <p>
-              BioThrive — a biological fertilizer and fungicide — needed a launch strategy.
+              <span className="text-brand-400">BioThrive</span> — a biological fertilizer and fungicide — needed a launch strategy.
               Instead of hiring an agency (which would take weeks and cost thousands), Kamya
-              turned to Eskai. The result: a complete go-to-market content plan, reviewed,
-              revised, and approved within 48 hours.
+              turned to Eskai. The result: a complete <span className="text-blue-400">go-to-market</span> content plan, reviewed,
+              revised, and approved within <span className="text-green-400">48 hours</span>.
             </p>
             <p>
-              The Dream Cycle ran twice — first producing a lean strategy based on available
+              The <span className="text-blue-400">Dream Cycle</span> ran twice — first producing a lean strategy based on available
               data, then improving with each iteration. When a formatting issue was flagged in the
-              DOCX, Eskai diagnosed the root cause (plain paragraphs instead of real tables),
+              <span className="text-yellow-300"> DOCX</span>, Eskai diagnosed the root cause (plain paragraphs instead of real tables),
               rebuilt the entire document with proper Word tables, and the fix was approved
               immediately.
             </p>

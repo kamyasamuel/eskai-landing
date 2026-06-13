@@ -2,17 +2,18 @@ import type { Metadata } from "next"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Eskai — Your AI Business Operating System",
+  title: "Eskai — Self-Hosted AI Agent for ARM Devices",
   description:
-    "Eskai is the first AI Operating System for your business. It knows you, watches your operations, executes your tasks, and runs strategic planning cycles to make your business smarter over time. Built by Eskaen Technologies.",
+    "Eskai is a self-hosted AI agent that runs on cheap ARM hardware — Raspberry Pi, Android tablets, and phones. Autonomous, private, and extremely affordable. No cloud compute bills, no vendor lock-in.",
   keywords: [
-    "AI assistant", "business automation", "AI operations", "Eskai",
-    "Eskaen Technologies", "AI agent", "business OS", "artificial intelligence",
+    "self-hosted AI", "AI agent", "ARM AI", "Raspberry Pi AI", "private AI",
+    "business automation", "AI operations", "Eskai", "Eskaen Technologies",
+    "autonomous agent", "edge AI", "on-device AI",
   ],
   openGraph: {
-    title: "Eskai — Your AI Business Operating System",
+    title: "Eskai — Self-Hosted AI Agent for ARM Devices",
     description:
-      "The first AI Operating System for your business. Self-aware. Autonomous. Strategic.",
+      "Your autonomous AI agent that runs on $35 ARM hardware. Private. Affordable. Yours.",
     type: "website",
     locale: "en_US",
   },

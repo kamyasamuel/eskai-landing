@@ -47,6 +47,7 @@ export default function ApplicationForm() {
   const [step, setStep] = useState(1)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState("")
 
   const update = (field: keyof FormData, value: any) => {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -66,45 +67,26 @@ export default function ApplicationForm() {
     if (!form.agree) return
 
     setSubmitting(true)
+    setError("")
 
-    // Simulate submission — in production this would hit an API
-    await new Promise((r) => setTimeout(r, 1500))
-
-    // Build email body
-    const body = `
-New Eskai Early Access Application
-
---- Contact ---
-Name: ${form.fullName}
-Email: ${form.email}
-Phone: ${form.phone}
-Company: ${form.company}
-Role: ${form.role}
-Team Size: ${form.employees}
-
---- Interest ---
-Areas: ${form.interest.join(", ")}
-
---- Use Case ---
-${form.useCase}
-
---- Current Tools ---
-${form.currentTools}
-
---- Referral ---
-${form.referral || "None"}
-    `.trim()
-
-    // Send via email
     try {
-      // We'll use the email tool separately — this marks the form as submitted
-      console.log("Application data ready:", body)
-    } catch (err) {
-      console.error("Submission error:", err)
-    }
+      const res = await fetch("/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
 
-    setSubmitting(false)
-    setSubmitted(true)
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || "Submission failed")
+      }
+
+      setSubmitted(true)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.")
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -118,7 +100,7 @@ ${form.referral || "None"}
             </div>
             <h2 className="text-2xl font-bold text-white">Application Received!</h2>
             <p className="text-dark-400 text-lg">
-              Thank you for your interest in Eskai. We&apos;ll review your application and
+              Thank you for your interest in Eskai. We'll review your application and
               get back to you within 48 hours with next steps for early access.
             </p>
             <div className="text-sm text-dark-500">
@@ -143,13 +125,20 @@ ${form.referral || "None"}
             Apply for early access
           </h2>
           <p className="text-dark-400 text-lg">
-            Eskai is currently in private beta. We&apos;re accepting a limited number of
+            Eskai is currently in private beta. We're accepting a limited number of
             founders and teams who want to be the first to run their business with an AI
             Operating System.
           </p>
         </div>
 
         <div className="glass rounded-2xl p-6 sm:p-10 border border-dark-700/30">
+          {/* Error banner */}
+          {error && (
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400">
+              {error}
+            </div>
+          )}
+
           {/* Progress steps */}
           <div className="flex items-center gap-2 mb-10">
             {[1, 2, 3].map((s) => (
@@ -262,7 +251,7 @@ ${form.referral || "None"}
               <div className="space-y-5 animate-fade-in">
                 <h3 className="text-xl font-semibold text-white">What interests you?</h3>
                 <p className="text-sm text-dark-400">
-                  Select all the ways you&apos;d use Eskai.
+                  Select all the ways you'd use Eskai.
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -338,7 +327,7 @@ ${form.referral || "None"}
                   />
                   <span className="text-sm text-dark-400 group-hover:text-dark-300 transition-colors">
                     I agree to the Eskai early access terms and privacy policy. I understand
-                    this is a private beta and I&apos;ll provide feedback to help shape the product. *
+                    this is a private beta and I'll provide feedback to help shape the product. *
                   </span>
                 </label>
               </div>
@@ -350,7 +339,7 @@ ${form.referral || "None"}
                 <button
                   type="button"
                   onClick={() => setStep(step - 1)}
-                  className="px-4 py-2.5 rounded-xl text-sm text-dark-300 hover:text-white bg-dark-800 hover:bg-dark-700 transition-all"
+                  className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm text-dark-300 hover:text-white bg-dark-800 hover:bg-dark-700 transition-all"
                 >
                   Back
                 </button>
@@ -362,7 +351,7 @@ ${form.referral || "None"}
                 <button
                   type="button"
                   onClick={() => setStep(step + 1)}
-                  className="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all"
+                  className="px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all"
                 >
                   Continue
                 </button>
@@ -370,7 +359,7 @@ ${form.referral || "None"}
                 <button
                   type="submit"
                   disabled={!form.agree || submitting}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {submitting ? (
                     <>

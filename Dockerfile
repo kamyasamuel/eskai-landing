@@ -3,25 +3,50 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files and install ALL dependencies (dev deps needed for build)
-COPY package.json package-lock.json ./
-RUN npm ci
+# Enable Corepack for package manager (optional, good practice)
+ENV COREPACK_ENABLE_STRICT=0
 
-# Copy source code
+# Install build dependencies for better-sqlite3 native module
+RUN apk add --no-cache python3 make g++
+
+# Copy package files first — changes infrequently, layers cache well
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --prefer-offline
+
+# Copy source code (changes frequently, separate layer)
 COPY . .
 
-# Build the static export
-RUN npm run build
+# Build with BuildKit cache for Next.js compiled output
+RUN --mount=type=cache,target=/app/.next/cache \
+    npm run build
 
-# ---- Serve Stage ----
-FROM nginx:alpine
+# ---- Production Stage ----
+FROM node:20-alpine AS server
 
-# Copy the static export to nginx html directory
-COPY --from=builder /app/out /usr/share/nginx/html
+WORKDIR /app
 
-# Copy custom nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Install runtime dependencies for better-sqlite3 native module
+RUN apk add --no-cache python3 make g++
 
-EXPOSE 80
+# Copy only production dependencies
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --prefer-offline --production
 
-CMD ["nginx", "-g", "daemon off;"]
+# Copy build output and public assets
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/next.config.js ./next.config.js
+
+# Create data directory for SQLite database
+RUN mkdir -p /app/data
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV DB_PATH=/app/data/eskai.db
+
+EXPOSE 3000
+
+CMD ["node_modules/.bin/next", "start"]
