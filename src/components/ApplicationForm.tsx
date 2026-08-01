@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
+import { trackEvent } from "@/lib/track"
 import { Send, CheckCircle, Loader2 } from "lucide-react"
 
 type FormData = {
@@ -48,8 +49,16 @@ export default function ApplicationForm() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState("")
+  const startedRef = useRef(false)
+
+  const markStarted = () => {
+    if (startedRef.current) return
+    startedRef.current = true
+    trackEvent("form_start", { step: 1 })
+  }
 
   const update = (field: keyof FormData, value: any) => {
+    markStarted()
     setForm((prev) => ({ ...prev, [field]: value }))
   }
 
@@ -78,10 +87,22 @@ export default function ApplicationForm() {
 
       if (!res.ok) {
         const data = await res.json()
+        trackEvent("form_submit", {
+          success: false,
+          reason: res.status === 409 ? "duplicate" : "error",
+          interests: form.interest.length,
+        })
         throw new Error(data.error || "Submission failed")
       }
 
       setSubmitted(true)
+      trackEvent("form_submit", {
+        success: true,
+        interests: form.interest.length,
+        emailDomain: form.email.split("@")[1] || "",
+        company: form.company ? true : false,
+        referral: form.referral || "",
+      })
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.")
     } finally {
@@ -350,7 +371,10 @@ export default function ApplicationForm() {
               {step < 3 ? (
                 <button
                   type="button"
-                  onClick={() => setStep(step + 1)}
+                  onClick={() => {
+                    markStarted()
+                    setStep(step + 1)
+                  }}
                   className="px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all"
                 >
                   Continue

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { withApiAuth } from "@/lib/middleware"
 import { getDb } from "@/lib/db"
-import { paginationSchema } from "@/lib/validation"
+import { paginationSchema, applicationSchema } from "@/lib/validation"
+import { v4 as uuidv4 } from "uuid"
 import type { ApiKeyInfo } from "@/lib/middleware"
 
 async function handleGetApplications(
@@ -141,5 +142,77 @@ async function handleBulkUpdate(
   }
 }
 
+
+/**
+ * POST /api/v1/applications
+ * Public application submission (no API key required — same as legacy /api/applications).
+ * Captures the application into the database so it appears in the dashboard,
+ * the notifier, and analytics (totalApplications / conversion rate).
+ */
+async function handleCreateApplication(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const parsed = applicationSchema.safeParse(body)
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: "Validation failed", details: parsed.error.flatten().fieldErrors },
+        { status: 400 }
+      )
+    }
+
+    const {
+      fullName,
+      email,
+      phone,
+      company,
+      role,
+      employees,
+      interest,
+      useCase,
+      currentTools,
+      referral,
+    } = parsed.data
+
+    const db = getDb()
+
+    // Check for duplicate email
+    const existing = db
+      .prepare("SELECT id, status FROM applications WHERE email = ?")
+      .get(email) as { id: string; status: string } | undefined
+
+    if (existing && existing.status !== "deleted") {
+      return NextResponse.json(
+        { error: "An application with this email already exists", id: existing.id },
+        { status: 409 }
+      )
+    }
+
+    const id = uuidv4()
+    db.prepare(`
+      INSERT INTO applications (id, full_name, email, phone, company, role, employees, interest, use_case, current_tools, referral)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      id,
+      fullName,
+      email,
+      phone || "",
+      company || "",
+      role,
+      employees || "",
+      JSON.stringify(interest || []),
+      useCase,
+      currentTools || "",
+      referral || ""
+    )
+
+    return NextResponse.json({ success: true, id }, { status: 201 })
+  } catch (error) {
+    console.error("Application submission error:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
+}
+
+export const POST = handleCreateApplication
 export const GET = withApiAuth(handleGetApplications, ["read:applications"])
 export const PATCH = withApiAuth(handleBulkUpdate, ["write:applications"])
