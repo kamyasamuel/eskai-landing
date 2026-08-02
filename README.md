@@ -26,7 +26,7 @@ Eskai is an autonomous AI assistant that knows who you are, watches your operati
 - 🔍 **Problem/Solution matrix** — Six pain points with Eskai's solutions
 - ⚡ **Feature showcase** — Self-awareness, Sensory Cortex, Dream Cycle, Self-Repair, and 6+ capability categories
 - 📊 **Case study** — Real-world proof of concept running BioThrive
-- 💰 **Pricing** — Four tiers: Personal ($29/mo), Business ($99/mo), Vertical ($199/mo), Enterprise (custom)
+- 💰 **Pricing** — One-time purchase: Personal ($35), Business ($150), Enterprise ($335). No subscriptions, no recurring fees.
 - 📝 **Multi-step early access application form** — 3-step application with interest selection, use case description, and agreement
 - 🌙 **Dark theme** — Glass-morphism design with gradient accents
 - 📱 **Responsive** — Fully responsive from mobile to desktop
@@ -38,7 +38,7 @@ Eskai is an autonomous AI assistant that knows who you are, watches your operati
 3. **Problem/Solution** — Pain point / solution comparisons
 4. **Features** — "The Eskai Difference" and "What Eskai Can Do" (150+ tools)
 5. **Case Study** — BioThrive launch: 87% directives completed, 2 dream cycles, 20 posts + 16 scripts
-6. **Pricing** — 4 tiers with feature breakdowns
+6. **Pricing** — One-time purchase: Personal ($35), Business ($150), Enterprise ($335). No subscriptions, no recurring fees.
 7. **Early Access Form** — Multi-step application for private beta
 8. **Footer** — Links, company info, and branding
 

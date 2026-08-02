@@ -1,13 +1,14 @@
 "use client"
 
-import { Check, ArrowRight, Star, HardDrive, Cpu, Shield } from "lucide-react"
+import { Check, ArrowRight, Star, HardDrive, Cpu, Shield, Users } from "lucide-react"
+import UserCounter from "./UserCounter"
 
 const tiers = [
   {
     name: "Personal",
     desc: "Your AI agent. For freelancers and solo entrepreneurs.",
-    price: 10,
-    period: "/month",
+    price: 35,
+    period: "one-time",
     features: [
       "Self-hosted on your own ARM device",
       "Self-awareness & memory",
@@ -25,8 +26,8 @@ const tiers = [
   {
     name: "Business",
     desc: "Your AI operations manager. For small teams and startups.",
-    price: 35,
-    period: "/month",
+    price: 150,
+    period: "one-time",
     features: [
       "Everything in Personal — all self-hosted",
       "Business Command Center",
@@ -43,28 +44,15 @@ const tiers = [
     badges: ["Self-Hosted", "Most Popular"],
   },
   {
-    name: "Vertical",
-    desc: "Industry-specific AI. Pre-loaded with domain knowledge.",
-    price: 75,
-    period: "/month",
-    badges: ["Self-Hosted", "Agriculture Ready"],
+    name: "Enterprise",
+    desc: "Your AI department. For organizations at scale.",
+    price: 335,
+    period: "one-time",
     features: [
       "Everything in Business — all self-hosted",
       "Pre-loaded domain knowledge",
       "Industry-specific tooling",
       "Custom reporting templates",
-      "Priority support",
-    ],
-    cta: "Get Early Access",
-    highlighted: false,
-  },
-  {
-    name: "Enterprise",
-    desc: "Your AI department. For organizations at scale.",
-    price: null,
-    period: "",
-    features: [
-      "Everything in Vertical — all self-hosted",
       "Dedicated ARM server deployment",
       "White-label branding",
       "Unlimited businesses & actors",
@@ -74,8 +62,9 @@ const tiers = [
       "24-hour support SLA",
       "Custom training & onboarding",
     ],
-    cta: "Contact Us",
+    cta: "Get Early Access",
     highlighted: false,
+    badges: ["Self-Hosted"],
   },
 ]
 
@@ -101,15 +90,11 @@ const planFeatures: Record<string, Array<{ label: string; accent: "brand" | "blu
     { label: "Sensory Cortex monitoring", accent: "blue" },
     { label: "Directive & workflow management", accent: "brand" },
   ],
-  "Vertical": [
+  "Enterprise": [
     { label: "Everything in Business — all self-hosted", accent: "brand" },
     { label: "Pre-loaded domain knowledge", accent: "blue" },
     { label: "Industry-specific tooling", accent: "green" },
     { label: "Custom reporting templates", accent: "yellow" },
-    { label: "Priority support", accent: "brand" },
-  ],
-  "Enterprise": [
-    { label: "Everything in Vertical — all self-hosted", accent: "brand" },
     { label: "Dedicated ARM server deployment", accent: "blue" },
     { label: "White-label branding", accent: "green" },
     { label: "Unlimited businesses & actors", accent: "none" },
@@ -140,13 +125,20 @@ export default function Pricing() {
             Pricing
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            Intelligence shouldn't be a luxury.
+            Own it once. Use it forever.
           </h2>
           <p className="text-dark-400 text-lg">
-            Every tier is self-hosted. No cloud compute fees, no data egress costs,
-            no vendor lock-in. Your agent runs on the device you already own, for less
-            than the price of a coffee per day.
+            One-time purchase. No subscriptions, no recurring fees, no vendor lock-in.
+            Your agent runs on the device you already own — and it is yours for life,
+            updates included.
           </p>
+
+          {/* Users counter */}
+          <div className="inline-flex items-center gap-2 rounded-full glass px-4 py-2 text-sm text-dark-200 border border-brand-800/30">
+            <Users className="w-4 h-4 text-brand-400" />
+            <UserCounter end={1500} suffix="+" className="font-bold text-brand-300" />
+            <span>users have already joined</span>
+          </div>
         </div>
 
         {/* Self-hosting highlight banner */}
@@ -167,7 +159,7 @@ export default function Pricing() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {tiers.map((tier, i) => (
             <div
               key={i}
@@ -204,7 +196,7 @@ export default function Pricing() {
               {/* Price */}
               <div className="mb-6">
                 {tier.price ? (
-                  <div className="flex items-baseline gap-1">
+                  <div className="flex items-baseline gap-1 flex-wrap">
                     <span className="text-3xl font-bold text-white">
                       <span className="text-brand-400">$</span>{tier.price}
                     </span>
@@ -243,10 +235,10 @@ export default function Pricing() {
           ))}
         </div>
 
-        {/* Annual note */}
+        {/* One-time note */}
         <div className="text-center mt-8">
           <p className="text-sm text-dark-500">
-            Annual plans available at 2 months free. All tiers are{" "}
+            One-time payment — yours forever, updates included. All tiers are{" "}
             <span className="text-brand-400">self-hosted</span> —
             bring your own Raspberry Pi, tablet, or phone.
           </p>

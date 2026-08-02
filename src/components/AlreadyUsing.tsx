@@ -14,12 +14,25 @@ import {
   Newspaper,
   Sprout,
   Cpu,
+  type LucideIcon,
 } from "lucide-react"
+import UserCounter from "./UserCounter"
 
-const stats = [
+type Stat = {
+  icon: LucideIcon
+  value?: string
+  end?: number
+  suffix?: string
+  label: string
+  sub: string
+  color: string
+}
+
+const stats: Stat[] = [
   {
     icon: Users,
-    value: "1,500+",
+    end: 1500,
+    suffix: "+",
     label: "Early adopters",
     sub: "Founders, teams and businesses already using Eskai",
     color: "text-brand-400",
@@ -101,7 +114,9 @@ export default function AlreadyUsing() {
               <div className="w-12 h-12 mx-auto rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:bg-brand-500/20 transition-all duration-300">
                 <s.icon className={`w-6 h-6 ${s.color}`} />
               </div>
-              <div className={`text-3xl font-bold ${s.color}`}>{s.value}</div>
+              <div className={`text-3xl font-bold ${s.color}`}>
+                {s.end ? <UserCounter end={s.end} suffix={s.suffix ?? ""} /> : s.value}
+              </div>
               <div className="font-semibold text-white">{s.label}</div>
               <div className="text-sm text-dark-400 leading-relaxed">{s.sub}</div>
             </div>

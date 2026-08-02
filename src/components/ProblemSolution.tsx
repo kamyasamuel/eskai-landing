@@ -31,12 +31,12 @@ const painPoints = [
   {
     icon: Users,
     problem: "You can't afford a full operations team",
-    solution: <><span className="text-brand-400">Eskai Business</span> at <span className="text-green-400">$35/month</span> does the work of a $3,000/month operations manager</>,
+    solution: <><span className="text-brand-400">Eskai Business</span> for <span className="text-green-400">a one-time $150</span> — the work of a $3,000/month operations manager, without the payroll</>,
   },
   {
     icon: Cloud,
     problem: "Cloud AI costs thousands even before you get value",
-    solution: <>Eskai runs on <span className="text-yellow-300">your own hardware</span> — Raspberry Pi, tablet, or phone. <span className="text-green-400">$10/month software only.</span></>,
+    solution: <>Eskai runs on <span className="text-yellow-300">your own hardware</span> — Raspberry Pi, tablet, or phone. <span className="text-green-400">$35 one-time software license.</span></>,
   },
   {
     icon: Smartphone,

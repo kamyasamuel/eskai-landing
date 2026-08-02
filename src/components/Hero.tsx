@@ -18,7 +18,7 @@ export default function Hero() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-sm text-brand-300 border border-brand-800/30">
               <Cpu className="w-3.5 h-3.5" />
-              <span>Self-hosted · Runs on $35 ARM hardware</span>
+              <span>Self-hosted · One-time purchase · Runs on $35 ARM hardware</span>
             </div>
 
             {/* Headline */}
