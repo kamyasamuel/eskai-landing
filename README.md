@@ -105,6 +105,41 @@ docker run -d -p 8080:80 eskai-landing:latest
 ```
 
 ### Using the Makefile
+### Data Persistence
+
+The app stores its SQLite database at `/app/data/eskai.db` inside the container
+(early-access applications, page views, events, API keys, admin users). The
+`docker-compose.yml` declares a **named volume `landing_data` mounted at
+`/app/data`**, so **all data survives `docker compose up -d --build` and
+container recreation**.
+
+> First deploy with the volume: the volume starts empty, so migrate any existing
+> data first:
+>
+> ```bash
+> # 1) Before recreating, copy the DB out of the running container
+> docker cp eskai-landing:/app/data ./data-backup
+> # 2) After `docker compose up -d --build` with the new volume, restore it
+> docker cp ./data-backup/. eskai-landing:/app/data/
+> docker compose restart landing
+> ```
+
+Backup / restore the whole volume:
+
+```bash
+# Backup
+docker run --rm -v eskai-landing_landing_data:/data -v "$PWD":/backup \
+  alpine tar czf /backup/eskai-data-$(date +%F).tar.gz -C /data .
+
+# Restore
+docker run --rm -v eskai-landing_landing_data:/data -v "$PWD":/backup \
+  alpine tar xzf /backup/eskai-data-<date>.tar.gz -C /data
+```
+
+> The volume's full name is `<project-dir>_landing_data` (e.g.
+> `eskai-landing_landing_data`). Verify with `docker volume ls`.
+
+
 
 ```bash
 make build        # Build image with BuildKit caching

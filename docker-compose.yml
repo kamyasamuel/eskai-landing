@@ -11,9 +11,18 @@ services:
     ports:
       - "8080:80"
     restart: unless-stopped
+    volumes:
+      # PERSISTENCE: the SQLite database (early-access applications, page_views,
+      # events, api_keys, admin_users) lives at /app/data/eskai.db inside the
+      # container. The named volume below keeps it safe across rebuilds and
+      # container recreation (`docker compose up -d --build` no longer wipes data).
+      - landing_data:/app/data
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
       interval: 30s
       timeout: 3s
       retries: 3
       start_period: 5s
+
+volumes:
+  landing_data:
