@@ -40,7 +40,10 @@ export default function Footer() {
 
           {/* Links */}
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-dark-200 uppercase tracking-wider">Product</h4>
+            <h4 className="text-sm font-semibold text-dark-200 uppercase tracking-wider flex items-center gap-2">
+              <span className="inline-block h-px w-3 bg-gradient-to-r from-brand-500 to-transparent" />
+              Product
+            </h4>
             <div className="space-y-2">
               <a
                 href="#how-it-works"
@@ -70,7 +73,10 @@ export default function Footer() {
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-sm font-semibold text-dark-200 uppercase tracking-wider">Company</h4>
+            <h4 className="text-sm font-semibold text-dark-200 uppercase tracking-wider flex items-center gap-2">
+              <span className="inline-block h-px w-3 bg-gradient-to-r from-brand-500 to-transparent" />
+              Company
+            </h4>
             <div className="space-y-2">
               <a
                 href="https://eskaen.com"

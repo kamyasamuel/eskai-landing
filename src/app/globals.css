@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -31,6 +31,33 @@
   }
 }
 
+@layer components {
+  /* Slanted accent word — italic, skewed, gradient */
+  .heading-accent {
+    @apply italic font-extrabold inline-block -skew-x-6 text-gradient;
+    letter-spacing: -0.01em;
+  }
+  /* Decorative gradient underline bar for section headings */
+  .heading-underline {
+    @apply mx-auto mt-4 h-1 w-20 rounded-full bg-gradient-to-r from-brand-500 via-emerald-500 to-brand-400;
+  }
+  .heading-underline-left {
+    @apply ml-0 mt-4 h-1 w-20 rounded-full bg-gradient-to-r from-brand-500 via-emerald-500 to-brand-400;
+  }
+  /* Section eyebrow label with gradient rule */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-brand-500 font-semibold;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply inline-block h-px w-8 bg-gradient-to-r from-brand-500 to-transparent;
+  }
+  .eyebrow-centered::after {
+    content: '';
+    @apply inline-block h-px w-8 bg-gradient-to-r from-transparent to-brand-500;
+  }
+}
+
 /* Animations */
 @keyframes fade-in {
   from {
@@ -52,12 +79,26 @@
   }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
 .animate-fade-in {
   animation: fade-in 0.8s ease-out forwards;
 }
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+.text-shimmer {
+  background-size: 200% auto;
+  animation: shimmer 6s linear infinite;
 }
 
 /* Scrollbar */
@@ -78,4 +119,7 @@
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+.lg\:text-6xl {
+  line-height: 1.25;
 }

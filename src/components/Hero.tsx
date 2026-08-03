@@ -22,11 +22,11 @@ export default function Hero() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
               Your{" "}
-              <span className="text-gradient">Self-Hosted</span>
+              <span className="heading-accent text-shimmer">Self-Hosted</span>
               <br />
-              <span className="text-gradient">AI Agent</span>
+              <span className="heading-accent text-shimmer">AI Agent</span>
             </h1>
 
             {/* Subtitle */}

@@ -119,7 +119,9 @@ export default function ApplicationForm() {
             <div className="w-16 h-16 rounded-full bg-brand-500/10 border border-brand-500/20 flex items-center justify-center mx-auto">
               <CheckCircle className="w-8 h-8 text-brand-400" />
             </div>
-            <h2 className="text-2xl font-bold text-white">Application Received!</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+              Application <span className="heading-accent">Received!</span>
+            </h2>
             <p className="text-dark-400 text-lg">
               Thank you for your interest in Eskai. We'll review your application and
               get back to you within 48 hours with next steps for early access.
@@ -139,12 +141,13 @@ export default function ApplicationForm() {
 
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-4">
-          <span className="text-xs uppercase tracking-[0.2em] text-brand-500 font-semibold">
+          <span className="eyebrow eyebrow-centered">
             Early Access
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            Apply for early access
+          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+            Apply for <span className="heading-accent">early access</span>
           </h2>
+          <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
             Eskai is currently in private beta. We're accepting a limited number of
             founders and teams who want to be the first to run their business with an AI
@@ -186,7 +189,9 @@ export default function ApplicationForm() {
             {/* Step 1 — Basic Info */}
             {step === 1 && (
               <div className="space-y-5 animate-fade-in">
-                <h3 className="text-xl font-semibold text-white">Tell us about yourself</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Tell us <span className="heading-accent">about yourself</span>
+                </h3>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -270,7 +275,9 @@ export default function ApplicationForm() {
             {/* Step 2 — Interests */}
             {step === 2 && (
               <div className="space-y-5 animate-fade-in">
-                <h3 className="text-xl font-semibold text-white">What interests you?</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  What <span className="heading-accent">interests you?</span>
+                </h3>
                 <p className="text-sm text-dark-400">
                   Select all the ways you'd use Eskai.
                 </p>
@@ -311,7 +318,9 @@ export default function ApplicationForm() {
             {/* Step 3 — Tools & Final */}
             {step === 3 && (
               <div className="space-y-5 animate-fade-in">
-                <h3 className="text-xl font-semibold text-white">Almost there</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  <span className="heading-accent">Almost</span> there
+                </h3>
 
                 <div className="space-y-2">
                   <label className="text-sm text-dark-300 font-medium">

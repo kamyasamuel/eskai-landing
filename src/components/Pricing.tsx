@@ -121,12 +121,13 @@ export default function Pricing() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-xs uppercase tracking-[0.2em] text-brand-500 font-semibold">
+          <span className="eyebrow eyebrow-centered">
             Pricing
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            Own it once. Use it forever.
+          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+            <span className="heading-accent">Own it once.</span> Use it forever.
           </h2>
+          <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
             One-time purchase. No subscriptions, no recurring fees, no vendor lock-in.
             Your agent runs on the device you already own — and it is yours for life,

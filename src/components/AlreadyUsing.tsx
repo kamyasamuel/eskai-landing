@@ -89,14 +89,15 @@ export default function AlreadyUsing() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-brand-500 font-semibold">
-            <Sparkles className="w-4 h-4" />
+          <span className="eyebrow eyebrow-centered">
+            <Sparkles className="w-3.5 h-3.5" />
             Already Using Eskai
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            Join <span className="text-gradient">1,500+</span> founders and teams
+          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+            Join <span className="heading-accent">1,500+</span> founders and teams
             running their business on Eskai
           </h2>
+          <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
             From solo makers to growing companies across the world — people are
             replacing costly SaaS stacks with one persistent, self-hosted agent

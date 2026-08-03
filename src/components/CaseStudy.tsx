@@ -16,12 +16,13 @@ export default function CaseStudy() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-xs uppercase tracking-[0.2em] text-brand-500 font-semibold">
+          <span className="eyebrow eyebrow-centered">
             Proof of Concept
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            Built by a founder, for founders
+          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+            Built by a <span className="heading-accent">founder,</span> for founders
           </h2>
+          <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
             Eskai wasn't built in a lab. It was built running a real business — <span className="text-brand-400">BioThrive</span>.
             Here's what Eskai delivered in its first week working alongside Kamya.

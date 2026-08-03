@@ -86,12 +86,14 @@ export default function Features() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-xs uppercase tracking-[0.2em] text-brand-500 font-semibold">
+          <span className="eyebrow eyebrow-centered">
             Capabilities
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">
-            150+ tools. One interface. Unlimited potential.
+          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+            150+ tools. <span className="heading-accent">One interface.</span>
+            <br className="hidden sm:block" /> Unlimited potential.
           </h2>
+          <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
             Eskai is not a single-purpose tool. It is a platform of interconnected capabilities
             that compound in value the more you use them.
@@ -100,7 +102,8 @@ export default function Features() {
 
         {featureGroups.map((group, gi) => (
           <div key={gi} className="mb-16 last:mb-0">
-            <h3 className="text-xl font-semibold text-dark-200 mb-8 text-center lg:text-left">
+            <h3 className="text-xl font-semibold text-dark-200 mb-8 text-center lg:text-left flex items-center justify-center lg:justify-start gap-3">
+              <span className="hidden lg:inline-block h-px w-10 bg-gradient-to-r from-brand-500 to-transparent" />
               {group.title}
             </h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
