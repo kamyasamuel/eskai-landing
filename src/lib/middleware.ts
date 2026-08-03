@@ -21,6 +21,33 @@ export type ApiHandler<T = unknown> = (
   context: T
 ) => Promise<NextResponse> | NextResponse
 
+// ─── readJsonBody ──────────────────────────────────────────────────────────────
+// Safely parse a JSON request body. Returns either the parsed data or a
+// ready-to-send 400 NextResponse (empty body, malformed JSON, etc.).
+export async function readJsonBody<T = unknown>(
+  request: NextRequest
+): Promise<{ data: T } | { error: NextResponse }> {
+  try {
+    const text = await request.text()
+    if (!text.trim()) {
+      return {
+        error: NextResponse.json(
+          { error: "Request body is required. Send a JSON body with Content-Type: application/json." },
+          { status: 400 }
+        ),
+      }
+    }
+    return { data: JSON.parse(text) as T }
+  } catch {
+    return {
+      error: NextResponse.json(
+        { error: "Invalid JSON in request body." },
+        { status: 400 }
+      ),
+    }
+  }
+}
+
 // ─── withApiAuth ──────────────────────────────────────────────────────────────
 
 export function withApiAuth(

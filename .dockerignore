@@ -16,6 +16,10 @@ out
 .env.test.local
 .env.production.local
 
+# Local SQLite database (never bake into image — use the named volume)
+data
+backups
+
 # IDE and OS files
 .vscode
 .idea

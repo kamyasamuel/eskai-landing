@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
+import { readJsonBody } from "@/lib/middleware"
 import { pageViewSchema } from "@/lib/validation"
 
 /**
@@ -10,7 +11,10 @@ import { pageViewSchema } from "@/lib/validation"
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<Record<string, unknown>>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const { sessionId, path, referrer, userAgent } = body
 
     if (!sessionId || !path) {

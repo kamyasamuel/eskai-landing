@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
+import { readJsonBody } from "@/lib/middleware"
 import { v4 as uuidv4 } from "uuid"
 import bcrypt from "bcryptjs"
 import { createApiKey } from "@/lib/auth"
@@ -13,7 +14,10 @@ import { createApiKey } from "@/lib/auth"
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<Record<string, unknown>>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const { email, password, name } = body
 
     if (!email || !password || !name) {
@@ -23,7 +27,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (password.length < 8) {
+    const emailStr = String(email)
+    const passwordStr = String(password)
+    const nameStr = String(name)
+
+    if (passwordStr.length < 8) {
       return NextResponse.json(
         { error: "Password must be at least 8 characters" },
         { status: 400 }
@@ -43,11 +51,11 @@ export async function POST(request: NextRequest) {
 
     // Create admin user
     const adminId = uuidv4()
-    const passwordHash = bcrypt.hashSync(password, 12)
+    const passwordHash = bcrypt.hashSync(passwordStr, 12)
 
     db.prepare(
       "INSERT INTO admin_users (id, email, password_hash, name, role) VALUES (?, ?, ?, ?, ?)"
-    ).run(adminId, email, passwordHash, name, "admin")
+    ).run(adminId, emailStr, passwordHash, nameStr, "admin")
 
     // Create a default API key with all scopes
     const apiKey = createApiKey(
@@ -58,7 +66,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: true,
-        adminUser: { id: adminId, email, name },
+        adminUser: { id: adminId, email: emailStr, name: nameStr },
         apiKey: {
           id: apiKey.id,
           prefix: apiKey.prefix,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { withApiAuth } from "@/lib/middleware"
+import { withApiAuth, readJsonBody } from "@/lib/middleware"
 import { getDb } from "@/lib/db"
 import { applicationUpdateSchema } from "@/lib/validation"
 import type { ApiKeyInfo } from "@/lib/middleware"
@@ -45,7 +45,10 @@ async function handleUpdateApplication(
       return NextResponse.json({ error: "Application ID is required" }, { status: 400 })
     }
 
-    const body = await request.json()
+    const bodyResult = await readJsonBody<unknown>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const parsed = applicationUpdateSchema.safeParse(body)
 
     if (!parsed.success) {

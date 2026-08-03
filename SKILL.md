@@ -9,82 +9,89 @@ This document gives an AI agent everything it needs to manage the Eskai landing 
 **Eskai** is a self-hosted, autonomous AI operating system that runs on commodity ARM hardware (Raspberry Pi 4/5, Android devices). It provides businesses with a persistent AI agent that manages operations, code, data, communications, and infrastructure — all locally, without cloud dependencies.
 
 ### Brand Identity
+
 - **Tagline**: "Your Self-Hosted AI Agent"
 - **Promise**: No cloud, no data leaks, no recurring compute bills — runs on $35-50 hardware
 - **Target Audience**: Founders, SMBs, tech leads in Africa and globally who need affordable, private, persistent AI
 - **Unique Differentiators**: Self-awareness engine, sensory cortex, dream cycle engine, self-repair system, runs on ARM
 
 ### Key Business Metrics to Track
-| Metric | Source | Why |
-|---|---|---|
-| Total applications | `GET /api/v1/applications` | Pipeline volume |
-| Conversion rate | `GET /api/v1/analytics` → `overview.conversionRate` | Page view → application funnel |
-| Pending applicants | `GET /api/v1/stats` → `applications.pending` | Workload for team review |
-| Daily page views | `GET /api/v1/analytics` → `dailyViews` | Traffic trends |
-| Top referrers | `GET /api/v1/analytics` → `topReferrers` | Marketing channel effectiveness |
-| Geo distribution | `GET /api/v1/analytics` → `geoDistribution` | Regional adoption |
+
+| Metric             | Source                                                   | Why                             |
+| ------------------ | -------------------------------------------------------- | ------------------------------- |
+| Total applications | `GET /api/v1/applications`                             | Pipeline volume                 |
+| Conversion rate    | `GET /api/v1/analytics` → `overview.conversionRate` | Page view → application funnel |
+| Pending applicants | `GET /api/v1/stats` → `applications.pending`        | Workload for team review        |
+| Daily page views   | `GET /api/v1/analytics` → `dailyViews`              | Traffic trends                  |
+| Top referrers      | `GET /api/v1/analytics` → `topReferrers`            | Marketing channel effectiveness |
+| Geo distribution   | `GET /api/v1/analytics` → `geoDistribution`         | Regional adoption               |
 
 ---
 
 ## 2. 🔑 Access & Authentication
 
 ### 2.1 Initial Setup (First Time)
+
 ```bash
 # Seed the database with an admin user + API key
-curl -X POST https://agent-eskai.eskaen.com/api/seed \
+curl -X POST https://eskai.eskaen.com/api/seed \
   -H "Content-Type: application/json" \
-  -d '{"email":"admin@eskai.com","password":"your-secure-password","name":"Admin Name"}'
+  -d '{"email":"admin@eskai.com","password":"your-secure-password","name":"admin"}'
 
 # Response includes a raw API key — SAVE IT (shown only once)
 ```
 
 ### 2.2 Getting JWT Token (For Admin Dashboard)
+
 ```bash
-curl -X POST https://agent-eskai.eskaen.com/api/auth/login \
+curl -X POST https://eskai.eskaen.com/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@eskai.com","password":"your-secure-password"}'
 # Response: { token: "eyJ...", user: { id, email, name, role } }
 ```
 
 ### 2.3 Managing API Keys (JWT Required)
+
 ```bash
 # List existing keys
-curl https://agent-eskai.eskaen.com/api/auth/keys \
+curl https://eskai.eskaen.com/api/auth/keys \
   -H "Authorization: Bearer <jwt_token>"
 
 # Create a new key with specific scopes
-curl -X POST https://agent-eskai.eskaen.com/api/auth/keys \
+curl -X POST https://eskai.eskaen.com/api/auth/keys \
   -H "Authorization: Bearer <jwt_token>" \
   -H "Content-Type: application/json" \
   -d '{"name":"Marketing Analytics","scopes":["read:analytics","export"]}'
 # Response includes rawKey — SAVE IT
 
 # Revoke a key (safe rotation / compromise response)
-curl -X DELETE https://agent-eskai.eskaen.com/api/auth/keys/<key_id> \
+curl -X DELETE https://eskai.eskaen.com/api/auth/keys/<key_id> \
   -H "Authorization: Bearer <jwt_token>"
 ```
 
 ### 2.4 Available API Key Scopes
-| Scope | Permits |
-|---|---|
-| `read:applications` | View customer applications |
-| `write:applications` | Update application status/notes |
-| `read:analytics` | Access analytics dashboard |
-| `read:stats` | Access system statistics |
-| `export` | Export data as CSV/JSON |
-| `admin` | All of the above + delete applications |
+
+| Scope                  | Permits                                |
+| ---------------------- | -------------------------------------- |
+| `read:applications`  | View customer applications             |
+| `write:applications` | Update application status/notes        |
+| `read:analytics`     | Access analytics dashboard             |
+| `read:stats`         | Access system statistics               |
+| `export`             | Export data as CSV/JSON                |
+| `admin`              | All of the above + delete applications |
 
 ---
 
 ## 3. 📋 Customer Applications
 
 ### 3.1 Viewing All Applications (Paginated)
+
 ```bash
-curl https://agent-eskai.eskaen.com/api/v1/applications \
+curl https://eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>"
 
 # With filters
-curl "https://agent-eskai.eskaen.com/api/v1/applications?page=1&limit=20&sort=created_at&order=desc&status=pending&search=kamya&startDate=2025-01-01&endDate=2025-12-31" \
+curl "https://eskai.eskaen.com/api/v1/applications?page=1&limit=20&sort=created_at&order=desc&status=pending&search=kamya&startDate=2025-01-01&endDate=2025-12-31" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
@@ -93,21 +100,23 @@ curl "https://agent-eskai.eskaen.com/api/v1/applications?page=1&limit=20&sort=cr
 **Response includes** pagination metadata: `{ page, limit, total, totalPages }`
 
 ### 3.2 Viewing a Single Application
+
 ```bash
-curl https://agent-eskai.eskaen.com/api/v1/applications/<id> \
+curl https://eskai.eskaen.com/api/v1/applications/<id> \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 ### 3.3 Updating Application Status / Adding Notes
+
 ```bash
 # Single update
-curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications/<id> \
+curl -X PATCH https://eskai.eskaen.com/api/v1/applications/<id> \
   -H "Authorization: Bearer esk_<key>" \
   -H "Content-Type: application/json" \
   -d '{"status":"approved","notes":"Great fit for early access. Follow up via email."}'
 
 # Bulk update (process multiple at once)
-curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications \
+curl -X PATCH https://eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>" \
   -H "Content-Type: application/json" \
   -d '[{"id":"uuid-1","status":"approved"},{"id":"uuid-2","status":"rejected","notes":"Not the right fit"}]'
@@ -116,10 +125,12 @@ curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications \
 **Valid statuses**: `pending`, `approved`, `rejected`, `contacted`, `deleted`
 
 ### 3.4 Deleting an Application
+
 ```bash
-curl -X DELETE https://agent-eskai.eskaen.com/api/v1/applications/<id> \
+curl -X DELETE https://eskai.eskaen.com/api/v1/applications/<id> \
   -H "Authorization: Bearer esk_<key>"
 ```
+
 Requires `admin` scope. Soft-deletes by setting status to `deleted`.
 
 ---
@@ -127,12 +138,14 @@ Requires `admin` scope. Soft-deletes by setting status to `deleted`.
 ## 4. 📊 Analytics & Business Intelligence
 
 ### 4.1 Analytics Dashboard
+
 ```bash
-curl "https://agent-eskai.eskaen.com/api/v1/analytics?startDate=2025-01-01&endDate=2025-12-31&limit=10" \
+curl "https://eskai.eskaen.com/api/v1/analytics?startDate=2025-01-01&endDate=2025-12-31&limit=10" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 **Returns**:
+
 ```json
 {
   "overview": {
@@ -163,12 +176,14 @@ curl "https://agent-eskai.eskaen.com/api/v1/analytics?startDate=2025-01-01&endDa
 ```
 
 ### 4.2 System Statistics
+
 ```bash
-curl https://agent-eskai.eskaen.com/api/v1/stats \
+curl https://eskai.eskaen.com/api/v1/stats \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 **Returns**:
+
 ```json
 {
   "database": { "applications": 234, "pageViews": 15234, "events": 3456, "apiKeys": 3, "apiLogs": 891 },
@@ -179,6 +194,7 @@ curl https://agent-eskai.eskaen.com/api/v1/stats \
 ```
 
 ### 4.3 Interpreting the Numbers
+
 - **Conversion Rate**: (Applications / Page Views) × 100. A healthy rate for early-access SaaS is 1-5%.
 - **Pending backlog**: If `applications.pending` grows faster than `applications.approved`, the team needs to process faster.
 - **Top Pages**: If `#apply` is a top page, the form is well-placed. If it's low, consider better CTAs.
@@ -191,12 +207,12 @@ curl https://agent-eskai.eskaen.com/api/v1/stats \
 
 ```bash
 # Export applications as CSV (for Google Sheets / Excel)
-curl "https://agent-eskai.eskaen.com/api/v1/export?type=applications&format=csv" \
+curl "https://eskai.eskaen.com/api/v1/export?type=applications&format=csv" \
   -H "Authorization: Bearer esk_<key>" \
   -o eskai-applications.csv
 
 # Export analytics as JSON
-curl "https://agent-eskai.eskaen.com/api/v1/export?type=analytics&format=json" \
+curl "https://eskai.eskaen.com/api/v1/export?type=analytics&format=json" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
@@ -210,6 +226,7 @@ curl "https://agent-eskai.eskaen.com/api/v1/export?type=analytics&format=json" \
 These endpoints are public (no API key) and meant to be called from the browser.
 
 ### 6.1 Tracking a Page View
+
 ```js
 fetch('/api/v1/track/page-view', {
   method: 'POST',
@@ -231,6 +248,7 @@ fetch('/api/v1/track/page-view', {
 ```
 
 ### 6.2 Tracking Custom Events
+
 ```js
 fetch('/api/v1/track/event', {
   method: 'POST',
@@ -245,6 +263,7 @@ fetch('/api/v1/track/event', {
 ```
 
 ### 6.3 Session Heartbeat (For Accurate Duration)
+
 ```js
 // Call every 30 seconds while user is on a page
 setInterval(() => {
@@ -261,6 +280,7 @@ setInterval(() => {
 ```
 
 ### 6.4 Legacy Endpoints (Still Work, Deprecated)
+
 - `POST /api/track` — Simple page view tracking (no enriched fields)
 - `POST /api/applications` — Application form submission
 - `GET /api/applications` — Unauthenticated list (limited to 100)
@@ -274,6 +294,7 @@ setInterval(() => {
 The site uses SQLite via `better-sqlite3`. The file is at `data/eskai.db` by default.
 
 ### 7.1 Applications
+
 ```sql
 CREATE TABLE applications (
   id TEXT PRIMARY KEY,
@@ -294,6 +315,7 @@ CREATE TABLE applications (
 ```
 
 ### 7.2 Page Views
+
 ```sql
 CREATE TABLE page_views (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -314,6 +336,7 @@ CREATE TABLE page_views (
 ```
 
 ### 7.3 Events
+
 ```sql
 CREATE TABLE events (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -326,6 +349,7 @@ CREATE TABLE events (
 ```
 
 ### 7.4 API Keys
+
 ```sql
 CREATE TABLE api_keys (
   id TEXT PRIMARY KEY,
@@ -342,6 +366,7 @@ CREATE TABLE api_keys (
 ```
 
 ### 7.5 API Access Logs
+
 ```sql
 CREATE TABLE api_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -356,6 +381,7 @@ CREATE TABLE api_logs (
 ```
 
 ### 7.6 Admin Users
+
 ```sql
 CREATE TABLE admin_users (
   id TEXT PRIMARY KEY,
@@ -420,6 +446,7 @@ eskai-landing/
 ```
 
 ### Landing Page Section Order
+
 1. **Navbar** — Logo, navigation links, CTA button
 2. **Hero** — Value proposition, terminal animation, trust indicators
 3. **ProblemSolution** — Pain points → Eskai solution
@@ -438,13 +465,14 @@ eskai-landing/
 DB_PATH=data/eskai.db
 
 # Security
-JWT_SECRET=uo6Vk7KGgutzbAlMaDSnjvNH7HZtshcYiXbQbPZCriY=
+JWT_SECRET=your-256-bit-secret-change-in-production
 
 # Server (if needed)
 PORT=80
 ```
 
 ### Setup
+
 ```bash
 cp .env.example .env   # Create .env from template
 # Then edit .env with your values
@@ -455,12 +483,14 @@ cp .env.example .env   # Create .env from template
 ## 10. 🚀 Deploying
 
 ### 10.1 Docker (Production)
+
 ```bash
 docker-compose up -d
 # Listens on port 80 with Nginx reverse proxy
 ```
 
 ### 10.2 Manual (Development)
+
 ```bash
 npm run dev       # Development server on :3000
 npm run build     # Production build
@@ -468,10 +498,13 @@ npm start         # Production server on :3000
 ```
 
 ### 10.3 Dockerfile
+
 Uses Node.js 20 LTS in a multi-stage build. Built app served via `next start` on port 3000.
 
 ### 10.4 nginx.conf
+
 Nginx reverse proxy forwarding `/` → `localhost:3000` with:
+
 - Static asset caching (1 year)
 - Gzip compression
 - Security headers (X-Content-Type-Options, X-Frame-Options)
@@ -481,72 +514,78 @@ Nginx reverse proxy forwarding `/` → `localhost:3000` with:
 
 ## 11. 🔐 Security Best Practices
 
-| Practice | Implementation |
-|---|---|
-| API keys | bcrypt-hashed; only prefix stored in plaintext |
-| Key rotation | Create new key → deploy apps → revoke old key via `DELETE /api/auth/keys/:id` |
-| Scoped access | Each key limited to required scopes; never grant `admin` unless necessary |
-| Rate limiting | 100 req/min per IP by default; configurable in `withRateLimit()` |
-| Audit trail | Every API request logged to `api_logs` with key ID, endpoint, IP, duration |
-| SQL injection | All queries use parameterized statements; sort column whitelisted |
-| Input validation | Zod schemas validate every request body |
-| JWT expiration | Tokens expire after 24 hours |
-| Password storage | bcrypt with 12 salt rounds |
-| Data persistence | SQLite with WAL mode for concurrent reads |
-| CORS | Configured per environment (default: same-origin) |
+| Practice         | Implementation                                                                   |
+| ---------------- | -------------------------------------------------------------------------------- |
+| API keys         | bcrypt-hashed; only prefix stored in plaintext                                   |
+| Key rotation     | Create new key → deploy apps → revoke old key via`DELETE /api/auth/keys/:id` |
+| Scoped access    | Each key limited to required scopes; never grant`admin` unless necessary       |
+| Rate limiting    | 100 req/min per IP by default; configurable in`withRateLimit()`                |
+| Audit trail      | Every API request logged to`api_logs` with key ID, endpoint, IP, duration      |
+| SQL injection    | All queries use parameterized statements; sort column whitelisted                |
+| Input validation | Zod schemas validate every request body                                          |
+| JWT expiration   | Tokens expire after 24 hours                                                     |
+| Password storage | bcrypt with 12 salt rounds                                                       |
+| Data persistence | SQLite with WAL mode for concurrent reads                                        |
+| CORS             | Configured per environment (default: same-origin)                                |
 
 ---
 
 ## 12. 🛠️ Common Operations
 
 ### 12.1 "How many new applications came in this week?"
+
 ```bash
-curl "https://agent-eskai.eskaen.com/api/v1/applications?status=pending&sort=created_at&order=desc&startDate=$(date -d '7 days ago' +%Y-%m-%d)" \
+curl "https://eskai.eskaen.com/api/v1/applications?status=pending&sort=created_at&order=desc&startDate=$(date -d '7 days ago' +%Y-%m-%d)" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 ### 12.2 "Show me traffic sources"
+
 ```bash
-curl "https://agent-eskai.eskaen.com/api/v1/analytics?limit=20" \
+curl "https://eskai.eskaen.com/api/v1/analytics?limit=20" \
   -H "Authorization: Bearer esk_<key>"
 # → Check `topReferrers` array
 ```
 
 ### 12.3 "Export all applicants for CRM import"
+
 ```bash
-curl "https://agent-eskai.eskaen.com/api/v1/export?type=applications&format=csv" \
+curl "https://eskai.eskaen.com/api/v1/export?type=applications&format=csv" \
   -H "Authorization: Bearer esk_<key>" \
   -o applicants-$(date +%F).csv
 ```
 
 ### 12.4 "Has anyone from Kenya applied?"
+
 ```bash
 # Search via applications endpoint
-curl "https://agent-eskai.eskaen.com/api/v1/applications?search=kenya" \
+curl "https://eskai.eskaen.com/api/v1/applications?search=kenya" \
   -H "Authorization: Bearer esk_<key>"
 # Or check geo analytics
-curl "https://agent-eskai.eskaen.com/api/v1/analytics" \
+curl "https://eskai.eskaen.com/api/v1/analytics" \
   -H "Authorization: Bearer esk_<key>"
 ```
 
 ### 12.5 "Rotate an API key that might be compromised"
+
 ```bash
 # 1. Create new key
-curl -X POST https://agent-eskai.eskaen.com/api/auth/keys \
+curl -X POST https://eskai.eskaen.com/api/auth/keys \
   -H "Authorization: Bearer <jwt>" \
   -H "Content-Type: application/json" \
   -d '{"name":"New Production Key","scopes":["read:applications","read:analytics"]}'
 # 2. Note the rawKey from response
 # 3. Deploy new key to apps
 # 4. Revoke old key
-curl -X DELETE https://agent-eskai.eskaen.com/api/auth/keys/<old_key_id> \
+curl -X DELETE https://eskai.eskaen.com/api/auth/keys/<old_key_id> \
   -H "Authorization: Bearer <jwt>"
 ```
 
 ### 12.6 "Approve multiple applicants at once"
+
 ```bash
 # Fetch pending list first, then bulk approve
-curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications \
+curl -X PATCH https://eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>" \
   -H "Content-Type: application/json" \
   -d '[
@@ -557,15 +596,17 @@ curl -X PATCH https://agent-eskai.eskaen.com/api/v1/applications \
 ```
 
 ### 12.7 "Check overall system health"
+
 ```bash
-curl https://agent-eskai.eskaen.com/api/v1/stats \
+curl https://eskai.eskaen.com/api/v1/stats \
   -H "Authorization: Bearer esk_<key>"
 # → Check: pending backlog, DB size, API usage trends
 ```
 
 ### 12.8 "How is the site performing today?"
+
 ```bash
-curl "https://agent-eskai.eskaen.com/api/v1/analytics?startDate=$(date +%Y-%m-%d)" \
+curl "https://eskai.eskaen.com/api/v1/analytics?startDate=$(date +%Y-%m-%d)" \
   -H "Authorization: Bearer esk_<key>"
 # → Check dailyViews for today, totalPageViews
 ```
@@ -576,17 +617,17 @@ curl "https://agent-eskai.eskaen.com/api/v1/analytics?startDate=$(date +%Y-%m-%d
 
 ```bash
 # Quick health check (no auth needed — just hit any endpoint without key)
-curl -s -o /dev/null -w "%{http_code}" https://agent-eskai.eskaen.com/api/v1/applications
+curl -s -o /dev/null -w "%{http_code}" https://eskai.eskaen.com/api/v1/applications
 # → Should return 401 (Missing auth)
 
 # Valid request
-curl -s https://agent-eskai.eskaen.com/api/v1/applications \
+curl -s https://eskai.eskaen.com/api/v1/applications \
   -H "Authorization: Bearer esk_<key>" | jq '.pagination'
 
 # Rate limit test (first 100 succeed, then 429)
 for i in $(seq 1 101); do
   curl -s -o /dev/null -w "%{http_code} " \
-    https://agent-eskai.eskaen.com/api/v1/applications \
+    https://eskai.eskaen.com/api/v1/applications \
     -H "Authorization: Bearer esk_<key>"
 done
 # → Expect 429 on the 101st request
@@ -597,11 +638,13 @@ done
 ## 14. 📝 Site Content Guidelines
 
 ### Tone
+
 - **Professional but warm** — Eskai is powerful tech but approachable
 - **Clear value propositions** — Focus on what Eskai DOES, not just what it IS
 - **African perspective** — Target audience includes African founders; highlight affordability and self-hosting (power/network resilience)
 
 ### Key Selling Points to Emphasize
+
 1. **Self-hosted** — Your data stays on your hardware, not someone else's cloud
 2. **Runs on $35 hardware** — Raspberry Pi, Android devices, any ARM board
 3. **Zero recurring compute** — No OpenAI bills, no cloud fees, no monthly minimums
@@ -609,6 +652,7 @@ done
 5. **Full-stack capabilities** — Code, data, communications, infrastructure — one AI to manage it all
 
 ### Target Customer Personas
+
 - **African founder** building a startup with limited capital — needs AI but can't afford $200+/month SaaS stacks
 - **Tech lead** who values privacy and wants AI on-premise
 - **Hacker/maker** who wants a local AI assistant that actually persists and knows their context
@@ -618,30 +662,30 @@ done
 
 ## 15. ❗ Troubleshooting
 
-| Problem | Likely Cause | Fix |
-|---|---|---|
-| `401 Unauthorized` | Missing/invalid API key | Check `Authorization: Bearer esk_...` header |
-| `403 Forbidden` | Key lacks required scope | Create new key with correct scopes |
-| `429 Too Many Requests` | Rate limit hit | Wait 60 seconds or increase config |
-| `409 Conflict` (applications) | Duplicate email | Check existing application; update status instead |
-| Build fails TypeScript | Schema mismatch | Run `npm run build` locally to see full errors |
-| DB file missing | First run | Call any API endpoint — schema auto-creates tables |
-| API key not found | Key was revoked or expired | Check `GET /api/auth/keys` with JWT |
-| CORS errors in browser | Client-side fetch to wrong origin | Ensure API calls go to same origin |
+| Problem                         | Likely Cause                      | Fix                                                 |
+| ------------------------------- | --------------------------------- | --------------------------------------------------- |
+| `401 Unauthorized`            | Missing/invalid API key           | Check`Authorization: Bearer esk_...` header       |
+| `403 Forbidden`               | Key lacks required scope          | Create new key with correct scopes                  |
+| `429 Too Many Requests`       | Rate limit hit                    | Wait 60 seconds or increase config                  |
+| `409 Conflict` (applications) | Duplicate email                   | Check existing application; update status instead   |
+| Build fails TypeScript          | Schema mismatch                   | Run`npm run build` locally to see full errors     |
+| DB file missing                 | First run                         | Call any API endpoint — schema auto-creates tables |
+| API key not found               | Key was revoked or expired        | Check`GET /api/auth/keys` with JWT                |
+| CORS errors in browser          | Client-side fetch to wrong origin | Ensure API calls go to same origin                  |
 
 ---
 
 ## 16. 📦 Dependencies
 
-| Package | Purpose |
-|---|---|
-| `next` | React framework (SSR/SSG) |
-| `react`, `react-dom` | UI library |
-| `better-sqlite3` | SQLite database |
-| `bcryptjs` | Password/API key hashing |
-| `jsonwebtoken` | JWT auth tokens |
-| `uuid` | ID generation |
-| `zod` | Input validation |
-| `lucide-react` | Icon library |
-| `react-hook-form` | Form handling (client) |
-| `tailwindcss` | CSS utility framework |
+| Package                  | Purpose                   |
+| ------------------------ | ------------------------- |
+| `next`                 | React framework (SSR/SSG) |
+| `react`, `react-dom` | UI library                |
+| `better-sqlite3`       | SQLite database           |
+| `bcryptjs`             | Password/API key hashing  |
+| `jsonwebtoken`         | JWT auth tokens           |
+| `uuid`                 | ID generation             |
+| `zod`                  | Input validation          |
+| `lucide-react`         | Icon library              |
+| `react-hook-form`      | Form handling (client)    |
+| `tailwindcss`          | CSS utility framework     |

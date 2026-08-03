@@ -16,7 +16,7 @@ services:
       # events, api_keys, admin_users) lives at /app/data/eskai.db inside the
       # container. The named volume below keeps it safe across rebuilds and
       # container recreation (`docker compose up -d --build` no longer wipes data).
-      - landing_data:/app/data
+      - eskai-landing_data:/app/data
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
       interval: 30s
@@ -25,4 +25,5 @@ services:
       start_period: 5s
 
 volumes:
-  landing_data:
+  eskai-landing_data:
+    name: eskai-landing_data

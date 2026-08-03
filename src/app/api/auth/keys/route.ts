@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { withJwtAuth } from "@/lib/middleware"
+import { withJwtAuth, readJsonBody } from "@/lib/middleware"
 import { createApiKey, listApiKeys } from "@/lib/auth"
 import { createApiKeySchema } from "@/lib/validation"
 import type { UserInfo } from "@/lib/middleware"
@@ -11,7 +11,10 @@ async function handleGetKeys(request: NextRequest, { user }: { user: UserInfo })
 
 async function handleCreateKey(request: NextRequest, { user }: { user: UserInfo }) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<unknown>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const parsed = createApiKeySchema.safeParse(body)
 
     if (!parsed.success) {

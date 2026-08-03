@@ -100,16 +100,38 @@ docker compose down
 # Build with BuildKit cache mounts
 DOCKER_BUILDKIT=1 docker build -t eskai-landing:latest .
 
-# Run the container
-docker run -d -p 8080:80 eskai-landing:latest
+# Run the container (mounts the named volume so data persists)
+docker run -d -p 8080:80 -v eskai-landing_data:/app/data eskai-landing:latest
 ```
 
+> ⚠️ **Never run without the `-v eskai-landing_data:/app/data` volume.** Without
+> it, the SQLite DB lives in the container's ephemeral layer and is destroyed on
+> `docker rm` / container recreation.
+
 ### Using the Makefile
+
+```bash
+make build        # Build image with BuildKit caching
+make run          # Run container on port 8080 (volume mounted)
+make logs         # Tail container logs
+make clean        # Stop and remove container (volume + data kept)
+make run-d        # Run dev server locally (hot reload)
+make build-no-cache  # Force clean rebuild
+make backup       # Backup SQLite volume to backups/
+make restore FILE=backups/<file>.tar.gz  # Restore from a backup
+make deploy       # Backup + rebuild + recreate (data-safe)
+```
+
+> ⚠️ `make clean` no longer removes the image (it only stops/removes the
+> container), so the named volume and your data are always preserved.
+> To fully wipe everything including data, use `docker compose down -v`
+> **only if you intend to delete all data**.
+
 ### Data Persistence
 
 The app stores its SQLite database at `/app/data/eskai.db` inside the container
 (early-access applications, page views, events, API keys, admin users). The
-`docker-compose.yml` declares a **named volume `landing_data` mounted at
+`docker-compose.yml` declares a **named volume `eskai-landing_data` mounted at
 `/app/data`**, so **all data survives `docker compose up -d --build` and
 container recreation**.
 
@@ -124,30 +146,24 @@ container recreation**.
 > docker compose restart landing
 > ```
 
-Backup / restore the whole volume:
+Backup / restore the whole volume (or use `make backup` / `make restore`):
 
 ```bash
 # Backup
-docker run --rm -v eskai-landing_landing_data:/data -v "$PWD":/backup \
+docker run --rm -v eskai-landing_data:/data -v "$PWD/backups":/backup \
   alpine tar czf /backup/eskai-data-$(date +%F).tar.gz -C /data .
 
 # Restore
-docker run --rm -v eskai-landing_landing_data:/data -v "$PWD":/backup \
+docker run --rm -v eskai-landing_data:/data -v "$PWD":/backup \
   alpine tar xzf /backup/eskai-data-<date>.tar.gz -C /data
 ```
 
-> The volume's full name is `<project-dir>_landing_data` (e.g.
-> `eskai-landing_landing_data`). Verify with `docker volume ls`.
+> The volume's full name is `eskai-landing_data`. Verify with `docker volume ls`.
 
-
+**Safe redeploy** (backs up first, then rebuilds via compose — volume preserved):
 
 ```bash
-make build        # Build image with BuildKit caching
-make run          # Run container on port 8080
-make logs         # Tail container logs
-make clean        # Stop and remove container + image
-make run-d        # Run dev server locally (hot reload)
-make build-no-cache  # Force clean rebuild
+make deploy
 ```
 
 ### Speed Comparison

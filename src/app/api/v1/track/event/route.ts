@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
+import { readJsonBody } from "@/lib/middleware"
 import { eventSchema } from "@/lib/validation"
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<unknown>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const parsed = eventSchema.safeParse(body)
 
     if (!parsed.success) {

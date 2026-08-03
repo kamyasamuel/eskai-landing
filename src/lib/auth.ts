@@ -56,8 +56,14 @@ export function validateApiKey(rawKey: string): {
   valid: boolean
   key?: { id: string; name: string; scopes: string[] }
 } {
+  // Strip any leading "esk_" prefix so both "esk_<key>" and "<key>" work.
+  // The prefix is only for human identification; the raw key is what's hashed.
+  const cleanKey = rawKey.startsWith(`${API_KEY_PREFIX}_`)
+    ? rawKey.slice(API_KEY_PREFIX.length + 1)
+    : rawKey
+
   // Reconstruct the prefix from the raw key
-  const prefix = `${API_KEY_PREFIX}_${rawKey.slice(0, 8)}`
+  const prefix = `${API_KEY_PREFIX}_${cleanKey.slice(0, 8)}`
   const db = getDb()
 
   const row = db
@@ -72,7 +78,7 @@ export function validateApiKey(rawKey: string): {
   if (!row.active || row.revoked_at) return { valid: false }
   if (row.expires_at && new Date(row.expires_at) < new Date()) return { valid: false }
 
-  const match = bcrypt.compareSync(rawKey, row.key_hash)
+  const match = bcrypt.compareSync(cleanKey, row.key_hash)
   if (!match) return { valid: false }
 
   // Update last used timestamp

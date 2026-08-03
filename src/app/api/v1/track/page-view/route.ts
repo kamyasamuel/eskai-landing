@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
+import { readJsonBody } from "@/lib/middleware"
 import { pageViewSchema } from "@/lib/validation"
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<unknown>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const parsed = pageViewSchema.safeParse(body)
 
     if (!parsed.success) {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { withApiAuth } from "@/lib/middleware"
+import { withApiAuth, readJsonBody } from "@/lib/middleware"
 import { getDb } from "@/lib/db"
 import { paginationSchema, applicationSchema } from "@/lib/validation"
 import { v4 as uuidv4 } from "uuid"
@@ -94,7 +94,10 @@ async function handleBulkUpdate(
   { apiKey }: { apiKey: ApiKeyInfo }
 ) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<unknown>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
 
     if (!Array.isArray(body)) {
       return NextResponse.json(
@@ -151,7 +154,10 @@ async function handleBulkUpdate(
  */
 async function handleCreateApplication(request: NextRequest) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<unknown>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const parsed = applicationSchema.safeParse(body)
 
     if (!parsed.success) {

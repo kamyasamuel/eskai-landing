@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
+import { readJsonBody } from "@/lib/middleware"
 import { verifyPassword, generateJwt } from "@/lib/auth"
 import { loginSchema } from "@/lib/validation"
 import { v4 as uuidv4 } from "uuid"
@@ -7,7 +8,10 @@ import bcrypt from "bcryptjs"
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const bodyResult = await readJsonBody<unknown>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const parsed = loginSchema.safeParse(body)
 
     if (!parsed.success) {
@@ -58,27 +62,34 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Use POST for login, or add ?seed=1 to create admin" }, { status: 400 })
     }
 
-    const body = await request.json()
+    const bodyResult = await readJsonBody<Record<string, unknown>>(request)
+    if ("error" in bodyResult) return bodyResult.error
+
+    const body = bodyResult.data
     const { email, password, name } = body
 
     if (!email || !password || !name) {
       return NextResponse.json({ error: "email, password, and name are required" }, { status: 400 })
     }
 
+    const emailStr = String(email)
+    const passwordStr = String(password)
+    const nameStr = String(name)
+
     const db = getDb()
-    const existing = db.prepare("SELECT id FROM admin_users WHERE email = ?").get(email)
+    const existing = db.prepare("SELECT id FROM admin_users WHERE email = ?").get(emailStr)
     if (existing) {
       return NextResponse.json({ error: "Admin user already exists" }, { status: 409 })
     }
 
     const id = uuidv4()
-    const passwordHash = bcrypt.hashSync(password, 12)
+    const passwordHash = bcrypt.hashSync(passwordStr, 12)
 
     db.prepare(
       "INSERT INTO admin_users (id, email, password_hash, name, role) VALUES (?, ?, ?, ?, ?)"
-    ).run(id, email, passwordHash, name, "admin")
+    ).run(id, emailStr, passwordHash, nameStr, "admin")
 
-    return NextResponse.json({ success: true, id, email, name }, { status: 201 })
+    return NextResponse.json({ success: true, id, email: emailStr, name: nameStr }, { status: 201 })
   } catch (error) {
     console.error("Seed error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

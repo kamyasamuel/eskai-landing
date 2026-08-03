@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import TrackingProvider from "@/components/TrackingProvider"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://eskai.com"
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://eskai.eskaen.com"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
