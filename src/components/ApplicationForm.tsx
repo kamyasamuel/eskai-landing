@@ -43,6 +43,41 @@ const initialForm: FormData = {
   agree: false,
 }
 
+const fieldLabels: Record<string, string> = {
+  fullName: "Full name",
+  email: "Email",
+  phone: "Phone",
+  company: "Company / organization",
+  role: "Your role",
+  employees: "Team size",
+  useCase: "Use case",
+  currentTools: "Current tools",
+  referral: "How you heard about us",
+  interest: "Interests",
+}
+
+function formatValidationMessage(
+  headline: string,
+  details: Record<string, string[]>
+): string {
+  const lines = Object.entries(details)
+    .filter(([, messages]) => Array.isArray(messages) && messages.length > 0)
+    .map(([field, messages]) => {
+      const label = fieldLabels[field] || field
+      const text = messages
+        .map((m) =>
+          m.replace(
+            /^String must contain at most (\d+) character\(s\)$/,
+            "must be at most $1 characters"
+          )
+        )
+        .join(", ")
+      return `\u2022 ${label}: ${text}`
+    })
+  if (lines.length === 0) return headline
+  return `${headline}\n${lines.join("\n")}`
+}
+
 export default function ApplicationForm() {
   const [form, setForm] = useState<FormData>(initialForm)
   const [step, setStep] = useState(1)
@@ -86,13 +121,35 @@ export default function ApplicationForm() {
       })
 
       if (!res.ok) {
-        const data = await res.json()
+        const contentType = res.headers.get("content-type") || ""
+        let message = "Submission failed. Please try again."
+        let details: Record<string, string[]> | undefined
+
+        if (contentType.includes("application/json")) {
+          const data = await res.json().catch(() => null)
+          if (data?.error) message = data.error
+          if (data?.details) details = data.details
+        } else {
+          // Non-JSON response — almost always a Cloudflare security block (403/1010)
+          message =
+            "Your submission was blocked by a security check. Please try again in Chrome or Safari, or turn off your VPN / ad blocker."
+        }
+
         trackEvent("form_submit", {
           success: false,
-          reason: res.status === 409 ? "duplicate" : "error",
+          reason:
+            res.status === 409
+              ? "duplicate"
+              : res.status === 403
+                ? "blocked"
+                : "error",
           interests: form.interest.length,
         })
-        throw new Error(data.error || "Submission failed")
+
+        if (details) {
+          throw new Error(formatValidationMessage(message, details))
+        }
+        throw new Error(message)
       }
 
       setSubmitted(true)
@@ -126,9 +183,6 @@ export default function ApplicationForm() {
               Thank you for your interest in Eskai. We'll review your application and
               get back to you within 48 hours with next steps for early access.
             </p>
-            <div className="text-sm text-dark-500">
-              In the meantime, check your inbox for a confirmation email.
-            </div>
           </div>
         </div>
       </section>
@@ -158,7 +212,7 @@ export default function ApplicationForm() {
         <div className="glass rounded-2xl p-6 sm:p-10 border border-dark-700/30">
           {/* Error banner */}
           {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400">
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 whitespace-pre-line">
               {error}
             </div>
           )}
@@ -202,7 +256,7 @@ export default function ApplicationForm() {
                       value={form.fullName}
                       onChange={(e) => update("fullName", e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
-                      placeholder="Kamya Samuel"
+                      maxLength={200} placeholder="Kamya Samuel"
                     />
                   </div>
                   <div className="space-y-2">
@@ -213,7 +267,7 @@ export default function ApplicationForm() {
                       value={form.email}
                       onChange={(e) => update("email", e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
-                      placeholder="kamya@eskaen.com"
+                      maxLength={254} placeholder="kamya@eskaen.com"
                     />
                   </div>
                 </div>
@@ -226,7 +280,7 @@ export default function ApplicationForm() {
                       value={form.phone}
                       onChange={(e) => update("phone", e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
-                      placeholder="+256 700 000 000"
+                      maxLength={50} placeholder="+256 700 000 000"
                     />
                   </div>
                   <div className="space-y-2">
@@ -236,7 +290,7 @@ export default function ApplicationForm() {
                       value={form.company}
                       onChange={(e) => update("company", e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
-                      placeholder="Eskaen Technologies"
+                      maxLength={200} placeholder="Eskaen Technologies"
                     />
                   </div>
                 </div>
@@ -250,7 +304,7 @@ export default function ApplicationForm() {
                       value={form.role}
                       onChange={(e) => update("role", e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
-                      placeholder="Founder & CEO"
+                      maxLength={200} placeholder="Founder & CEO"
                     />
                   </div>
                   <div className="space-y-2">
@@ -309,7 +363,7 @@ export default function ApplicationForm() {
                     onChange={(e) => update("useCase", e.target.value)}
                     rows={4}
                     className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
-                    placeholder="Tell us how you envision using Eskai in your business. What problems do you want it to solve? What would make it invaluable to you?"
+                    maxLength={2000} placeholder="Tell us how you envision using Eskai in your business. What problems do you want it to solve? What would make it invaluable to you?"
                   />
                 </div>
               </div>
@@ -331,7 +385,7 @@ export default function ApplicationForm() {
                     onChange={(e) => update("currentTools", e.target.value)}
                     rows={3}
                     className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
-                    placeholder="e.g., ChatGPT, Zapier, Notion, Asana, Google Docs, Telegram, email..."
+                    maxLength={1000} placeholder="e.g., ChatGPT, Zapier, Notion, Asana, Google Docs, Telegram, email..."
                   />
                 </div>
 
@@ -344,7 +398,7 @@ export default function ApplicationForm() {
                     value={form.referral}
                     onChange={(e) => update("referral", e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
-                    placeholder="Twitter, friend, article, etc."
+                    maxLength={200} placeholder="Twitter, friend, article, etc."
                   />
                 </div>
 
