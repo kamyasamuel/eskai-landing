@@ -6,13 +6,13 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://eskai.eskaen.com"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Eskai — Self-Hosted AI Agent for ARM Devices",
+  title: "Eskai Ops — Your business runs itself. You just watch it happen.",
   description:
-    "Eskai is a self-hosted AI agent that runs on cheap ARM hardware — Raspberry Pi, Android tablets, and phones. Autonomous, private, and extremely affordable. No cloud compute bills, no vendor lock-in.",
+    "Eskai Ops is the AI operations agent that runs your recurring business tasks, watches your systems, and reports to you on Telegram. No dashboard to babysit. No tickets. Just outcomes.",
   keywords: [
-    "self-hosted AI", "AI agent", "ARM AI", "Raspberry Pi AI", "private AI",
-    "business automation", "AI operations", "Eskai", "Eskaen Technologies",
-    "autonomous agent", "edge AI", "on-device AI",
+    "AI operations", "AI agent", "business automation", "Telegram automation",
+    "uptime monitoring", "Eskai Ops", "Eskai", "Eskaen Technologies",
+    "autonomous agent", "ops engineer", "recurring tasks automation",
   ],
   icons: {
     icon: [
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Eskai — Self-Hosted AI Agent for ARM Devices",
+    title: "Eskai Ops — Your business runs itself. You just watch it happen.",
     description:
-      "Your autonomous AI agent that runs on $35 ARM hardware. Private. Affordable. Yours.",
+      "The AI operations agent that runs your recurring business tasks, watches your systems, and reports to you on Telegram.",
     type: "website",
     locale: "en_US",
     images: [

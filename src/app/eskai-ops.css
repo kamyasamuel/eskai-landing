@@ -1,0 +1,108 @@
+:root {
+  --bg: #0b1120;
+  --bg-soft: #111a30;
+  --card: #16203a;
+  --border: #24345a;
+  --text: #e6ebf5;
+  --muted: #93a1c4;
+  --accent: #4f8cff;
+  --accent-2: #7c5cff;
+  --green: #34d399;
+  --radius: 14px;
+}
+.eskai-ops * { margin: 0; padding: 0; box-sizing: border-box; }
+.eskai-ops { scroll-behavior: smooth; }
+.eskai-ops body,
+.eskai-ops {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+.eskai-ops .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* Nav */
+.eskai-ops nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px; max-width: 1080px; margin: 0 auto;
+}
+.eskai-ops .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+.eskai-ops .logo span { color: var(--accent); }
+.eskai-ops nav .links a { color: var(--muted); text-decoration: none; margin-left: 26px; font-size: 15px; }
+.eskai-ops nav .links a:hover { color: var(--text); }
+.eskai-ops .btn {
+  display: inline-block; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff !important; padding: 10px 22px; border-radius: 10px; font-weight: 600;
+  text-decoration: none; border: none; cursor: pointer; font-size: 15px;
+}
+.eskai-ops .btn:hover { filter: brightness(1.1); }
+.eskai-ops .btn.ghost { background: transparent; border: 1px solid var(--border); color: var(--text) !important; }
+
+/* Hero */
+.eskai-ops .hero { text-align: center; padding: 96px 24px 72px; background: radial-gradient(900px 400px at 50% -10%, #1c2a55 0%, var(--bg) 65%); }
+.eskai-ops .hero .badge {
+  display: inline-block; background: rgba(79,140,255,0.12); border: 1px solid rgba(79,140,255,0.35);
+  color: var(--accent); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; margin-bottom: 24px;
+}
+.eskai-ops .hero h1 { font-size: clamp(38px, 6vw, 60px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; max-width: 800px; margin: 0 auto 20px; }
+.eskai-ops .hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.eskai-ops .hero p.sub { font-size: 19px; color: var(--muted); max-width: 640px; margin: 0 auto 34px; }
+.eskai-ops .hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.eskai-ops .trust { margin-top: 46px; display: flex; justify-content: center; gap: 36px; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+.eskai-ops .trust b { color: var(--text); display: block; font-size: 18px; }
+.eskai-ops .trust div { text-align: center; }
+
+/* Sections */
+.eskai-ops section { padding: 72px 0; }
+.eskai-ops h2 { font-size: clamp(28px, 4vw, 38px); font-weight: 800; letter-spacing: -0.02em; text-align: center; margin-bottom: 12px; }
+.eskai-ops .sec-sub { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 48px; font-size: 17px; }
+
+/* Features */
+.eskai-ops .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.eskai-ops .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; }
+.eskai-ops .card h3 { font-size: 18px; margin-bottom: 8px; }
+.eskai-ops .card p { color: var(--muted); font-size: 15px; }
+.eskai-ops .card .ico { font-size: 24px; margin-bottom: 14px; }
+
+/* How it works */
+.eskai-ops .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; counter-reset: step; }
+.eskai-ops .step { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; position: relative; }
+.eskai-ops .step::before {
+  counter-increment: step; content: counter(step);
+  position: absolute; top: -14px; left: 22px; width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+}
+.eskai-ops .step h3 { margin: 8px 0 8px; font-size: 17px; }
+.eskai-ops .step p { color: var(--muted); font-size: 15px; }
+
+/* Pricing */
+.eskai-ops .pricing { background: var(--bg-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.eskai-ops .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: stretch; }
+.eskai-ops .plan { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; display: flex; flex-direction: column; }
+.eskai-ops .plan.popular { border: 2px solid var(--accent); position: relative; }
+.eskai-ops .plan .tag { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 999px; letter-spacing: 0.04em; }
+.eskai-ops .plan h3 { font-size: 17px; color: var(--muted); font-weight: 600; }
+.eskai-ops .plan .price { font-size: 42px; font-weight: 800; margin: 10px 0 4px; }
+.eskai-ops .plan .price span { font-size: 16px; color: var(--muted); font-weight: 500; }
+.eskai-ops .plan ul { list-style: none; margin: 20px 0 26px; flex: 1; }
+.eskai-ops .plan ul li { padding: 7px 0 7px 26px; position: relative; color: var(--text); font-size: 15px; }
+.eskai-ops .plan ul li::before { content: "\2713"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+.eskai-ops .plan .btn { text-align: center; }
+
+/* FAQ */
+.eskai-ops details { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; margin-bottom: 12px; }
+.eskai-ops summary { font-weight: 600; cursor: pointer; font-size: 16px; }
+.eskai-ops details p { color: var(--muted); margin-top: 10px; font-size: 15px; }
+
+/* CTA + footer */
+.eskai-ops .cta-band { text-align: center; padding: 80px 24px; }
+.eskai-ops .cta-band h2 { margin-bottom: 16px; }
+.eskai-ops .cta-band p { color: var(--muted); margin-bottom: 30px; font-size: 17px; }
+.eskai-ops footer { border-top: 1px solid var(--border); padding: 30px 0 40px; text-align: center; color: var(--muted); font-size: 14px; }
+.eskai-ops footer a { color: var(--muted); text-decoration: none; }
+.eskai-ops footer a:hover { color: var(--text); }
+.eskai-ops .foot-contact { margin-top: 12px; }
+.eskai-ops .foot-contact a { color: var(--accent); }
+@media (max-width: 640px) { .eskai-ops nav .links { display: none; } }
