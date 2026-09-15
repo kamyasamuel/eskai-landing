@@ -428,8 +428,8 @@ eskai-landing/
 │   │           └── export/route.ts     # CSV/JSON data export
 │   ├── components/
 │   │   ├── Navbar.tsx                  # Site navigation (sticky, glass effect)
-│   │   ├── Hero.tsx                    # Hero with chat visual + terminal strip
-│   │   ├── AlreadyUsing.tsx            # Social proof stats and industries
+│   │   ├── Hero.tsx                    # Hero with chat visual + terminal strip + scroll cue (viewport-pinned, fades on scroll)
+│   │   ├── AlreadyUsing.tsx            # Documented proof cards + early-batch slot + industries
 │   │   ├── ProblemSolution.tsx         # Problem → Solution section
 │   │   ├── Features.tsx                # Feature grids (12 features in 2 groups)
 │   │   ├── HowYouGetIt.tsx             # Delivery & setup steps
@@ -442,6 +442,8 @@ eskai-landing/
 │       ├── auth.ts                     # JWT, bcrypt, API key CRUD, scope checking
 │       ├── validation.ts              # Zod schemas for all inputs
 │       └── middleware.ts              # withApiAuth, withJwtAuth, withRateLimit, withRequestLog
+├── docs/
+│   └── pricing-cost-model.md          # Price assumptions, unit economics, edit points
 ├── Dockerfile                         # Docker deployment (Node.js)
 ├── docker-compose.yml                 # Multi-service orchestration
 ├── nginx.conf                         # Nginx reverse proxy config
@@ -453,7 +455,7 @@ eskai-landing/
 
 1. **Navbar** — Logo, navigation links, "Reserve Yours" CTA
 2. **Hero** — Value proposition, chat-style product visual, terminal strip for technical readers
-3. **AlreadyUsing** — Adoption stats and industries served
+3. **AlreadyUsing** — Documented proof, not adoption counts: BioThrive results (20 posts + 16 scripts in <24h), $0 cloud bills, direct founder line, a "your story here" early-batch card, and industries served. Rule: every number shown is verifiable — see the guardrail comment in the component
 4. **ProblemSolution** — Everyday pain points → Eskai answers
 5. **Features** — Two groups: "What Eskai Does For You" (6) and "What It Can Do" (6)
 6. **HowYouGetIt** — Order → we configure → arrives ready → you message it
