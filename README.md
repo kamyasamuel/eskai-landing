@@ -22,25 +22,27 @@ Eskai is an autonomous AI assistant that knows who you are, watches your operati
 
 ## Features
 
-- 🎯 **Hero section** — Terminal-themed hero with product value proposition
-- 🔍 **Problem/Solution matrix** — Six pain points with Eskai's solutions
-- ⚡ **Feature showcase** — Self-awareness, Sensory Cortex, Dream Cycle, Self-Repair, and 6+ capability categories
-- 📊 **Case study** — Real-world proof of concept running BioThrive
-- 💰 **Pricing** — One-time purchase: Personal ($35), Business ($150), Enterprise ($335). No subscriptions, no recurring fees.
-- 📝 **Multi-step early access application form** — 3-step application with interest selection, use case description, and agreement
+- 🎯 **Hero section** — Plain-language value proposition with a chat-style product visual
+- 🔍 **Problem/Solution matrix** — Eight everyday business pain points with Eskai's answers
+- ⚡ **Feature showcase** — "What Eskai Does For You" and "What It Can Do" (150+ tools behind one chat)
+- 🚚 **How You Get It** — Order → we configure it → it arrives ready → you message it
+- 📊 **Case study** — Real story: BioThrive's launch plan, asked on Monday, delivered by Tuesday
+- 💰 **Pricing** — One-time hardware + setup: Personal ($199), Business ($599), Custom (from $2,500). Optional Care Plan ($9/$29 per month) plus token spend (bring your own API key or prepaid credits). No subscription.
+- 📝 **Multi-step reservation form** — 3-step form with plan interest, location, payment preference and use case
 - 🌙 **Dark theme** — Glass-morphism design with gradient accents
 - 📱 **Responsive** — Fully responsive from mobile to desktop
 
 ## Sections
 
 1. **Navbar** — Fixed top navigation with smooth-scroll links
-2. **Hero** — Value proposition, CTA buttons, interactive terminal visual
-3. **Problem/Solution** — Pain point / solution comparisons
-4. **Features** — "The Eskai Difference" and "What Eskai Can Do" (150+ tools)
-5. **Case Study** — BioThrive launch: 87% directives completed, 2 dream cycles, 20 posts + 16 scripts
-6. **Pricing** — One-time purchase: Personal ($35), Business ($150), Enterprise ($335). No subscriptions, no recurring fees.
-7. **Early Access Form** — Multi-step application for private beta
-8. **Footer** — Links, company info, and branding
+2. **Hero** — Value proposition, CTA buttons, chat-style product visual (+ a terminal strip for technical readers)
+3. **Problem/Solution** — Pain point / solution comparisons in plain language
+4. **Features** — "What Eskai Does For You" and "What It Can Do"
+5. **How You Get It** — Delivery and setup steps
+6. **Case Study** — BioThrive launch: 20 posts + 16 scripts, under 24 hours
+7. **Pricing** — One-time hardware + setup: Personal ($199), Business ($599), Custom (from $2,500) + optional Care Plan and token spend
+8. **Reservation Form** — Multi-step form to reserve a device
+9. **Footer** — Links, company info, and branding
 
 ## Getting Started
 
@@ -204,12 +206,14 @@ eskai-landing/
 │   │   └── page.tsx         # Home page composing all sections
 │   └── components/
 │       ├── Navbar.tsx        # Fixed navigation with mobile menu
-│       ├── Hero.tsx          # Hero with terminal visual
+│       ├── Hero.tsx          # Hero with chat visual + terminal strip
+│       ├── AlreadyUsing.tsx  # Social proof stats, industries, avatars
 │       ├── ProblemSolution.tsx # Pain/solution comparison grid
 │       ├── Features.tsx      # Feature cards grouped by category
-│       ├── CaseStudy.tsx     # BioThrive proof-of-concept story
-│       ├── Pricing.tsx       # 4-tier pricing cards
-│       ├── ApplicationForm.tsx # 3-step early access form
+│       ├── HowYouGetIt.tsx   # Delivery & setup steps
+│       ├── CaseStudy.tsx     # BioThrive story
+│       ├── Pricing.tsx       # 3-tier hardware pricing + cost explainer
+│       ├── ApplicationForm.tsx # 3-step reservation form
 │       └── Footer.tsx        # Footer with links & branding
 ├── Dockerfile               # Multi-stage Docker build with BuildKit cache mounts
 ├── docker-compose.yml       # Docker Compose orchestration

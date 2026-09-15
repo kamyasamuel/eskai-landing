@@ -6,14 +6,16 @@ This document gives an AI agent everything it needs to manage the Eskai landing 
 
 ## 1. 🏢 Business Overview
 
-**Eskai** is a self-hosted, autonomous AI operating system that runs on commodity ARM hardware (Raspberry Pi 4/5, Android devices). It provides businesses with a persistent AI agent that manages operations, code, data, communications, and infrastructure — all locally, without cloud dependencies.
+**Eskai** is an AI assistant that ships pre-installed on a device we configure for the customer — it arrives ready to use. It runs a person's or business's recurring work (documents, invoices, follow-ups, records, monitoring, research, reports) and reports back in plain language over Telegram or WhatsApp. Everything it learns stays on the customer's own device; there are no cloud dependencies.
 
 ### Brand Identity
 
-- **Tagline**: "Your Self-Hosted AI Agent"
-- **Promise**: No cloud, no data leaks, no recurring compute bills — runs on $35-50 hardware
-- **Target Audience**: Founders, SMBs, tech leads in Africa and globally who need affordable, private, persistent AI
-- **Unique Differentiators**: Self-awareness engine, sensory cortex, dream cycle engine, self-repair system, runs on ARM
+- **Tagline**: "Your own AI assistant — one that actually does the work"
+- **Promise**: Delivered ready to use · Buy once, no subscription · Your information never leaves your device · The only running cost is the AI tokens it uses (bring your own API key or buy prepaid credits)
+- **Target Audience**: Everyday business owners first — shop owners, farmers, clinics, schools, logistics, freelancers — plus founders, SMBs and tech leads in Africa and globally who want affordable, private, persistent AI
+- **Pricing**: Personal $199 one-time · Business $599 one-time · Custom from $2,500. Optional Care Plan ($9/$29 per month) covers updates, encrypted backup of memory and remote support
+- **Unique Differentiators**: Comes configured and delivered, self-awareness engine, sensory cortex, dream cycle engine, self-repair system, plain-language chat interface
+- **Copy rule**: customer-facing copy is written in plain language for non-technical readers. Avoid "self-hosted", "ARM", "API", "agent" and similar jargon near the top of the page; engine names (Self-Awareness, Sensory Cortex, Dream Cycle, Self-Repair) are internal names and must be translated into benefits on the marketing site.
 
 ### Key Business Metrics to Track
 
@@ -426,12 +428,14 @@ eskai-landing/
 │   │           └── export/route.ts     # CSV/JSON data export
 │   ├── components/
 │   │   ├── Navbar.tsx                  # Site navigation (sticky, glass effect)
-│   │   ├── Hero.tsx                    # Hero section with terminal demo
+│   │   ├── Hero.tsx                    # Hero with chat visual + terminal strip
+│   │   ├── AlreadyUsing.tsx            # Social proof stats and industries
 │   │   ├── ProblemSolution.tsx         # Problem → Solution section
 │   │   ├── Features.tsx                # Feature grids (12 features in 2 groups)
+│   │   ├── HowYouGetIt.tsx             # Delivery & setup steps
 │   │   ├── CaseStudy.tsx               # Real-world case study (BioThrive)
-│   │   ├── Pricing.tsx                 # Pricing tiers
-│   │   ├── ApplicationForm.tsx         # 3-step application form with interest picker
+│   │   ├── Pricing.tsx                 # Hardware pricing tiers + cost explainer
+│   │   ├── ApplicationForm.tsx         # 3-step reservation form with plan/location/payment
 │   │   └── Footer.tsx                  # Site footer
 │   └── lib/
 │       ├── db.ts                       # SQLite connection + schema init
@@ -447,14 +451,16 @@ eskai-landing/
 
 ### Landing Page Section Order
 
-1. **Navbar** — Logo, navigation links, CTA button
-2. **Hero** — Value proposition, terminal animation, trust indicators
-3. **ProblemSolution** — Pain points → Eskai solution
-4. **Features** — Two groups: "The Eskai Difference" (6 features) and "What Eskai Can Do" (6 features)
-5. **CaseStudy** — Real-world example (BioThrive agricultural analytics)
-6. **Pricing** — Tiered plans
-7. **ApplicationForm** — 3-step early access form
-8. **Footer** — Links, copyright
+1. **Navbar** — Logo, navigation links, "Reserve Yours" CTA
+2. **Hero** — Value proposition, chat-style product visual, terminal strip for technical readers
+3. **AlreadyUsing** — Adoption stats and industries served
+4. **ProblemSolution** — Everyday pain points → Eskai answers
+5. **Features** — Two groups: "What Eskai Does For You" (6) and "What It Can Do" (6)
+6. **HowYouGetIt** — Order → we configure → arrives ready → you message it
+7. **CaseStudy** — Real story (BioThrive launch plan)
+8. **Pricing** — Personal $199 / Business $599 / Custom from $2,500, plus Care Plan and token costs
+9. **ApplicationForm** — 3-step reservation form (plan interest, location, payment preference)
+10. **Footer** — Links, copyright
 
 ---
 
@@ -645,18 +651,22 @@ done
 
 ### Key Selling Points to Emphasize
 
-1. **Self-hosted** — Your data stays on your hardware, not someone else's cloud
-2. **Runs on $35 hardware** — Raspberry Pi, Android devices, any ARM board
-3. **Zero recurring compute** — No OpenAI bills, no cloud fees, no monthly minimums
-4. **Persistent & autonomous** — Eskai doesn't sleep; it monitors, learns, and acts 24/7
-5. **Full-stack capabilities** — Code, data, communications, infrastructure — one AI to manage it all
+1. **Ready to use** — It arrives configured on a device we set up for you; plug in, connect to Wi-Fi, done
+2. **Buy once** — One payment for the device and the setup. No subscription, nothing to cancel, no lock-in
+3. **Your information stays with you** — Records, documents and conversations live on your device, in your office
+4. **It works while you sleep** — Monitors, learns, chases follow-ups and reports back 24/7
+5. **Plain language** — You type a message ("send the invoice reminder"); it does the work and reports back
+6. **Honest running costs** — Only AI tokens: bring your own API key at zero markup, or buy prepaid credits
 
 ### Target Customer Personas
 
+- **Shop or kiosk owner** — evenings lost to invoices, stock counts and supplier follow-ups
+- **Farmer / agri co-op** — records, buyer outreach and reports kept on paper or in WhatsApp
+- **Clinic, school or salon** — reminders, letters, summaries and recurring paperwork
+- **Freelancer or consultant** — proposals, invoices, research and client updates
+- **Small business owner** managing operations with spreadsheets and email — needs help without complexity
 - **African founder** building a startup with limited capital — needs AI but can't afford $200+/month SaaS stacks
-- **Tech lead** who values privacy and wants AI on-premise
-- **Hacker/maker** who wants a local AI assistant that actually persists and knows their context
-- **Small business owner** managing operations with spreadsheets and email — needs automation without complexity
+- **Tech lead / maker** who values privacy and wants AI on their own hardware
 
 ---
 

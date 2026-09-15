@@ -1,9 +1,37 @@
 "use client"
 
-import { ArrowRight, Cpu, Shield, Smartphone, HardDrive } from "lucide-react"
-import Image from "next/image"
+import { useEffect, useState } from "react"
+import { ArrowRight, CheckCheck, Lock, Send, Sparkles, Wifi } from "lucide-react"
+
+const chat: Array<{ from: "eskai" | "you"; text: string }> = [
+  {
+    from: "eskai",
+    text: "Good morning 👋 Your 8am report is ready: 3 orders came in overnight, and one supplier invoice is due today.",
+  },
+  { from: "you", text: "Send the invoice reminder" },
+  {
+    from: "eskai",
+    text: "Done — sent to Grace at Kampala Agro. I'll tell you as soon as she replies.",
+  },
+  { from: "you", text: "how is my stock looking?" },
+  {
+    from: "eskai",
+    text: "4 items are running low: maize seed, NPK, tomato stakes and gloves. Want me to draft the restock order?",
+  },
+]
 
 export default function Hero() {
+  // Scroll cue: pinned to the viewport bottom on load, fades out once the
+  // visitor starts scrolling so it never overlaps content further down.
+  const [showScrollCue, setShowScrollCue] = useState(true)
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollCue(window.scrollY < 80)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
       {/* Background effects */}
@@ -17,21 +45,22 @@ export default function Hero() {
           <div className="space-y-6 animate-fade-in">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass text-sm text-brand-300 border border-brand-800/30">
-              <Cpu className="w-3.5 h-3.5" />
-              <span>Self-hosted · One-time purchase · Runs on $35 ARM hardware</span>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Comes ready to use · Buy once · No subscription</span>
             </div>
 
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-              Your{" "}
-              <span className="heading-accent text-shimmer">Self-Hosted</span>
+              Your own AI assistant
               <br />
-              <span className="heading-accent text-shimmer">AI Agent</span>
+              <span className="heading-accent text-shimmer">that actually does the work.</span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-dark-300 leading-relaxed max-w-lg">
-              An autonomous AI agent that runs on your own hardware. No cloud, no data leaks, no recurring bills.
+              We deliver it to you on a small device, already set up. It writes your documents,
+              sends your follow-ups, keeps an eye on things and reports to you on Telegram — and
+              everything stays in your office. Pay once, no monthly subscription.
             </p>
 
             {/* CTA */}
@@ -40,89 +69,80 @@ export default function Hero() {
                 href="#apply"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-sm sm:text-base text-white font-semibold transition-all duration-200 glow hover:glow-sm"
               >
-                Get Early Access
+                Reserve yours
                 <ArrowRight className="w-4 h-4" />
               </a>
               <a
-                href="#how-it-works"
+                href="#how-you-get-it"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl glass glass-hover text-sm sm:text-base text-dark-200 font-semibold transition-all duration-200"
               >
-                How It Works
+                See how you get it
               </a>
             </div>
 
             {/* Trust indicators */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-dark-400 pt-2">
               <span className="flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-brand-500" />
-                Your data stays on your hardware
+                <Lock className="w-4 h-4 text-brand-500" />
+                Your information stays on your device
               </span>
               <span className="flex items-center gap-1.5">
-                No recurring compute costs
+                <Wifi className="w-4 h-4 text-brand-500" />
+                Works with the internet you already have
               </span>
             </div>
           </div>
 
-          {/* Right — Visual */}
-          <div className="hidden lg:flex items-center justify-center animate-float">
-            <div className="relative">
-              {/* Logo watermark */}
-              <div className="absolute -top-10 -right-10 w-32 h-32 opacity-10 pointer-events-none">
-                <Image
-                  src="/logo.svg"
-                  alt=""
-                  width={128}
-                  height={128}
-                  aria-hidden="true"
-                />
-              </div>
-
-              {/* Main card */}
-              <div className="w-[420px] rounded-2xl glass border border-dark-700/50 p-6 space-y-4">
-                {/* Terminal header */}
-                <div className="flex items-center gap-2 pb-3 border-b border-dark-700/30">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                  <span className="text-xs text-dark-500 ml-2 font-mono">eskai@terminal:~$</span>
+          {/* Right — Chat visual */}
+          <div className="flex items-center justify-center animate-float">
+            <div className="relative w-full max-w-md">
+              <div className="rounded-2xl glass border border-dark-700/50 p-5 space-y-4">
+                {/* Chat header */}
+                <div className="flex items-center gap-3 pb-3 border-b border-dark-700/30">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500 to-emerald-600 flex items-center justify-center text-white text-sm font-bold">
+                    E
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-white">Eskai</div>
+                    <div className="text-xs text-green-400 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                      online · working
+                    </div>
+                  </div>
                 </div>
 
-                {/* Terminal lines */}
-                <div className="space-y-3 font-mono text-sm">
-                  <div className="flex items-start gap-2">
-                    <span className="text-brand-400 shrink-0">$</span>
-                    <span className="text-dark-200">eskai.whoami()</span>
-                  </div>
-                  <div className="pl-5 text-dark-400">
-                    <span className="text-brand-300">→</span>{" "}
-                    <span>"Eskai v1.2.0 — Personal AI Assistant to Kamya Samuel"</span>
-                  </div>
+                {/* Messages */}
+                <div className="space-y-3">
+                  {chat.map((msg, i) => (
+                    <div
+                      key={i}
+                      className={`flex ${msg.from === "you" ? "justify-end" : "justify-start"}`}
+                    >
+                      <div
+                        className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                          msg.from === "you"
+                            ? "bg-brand-600 text-white rounded-br-sm"
+                            : "bg-dark-800 text-dark-200 rounded-bl-sm"
+                        }`}
+                      >
+                        {msg.text}
+                        {msg.from === "you" && (
+                          <span className="ml-2 inline-flex align-middle text-white/60">
+                            <CheckCheck className="w-3.5 h-3.5" />
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-                  <div className="flex items-start gap-2 pt-2">
-                    <span className="text-brand-400 shrink-0">$</span>
-                    <span className="text-dark-200">eskai.introspect()</span>
+                {/* Input */}
+                <div className="flex items-center gap-2 pt-3 border-t border-dark-700/30">
+                  <div className="flex-1 px-3.5 py-2.5 rounded-xl bg-dark-800 text-sm text-dark-500">
+                    Message Eskai…
                   </div>
-                  <div className="pl-5 space-y-1 text-dark-400">
-                    <div><span className="text-brand-300">→</span> status: <span className="text-green-400">operational</span></div>
-                    <div><span className="text-brand-300">→</span> memory: <span className="text-blue-400">active</span></div>
-                    <div><span className="text-brand-300">→</span> sensors: <span className="text-blue-400">6/6 online</span></div>
-                    <div><span className="text-brand-300">→</span> self-repair: <span className="text-blue-400">engaged</span></div>
-                  </div>
-
-                  <div className="flex items-start gap-2 pt-2">
-                    <span className="text-brand-400 shrink-0">$</span>
-                    <span className="text-dark-200">eskai.analyze_operations("biothrive")</span>
-                  </div>
-                  <div className="pl-5 text-dark-400">
-                    <span className="text-brand-300">→</span>{" "}
-                    <span className="text-yellow-300">4 directives active</span> ·{" "}
-                    <span className="text-green-400">87% completion</span> ·{" "}
-                    <span className="text-blue-400">2 dream cycles completed</span>
-                  </div>
-
-                  <div className="flex items-start gap-2 pt-2">
-                    <span className="text-brand-400 shrink-0">$</span>
-                    <span className="text-dark-200 animate-pulse">_</span>
+                  <div className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center shrink-0">
+                    <Send className="w-4 h-4 text-white" />
                   </div>
                 </div>
               </div>
@@ -132,13 +152,49 @@ export default function Hero() {
             </div>
           </div>
         </div>
+
+        {/* For the technical folks */}
+        <div className="mt-16 max-w-3xl mx-auto">
+          <div className="rounded-xl glass border border-dark-700/50 p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs uppercase tracking-wider text-dark-500">
+                For the technical folks
+              </span>
+            </div>
+            <div className="space-y-1.5 font-mono text-xs sm:text-sm">
+              <div className="flex items-start gap-2">
+                <span className="text-brand-400 shrink-0">$</span>
+                <span className="text-dark-200">eskai.whoami()</span>
+              </div>
+              <div className="pl-5 text-dark-400">
+                <span className="text-brand-300">→</span>{" "}
+                <span>&quot;Eskai — self-hosted agent, running on your own device&quot;</span>
+              </div>
+              <div className="flex items-start gap-2 pt-1.5">
+                <span className="text-brand-400 shrink-0">$</span>
+                <span className="text-dark-200">eskai.status()</span>
+              </div>
+              <div className="pl-5 text-dark-400">
+                <span className="text-brand-300">→</span> memory:{" "}
+                <span className="text-blue-400">active</span> · sensors:{" "}
+                <span className="text-blue-400">6/6 online</span> · self-repair:{" "}
+                <span className="text-green-400">engaged</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-dark-600">
+      {/* Scroll indicator — fixed to viewport, fades on scroll */}
+      <div
+        aria-hidden="true"
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2 text-dark-600 pointer-events-none transition-opacity duration-700 ${
+          showScrollCue ? "opacity-100" : "opacity-0"
+        }`}
+      >
         <span className="text-xs uppercase tracking-widest">Scroll</span>
         <div className="w-5 h-8 rounded-full border border-dark-700 flex items-start justify-center p-1.5">
-          <div className="w-1 h-2 rounded-full bg-dark-500 animate-bounce" />
+          <div className="w-1 h-2 rounded-full bg-dark-500 animate-bounce motion-reduce:animate-none" />
         </div>
       </div>
     </section>

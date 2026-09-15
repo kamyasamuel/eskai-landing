@@ -1,78 +1,78 @@
 "use client"
 
 import {
-  Cpu, Eye, Terminal, Brain, Activity, Wrench,
-  GitBranch, Globe, Database, FileText, MessageSquare, Lock, Smartphone, HardDrive
+  Activity, Brain, Database, Eye, FileText, GitBranch, Globe, HardDrive,
+  Lock, MessageSquare, Terminal, Wrench,
 } from "lucide-react"
 
 const featureGroups = [
   {
-    title: "The Eskai Difference",
+    title: "What Eskai Does For You",
     features: [
       {
         icon: Brain,
-        title: "Self-Awareness Engine",
-        desc: <>Eskai knows who it is, who you are, and what's happening. <span className="text-brand-400">Identity</span>, <span className="text-blue-400">memory</span>, <span className="text-brand-400">introspection</span>, and <span className="text-blue-400">state tracking</span> built in from day one.</>,
-      },
-      {
-        icon: Eye,
-        title: "Sensory Cortex",
-        desc: <>Real-time system monitoring — <span className="text-yellow-300">file changes</span>, <span className="text-red-400">error detection</span>, <span className="text-blue-400">resource pressure</span>, <span className="text-brand-400">event correlation</span>. Eskai sees what's happening across your infrastructure.</>,
+        title: "It remembers you",
+        desc: <>Your customers, suppliers, prices and the way you like things done stay in its head. You <span className="text-blue-400">never explain the same thing twice</span> — and it gets <span className="text-green-400">more useful every week</span>.</>,
       },
       {
         icon: Activity,
-        title: "Dream Cycle Engine",
-        desc: <>Strategic planning that synthesizes operational data into <span className="text-blue-400">insights</span> overnight. Eskai doesn't just execute — it <span className="text-brand-400">reflects</span>, <span className="text-blue-400">learns</span>, and <span className="text-green-400">improves its strategy</span> autonomously.</>,
+        title: "It works while you sleep",
+        desc: <>Overnight it goes through what happened in your business and leaves you a <span className="text-green-400">short, plain plan</span> each morning — what sold, what&apos;s running low, what to do next.</>,
+      },
+      {
+        icon: Eye,
+        title: "It keeps an eye on things",
+        desc: <>Your stock, your records and your systems are watched <span className="text-blue-400">around the clock</span>. When something breaks or runs low you hear about it <span className="text-yellow-300">early</span> — not from a customer.</>,
       },
       {
         icon: Wrench,
-        title: "Self-Repair System",
-        desc: <><span className="text-green-400">Circuit breakers</span>, <span className="text-yellow-300">error tracking</span>, <span className="text-blue-400">checkpointing</span>, and <span className="text-green-400">automatic recovery</span>. When things break, Eskai <span className="text-brand-400">knows</span>, <span className="text-blue-400">adapts</span>, and <span className="text-green-400">keeps going</span>.</>,
-      },
-      {
-        icon: Smartphone,
-        title: "Self-Hosted on ARM",
-        desc: <>Runs on <span className="text-brand-400">Raspberry Pi 4/5</span>, <span className="text-yellow-300">Android tablets</span>, and <span className="text-yellow-300">phones</span>. No cloud compute needed — deploy on hardware you already own for <span className="text-green-400">$50 or less</span>.</>,
+        title: "It fixes itself",
+        desc: <>If something goes wrong it <span className="text-green-400">recovers on its own</span>, picks up where it left off, and tells you what happened — instead of stopping and waiting for a technician.</>,
       },
       {
         icon: HardDrive,
-        title: "Your Data, Your Device",
-        desc: <><span className="text-green-400">Zero data</span> leaves your hardware. No third-party servers, no <span className="text-yellow-300">data egress fees</span>, no <span className="text-red-400">privacy concerns</span>. Everything stays <span className="text-brand-400">local</span> unless you choose otherwise.</>,
+        title: "It comes ready to use",
+        desc: <>We ship it on a <span className="text-brand-400">small device we configure for you</span>. Plug it in, connect to Wi-Fi, and it&apos;s live — no installation, no server room, no IT person.</>,
+      },
+      {
+        icon: Lock,
+        title: "Your information stays with you",
+        desc: <>Nothing is uploaded to us. Your records, conversations and documents live <span className="text-green-400">on your device, in your office</span> — and it keeps working with the internet unplugged.</>,
       },
     ],
   },
   {
-    title: "What Eskai Can Do",
+    title: "What It Can Do",
     features: [
       {
-        icon: Terminal,
-        title: "Code & Execute",
-        desc: <>Run <span className="text-brand-400">Python</span>, <span className="text-green-400">shell commands</span>, manage <span className="text-yellow-300">Git repos</span>, build projects, deploy applications — all through natural conversation.</>,
-      },
-      {
         icon: FileText,
-        title: "Files & Documents",
-        desc: <>Read, write, convert <span className="text-green-400">CSVs</span>, <span className="text-blue-400">Excel</span>, <span className="text-red-400">PDFs</span>, <span className="text-yellow-300">DOCX</span>, images, <span className="text-brand-400">Markdown</span>. Create professional documents with proper formatting and tables.</>,
-      },
-      {
-        icon: Database,
-        title: "Databases & APIs",
-        desc: <>Connect to <span className="text-brand-400">SQLite</span>, <span className="text-blue-400">PostgreSQL</span>, <span className="text-yellow-300">MySQL</span>. Query, export, and analyze data. Make <span className="text-green-400">HTTP requests</span> to any API. Full <span className="text-yellow-300">GitHub</span>, <span className="text-red-400">Slack</span>, <span className="text-blue-400">Notion</span> integration.</>,
-      },
-      {
-        icon: Globe,
-        title: "Web & Research",
-        desc: <>Search the web, browse pages, download files, conduct structured research with <span className="text-brand-400">source tracking</span> and <span className="text-blue-400">synthesis reports</span>.</>,
-      },
-      {
-        icon: GitBranch,
-        title: "DevOps & Infrastructure",
-        desc: <>Manage <span className="text-blue-400">Docker</span> containers, <span className="text-green-400">SSH</span> into servers, set up <span className="text-yellow-300">systemd</span> services, configure environments, handle <span className="text-brand-400">cron jobs</span>, run <span className="text-green-400">deployment validation</span>.</>,
+        title: "Documents & records",
+        desc: <>Invoices, quotes, reports, letters and spreadsheets — written, <span className="text-green-400">properly formatted</span> and ready to send, in Word, Excel or PDF.</>,
       },
       {
         icon: MessageSquare,
-        title: "Communication",
-        desc: <>Send emails with attachments, <span className="text-yellow-300">Telegram</span> messages with buttons and media, manage messaging workflows across platforms.</>,
+        title: "Messages & follow-ups",
+        desc: <>It writes your replies, <span className="text-yellow-300">chases unpaid invoices</span>, reminds customers and staff, and sends on email or Telegram — so nothing sits waiting on you.</>,
+      },
+      {
+        icon: Globe,
+        title: "Research",
+        desc: <>Suppliers, prices, competitors and buyers — researched with the <span className="text-brand-400">sources attached</span>, so you can check it yourself instead of taking its word.</>,
+      },
+      {
+        icon: Database,
+        title: "Your numbers",
+        desc: <>It reads your spreadsheets and records, adds things up, spots what&apos;s missing, and shows you the <span className="text-blue-400">totals that actually matter</span>.</>,
+      },
+      {
+        icon: Terminal,
+        title: "Technical work",
+        desc: <>For the technical folk: it writes and runs <span className="text-brand-400">scripts</span>, manages servers and Git, and builds small tools on request.</>,
+      },
+      {
+        icon: GitBranch,
+        title: "Works with your tools",
+        desc: <>Email, Telegram, Slack, Notion, GitHub, databases — <span className="text-green-400">connected</span>, so you don&apos;t have to change the way you already work.</>,
       },
     ],
   },
@@ -90,13 +90,13 @@ export default function Features() {
             Capabilities
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
-            150+ tools. <span className="heading-accent">One interface.</span>
-            <br className="hidden sm:block" /> Unlimited potential.
+            You just type a message. <span className="heading-accent">It does the rest.</span>
           </h2>
           <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
-            Eskai is not a single-purpose tool. It is a platform of interconnected capabilities
-            that compound in value the more you use them.
+            &ldquo;Send the invoice reminder.&rdquo; &ldquo;Write last week&apos;s report.&rdquo;
+            &ldquo;Check my stock.&rdquo; That&apos;s the whole interface. Behind it there are more
+            than 150 tools working for you — you only ever have to use the chat.
           </p>
         </div>
 

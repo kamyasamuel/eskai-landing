@@ -6,13 +6,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://eskai.eskaen.com"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Eskai Ops — Your business runs itself. You just watch it happen.",
+  title: "Eskai — Your Own AI Assistant, Delivered Ready to Use",
   description:
-    "Eskai Ops is the AI operations agent that runs your recurring business tasks, watches your systems, and reports to you on Telegram. No dashboard to babysit. No tickets. Just outcomes.",
+    "Eskai is an AI assistant that arrives already set up on a device you own. It writes your documents and invoices, chases follow-ups, watches your systems and reports to you on Telegram — and your information never leaves your office. Buy once, no subscription.",
   keywords: [
-    "AI operations", "AI agent", "business automation", "Telegram automation",
-    "uptime monitoring", "Eskai Ops", "Eskai", "Eskaen Technologies",
-    "autonomous agent", "ops engineer", "recurring tasks automation",
+    "AI assistant", "private AI", "on-device AI", "business automation",
+    "AI for small business", "invoice automation", "document automation",
+    "self-hosted AI", "buy once AI", "AI for shops and farms",
+    "Eskai", "Eskaen Technologies",
   ],
   icons: {
     icon: [
@@ -26,9 +27,9 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Eskai Ops — Your business runs itself. You just watch it happen.",
+    title: "Eskai — Your Own AI Assistant, Delivered Ready to Use",
     description:
-      "The AI operations agent that runs your recurring business tasks, watches your systems, and reports to you on Telegram.",
+      "It arrives set up on a device you own. It does the paperwork, remembers everything, and keeps your information in your office. Buy once — no subscription.",
     type: "website",
     locale: "en_US",
     images: [

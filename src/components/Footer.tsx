@@ -23,7 +23,9 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm text-dark-400 max-w-md leading-relaxed">
-              The first AI Operating System for your business. Built by{" "}
+              Your own AI assistant — delivered on a device you own. It does the paperwork,
+              remembers everything about your business, and keeps your information in your office.
+              Built by{" "}
               <a
                 href="https://eskaen.com"
                 target="_blank"
@@ -32,9 +34,9 @@ export default function Footer() {
               >
                 Eskaen Technologies
               </a>
-              . <span className="text-blue-400">Self-aware</span>.{" "}
-              <span className="text-green-400">Autonomous</span>.{" "}
-              <span className="text-yellow-300">Strategic</span>.
+              . <span className="text-blue-400">Private</span>.{" "}
+              <span className="text-green-400">Hard-working</span>.{" "}
+              <span className="text-yellow-300">Yours</span>.
             </p>
           </div>
 
@@ -67,7 +69,7 @@ export default function Footer() {
                 href="#apply"
                 className="block text-sm text-dark-400 hover:text-yellow-300 transition-colors"
               >
-                Early Access
+                Reserve Yours
               </a>
             </div>
           </div>
@@ -92,7 +94,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="block text-sm text-dark-400 hover:text-green-400 transition-colors"
               >
-                BioThrive
+                Biosciences Division
               </a>
               <a
                 href="mailto:kamyasamuel@eskaen.com"

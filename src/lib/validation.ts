@@ -5,7 +5,7 @@ export const applicationSchema = z.object({
   email: z.string().email("Invalid email address"),
   phone: z.string().max(50).optional().default(""),
   company: z.string().max(200).optional().default(""),
-  role: z.string().min(1, "Role is required").max(200),
+  role: z.string().max(200).optional().default(""),
   employees: z.string().max(50).optional().default(""),
   interest: z.array(z.string()).optional().default([]),
   useCase: z.string().min(1, "Use case is required").max(2000),

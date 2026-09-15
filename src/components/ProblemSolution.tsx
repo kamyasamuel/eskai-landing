@@ -1,47 +1,47 @@
 "use client"
 
-import { Bot, Zap, Search, Shield, RefreshCw, Users, Cloud, Smartphone } from "lucide-react"
+import { Cloud, FileText, MessageSquare, RefreshCw, Shield, Target, TrendingUp, Users } from "lucide-react"
 
 const painPoints = [
   {
-    icon: Bot,
-    problem: "AI gives you answers but doesn't do the work",
-    solution: <>Eskai <span className="text-green-400">executes</span> — sends emails, edits files, runs code, queries databases, deploys infrastructure</>,
+    icon: FileText,
+    problem: "Your evenings disappear into invoices, receipts and reports",
+    solution: <>Eskai writes them — quotes, invoices, reports and letters, <span className="text-green-400">formatted and ready to send</span>. You check and forward.</>,
   },
   {
-    icon: Zap,
-    problem: "You juggle 15 tools that don't talk to each other",
-    solution: <>Eskai connects <span className="text-brand-400">150+ capabilities</span> in one unified interface with <span className="text-blue-400">persistent context</span></>,
-  },
-  {
-    icon: Search,
-    problem: "Every conversation starts from zero — no memory, no context",
-    solution: <>Eskai remembers <span className="text-brand-400">everything</span> — facts, sessions, projects, relationships, preferences</>,
-  },
-  {
-    icon: Shield,
-    problem: "Your business has no system for tracking what gets done",
-    solution: <>Eskai's <span className="text-yellow-300">Business Command Center</span> tracks directives, actors, outcomes, and strategy</>,
+    icon: MessageSquare,
+    problem: "You run your business across WhatsApp, a notebook and three spreadsheets",
+    solution: <>One <span className="text-brand-400">simple chat</span> handles orders, stock, reminders and customer replies — and it remembers the whole conversation.</>,
   },
   {
     icon: RefreshCw,
-    problem: "You make decisions without enough data",
-    solution: <>Eskai's <span className="text-blue-400">Dream Cycle</span> synthesizes operations into <span className="text-green-400">strategic insights</span> overnight</>,
+    problem: "You explain the same things over and over — to staff, to suppliers, to new hires",
+    solution: <>Eskai <span className="text-blue-400">remembers everything</span> — your customers, suppliers, prices and how you like things done. Say it once, ever.</>,
+  },
+  {
+    icon: Target,
+    problem: "You don't really know what's getting done, or who's waiting on you",
+    solution: <>It keeps one plain list: <span className="text-yellow-300">what's finished</span>, <span className="text-red-400">what's stuck</span>, and what it handled while you slept.</>,
+  },
+  {
+    icon: TrendingUp,
+    problem: "Decisions get made without the numbers in front of you",
+    solution: <>Overnight it reads your records and hands you a <span className="text-green-400">short, plain plan</span> each morning — sales, stock, what to do next.</>,
   },
   {
     icon: Users,
-    problem: "You can't afford a full operations team",
-    solution: <><span className="text-brand-400">Eskai Business</span> for <span className="text-green-400">a one-time $150</span> — the work of a $3,000/month operations manager, without the payroll</>,
+    problem: "You can't justify hiring an office admin just for the paperwork",
+    solution: <><span className="text-brand-400">$199 once</span> — not a salary, not a monthly bill. One payment that costs less than a month of a clerk&apos;s pay.</>,
   },
   {
     icon: Cloud,
-    problem: "Cloud AI costs thousands even before you get value",
-    solution: <>Eskai runs on <span className="text-yellow-300">your own hardware</span> — Raspberry Pi, tablet, or phone. <span className="text-green-400">$35 one-time software license.</span></>,
+    problem: "AI tools want to bill you every month, forever",
+    solution: <>Eskai is <span className="text-green-400">bought, not rented.</span> The device is yours — the only running cost is the AI tokens it uses, and you can bring your own.</>,
   },
   {
-    icon: Smartphone,
-    problem: "Your data goes to third-party servers you don't control",
-    solution: <><span className="text-green-400">Self-hosted</span> by design. Your data, your device, your privacy. <span className="text-brand-400">Zero data</span> leaves your hardware.</>,
+    icon: Shield,
+    problem: "Your business information sits on servers you don't control",
+    solution: <><span className="text-green-400">It stays on your device</span>, in your office. Unplug the internet and it keeps working with everything it has learned.</>,
   },
 ]
 
@@ -57,12 +57,13 @@ export default function ProblemSolution() {
             The Problem We Solve
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
-            AI that <span className="heading-accent">actually runs</span> your business
+            AI that <span className="heading-accent">actually runs</span> the work
           </h2>
           <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
-            Most AI tools are passive — they wait for you to ask. Eskai is active. It watches,
-            remembers, executes, and strategizes. Like hiring a COO who never sleeps.
+            Most AI tools wait for you to ask, then hand you an answer you still have to act on.
+            Eskai is different: it does the work, remembers everything, and tells you what
+            happened — like an employee who never forgets and never sleeps.
           </p>
         </div>
 

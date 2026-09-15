@@ -11,6 +11,9 @@ type FormData = {
   company: string
   role: string
   employees: string
+  location: string
+  plan: string
+  payment: string
   interest: string[]
   useCase: string
   currentTools: string
@@ -19,14 +22,29 @@ type FormData = {
 }
 
 const interestOptions = [
-  "AI Personal Assistant",
-  "Business Operations Automation",
-  "Marketing & Content Creation",
-  "Software Development",
-  "Data Analysis & Research",
-  "Agriculture / Agritech",
-  "Customer Support",
-  "Other",
+  "Invoices, quotes & documents",
+  "Stock & sales records",
+  "Marketing & social posts",
+  "Customer replies & follow-ups",
+  "Reports & paperwork",
+  "Farming / agriculture",
+  "Research & suppliers",
+  "Something else",
+]
+
+const planOptions = [
+  "Personal — $199",
+  "Business — $599",
+  "Custom / several branches",
+  "Not sure yet",
+]
+
+const paymentOptions = [
+  "Mobile money",
+  "Card",
+  "Bank transfer",
+  "Pay in 3",
+  "Not sure yet",
 ]
 
 const initialForm: FormData = {
@@ -36,6 +54,9 @@ const initialForm: FormData = {
   company: "",
   role: "",
   employees: "",
+  location: "",
+  plan: "",
+  payment: "",
   interest: [],
   useCase: "",
   currentTools: "",
@@ -46,11 +67,14 @@ const initialForm: FormData = {
 const fieldLabels: Record<string, string> = {
   fullName: "Full name",
   email: "Email",
-  phone: "Phone",
+  phone: "Phone / WhatsApp",
   company: "Company / organization",
   role: "Your role",
   employees: "Team size",
-  useCase: "Use case",
+  location: "Location",
+  plan: "Plan interest",
+  payment: "Payment preference",
+  useCase: "What you want it to do",
   currentTools: "Current tools",
   referral: "How you heard about us",
   interest: "Interests",
@@ -114,10 +138,23 @@ export default function ApplicationForm() {
     setError("")
 
     try {
+      // Plan / location / payment are folded into the existing `interest` list so the
+      // database schema (fixed columns, no migration runner) does not need changing.
+      const tags = [
+        form.plan ? `Plan: ${form.plan}` : "",
+        form.location ? `Location: ${form.location}` : "",
+        form.payment ? `Payment: ${form.payment}` : "",
+      ].filter(Boolean)
+
+      const payload = {
+        ...form,
+        interest: [...form.interest, ...tags],
+      }
+
       const res = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       })
 
       if (!res.ok) {
@@ -177,11 +214,12 @@ export default function ApplicationForm() {
               <CheckCircle className="w-8 h-8 text-brand-400" />
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-white">
-              Application <span className="heading-accent">Received!</span>
+              Got it. <span className="heading-accent">We&apos;ll be in touch.</span>
             </h2>
             <p className="text-dark-400 text-lg">
-              Thank you for your interest in Eskai. We'll review your application and
-              get back to you within 48 hours with next steps for early access.
+              Thank you — your details are with us. We&apos;ll get back to you within 48 hours on
+              WhatsApp or email to confirm your Eskai, arrange delivery, and answer anything you
+              want to ask.
             </p>
           </div>
         </div>
@@ -196,16 +234,16 @@ export default function ApplicationForm() {
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-4">
           <span className="eyebrow eyebrow-centered">
-            Early Access
+            Reserve Yours
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
-            Apply for <span className="heading-accent">early access</span>
+            Tell us what you&apos;d like <span className="heading-accent">it to do.</span>
           </h2>
           <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
-            Eskai is currently in private beta. We're accepting a limited number of
-            founders and teams who want to be the first to run their business with an AI
-            Operating System.
+            We ship in small batches so every Eskai can be set up properly. Answer a few plain
+            questions — no technical detail needed — and we&apos;ll come back to you within 48
+            hours to arrange everything.
           </p>
         </div>
 
@@ -244,7 +282,7 @@ export default function ApplicationForm() {
             {step === 1 && (
               <div className="space-y-5 animate-fade-in">
                 <h3 className="text-xl font-semibold text-white">
-                  Tell us <span className="heading-accent">about yourself</span>
+                  About <span className="heading-accent">you</span>
                 </h3>
 
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -274,7 +312,7 @@ export default function ApplicationForm() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Phone</label>
+                    <label className="text-sm text-dark-300 font-medium">Phone / WhatsApp</label>
                     <input
                       type="tel"
                       value={form.phone}
@@ -284,7 +322,20 @@ export default function ApplicationForm() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Company / Organization</label>
+                    <label className="text-sm text-dark-300 font-medium">Where are you? (city & country)</label>
+                    <input
+                      type="text"
+                      value={form.location}
+                      onChange={(e) => update("location", e.target.value)}
+                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      maxLength={120} placeholder="Kampala, Uganda"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm text-dark-300 font-medium">Business / Organization <span className="text-dark-500">(optional)</span></label>
                     <input
                       type="text"
                       value={form.company}
@@ -293,22 +344,8 @@ export default function ApplicationForm() {
                       maxLength={200} placeholder="Eskaen Technologies"
                     />
                   </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Your Role *</label>
-                    <input
-                      type="text"
-                      required
-                      value={form.role}
-                      onChange={(e) => update("role", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
-                      maxLength={200} placeholder="Founder & CEO"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Team Size</label>
+                    <label className="text-sm text-dark-300 font-medium">How many people work with you?</label>
                     <select
                       value={form.employees}
                       onChange={(e) => update("employees", e.target.value)}
@@ -323,6 +360,17 @@ export default function ApplicationForm() {
                     </select>
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm text-dark-300 font-medium">What do you do? <span className="text-dark-500">(optional)</span></label>
+                  <input
+                    type="text"
+                    value={form.role}
+                    onChange={(e) => update("role", e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                    maxLength={200} placeholder="I run a shop / a farm / a clinic / a consultancy…"
+                  />
+                </div>
               </div>
             )}
 
@@ -330,10 +378,10 @@ export default function ApplicationForm() {
             {step === 2 && (
               <div className="space-y-5 animate-fade-in">
                 <h3 className="text-xl font-semibold text-white">
-                  What <span className="heading-accent">interests you?</span>
+                  What do you need <span className="heading-accent">help with?</span>
                 </h3>
                 <p className="text-sm text-dark-400">
-                  Select all the ways you'd use Eskai.
+                  Pick everything that sounds like your week — you can change your mind later.
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -355,7 +403,29 @@ export default function ApplicationForm() {
 
                 <div className="space-y-2">
                   <label className="text-sm text-dark-300 font-medium">
-                    Describe your use case *
+                    Which one are you thinking about?
+                  </label>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {planOptions.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => update("plan", form.plan === item ? "" : item)}
+                        className={`text-left px-4 py-3 rounded-xl border transition-all duration-200 text-sm ${
+                          form.plan === item
+                            ? "bg-brand-600/10 border-brand-500/30 text-brand-300"
+                            : "bg-dark-800 border-dark-700 text-dark-400 hover:border-dark-600"
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm text-dark-300 font-medium">
+                    What would you like it to do? *
                   </label>
                   <textarea
                     required
@@ -363,7 +433,7 @@ export default function ApplicationForm() {
                     onChange={(e) => update("useCase", e.target.value)}
                     rows={4}
                     className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
-                    maxLength={2000} placeholder="Tell us how you envision using Eskai in your business. What problems do you want it to solve? What would make it invaluable to you?"
+                    maxLength={2000} placeholder="In your own words — e.g. 'I run a shop and spend my evenings writing invoices and chasing suppliers. I'd like it to handle that.'"
                   />
                 </div>
               </div>
@@ -373,19 +443,41 @@ export default function ApplicationForm() {
             {step === 3 && (
               <div className="space-y-5 animate-fade-in">
                 <h3 className="text-xl font-semibold text-white">
-                  <span className="heading-accent">Almost</span> there
+                  <span className="heading-accent">Last bit</span> — then we&apos;re done
                 </h3>
 
                 <div className="space-y-2">
                   <label className="text-sm text-dark-300 font-medium">
-                    What tools do you currently use?
+                    How would you prefer to pay?
+                  </label>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {paymentOptions.map((item) => (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => update("payment", form.payment === item ? "" : item)}
+                        className={`text-left px-4 py-3 rounded-xl border transition-all duration-200 text-sm ${
+                          form.payment === item
+                            ? "bg-brand-600/10 border-brand-500/30 text-brand-300"
+                            : "bg-dark-800 border-dark-700 text-dark-400 hover:border-dark-600"
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm text-dark-300 font-medium">
+                    Anything you already use that it should work with? <span className="text-dark-500">(optional)</span>
                   </label>
                   <textarea
                     value={form.currentTools}
                     onChange={(e) => update("currentTools", e.target.value)}
                     rows={3}
                     className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
-                    maxLength={1000} placeholder="e.g., ChatGPT, Zapier, Notion, Asana, Google Docs, Telegram, email..."
+                    maxLength={1000} placeholder="e.g., Excel, WhatsApp, QuickBooks, a supplier portal, paper records…"
                   />
                 </div>
 
@@ -410,8 +502,8 @@ export default function ApplicationForm() {
                     className="mt-1 w-4 h-4 rounded border-dark-600 bg-dark-800 text-brand-600 focus:ring-brand-500/20"
                   />
                   <span className="text-sm text-dark-400 group-hover:text-dark-300 transition-colors">
-                    I agree to the Eskai early access terms and privacy policy. I understand
-                    this is a private beta and I'll provide feedback to help shape the product. *
+                    I agree to the Eskai terms and privacy policy. I understand Eskai ships
+                    in small batches, and I&apos;ll share feedback to help shape it. *
                   </span>
                 </label>
               </div>

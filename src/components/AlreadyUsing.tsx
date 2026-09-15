@@ -1,9 +1,9 @@
 import {
-  Users,
-  Globe,
-  Zap,
-  CloudOff,
   ArrowRight,
+  Clock,
+  CloudOff,
+  FileCheck,
+  Quote,
   Sparkles,
   Bot,
   Building2,
@@ -14,49 +14,49 @@ import {
   Newspaper,
   Sprout,
   Cpu,
+  Users,
   type LucideIcon,
 } from "lucide-react"
-import UserCounter from "./UserCounter"
 
-type Stat = {
+type Proof = {
   icon: LucideIcon
-  value?: string
-  end?: number
-  suffix?: string
+  value: string
   label: string
   sub: string
   color: string
 }
 
-const stats: Stat[] = [
+// Every number on this page must be something we can stand behind:
+// either documented first-party results (the BioThrive launch week)
+// or a product guarantee. No adoption counts until they are real.
+const proofs: Proof[] = [
   {
-    icon: Users,
-    end: 1500,
-    suffix: "+",
-    label: "Early adopters",
-    sub: "Founders, teams and businesses already using Eskai",
-    color: "text-brand-400",
-  },
-  {
-    icon: Globe,
-    value: "40+",
-    label: "Countries",
-    sub: "From Kampala to Berlin to São Paulo — everywhere",
-    color: "text-blue-400",
-  },
-  {
-    icon: Zap,
-    value: "250k+",
-    label: "Tasks automated",
-    sub: "Emails, reports, code, research and operations",
+    icon: FileCheck,
+    value: "20 posts + 16 scripts",
+    label: "Real work, delivered",
+    sub: "Produced for BioThrive — a real farm-input business — in one overnight run",
     color: "text-yellow-300",
+  },
+  {
+    icon: Clock,
+    value: "Under 24 hours",
+    label: "From request to finished document",
+    sub: "A plain-language message in, a formatted, dated Word document back",
+    color: "text-brand-400",
   },
   {
     icon: CloudOff,
     value: "$0",
-    label: "Cloud compute bills",
-    sub: "Everything runs on hardware you already own",
+    label: "Cloud bills",
+    sub: "It runs on the device we ship you — your information never lives on our servers",
     color: "text-green-400",
+  },
+  {
+    icon: Users,
+    value: "Direct line",
+    label: "To the founding team",
+    sub: "Early owners don't open tickets — they message us on WhatsApp when they need a hand",
+    color: "text-blue-400",
   },
 ]
 
@@ -72,15 +72,6 @@ const industries = [
   { icon: Bot, label: "AI Startups" },
 ]
 
-const avatars = [
-  { initials: "KS", gradient: "from-brand-500 to-emerald-600" },
-  { initials: "AM", gradient: "from-blue-500 to-cyan-600" },
-  { initials: "JT", gradient: "from-purple-500 to-pink-600" },
-  { initials: "NO", gradient: "from-amber-500 to-orange-600" },
-  { initials: "DW", gradient: "from-rose-500 to-red-600" },
-  { initials: "LP", gradient: "from-teal-500 to-green-600" },
-]
-
 export default function AlreadyUsing() {
   return (
     <section id="already-using" className="py-24 relative">
@@ -91,81 +82,104 @@ export default function AlreadyUsing() {
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="eyebrow eyebrow-centered">
             <Sparkles className="w-3.5 h-3.5" />
-            Already Using Eskai
+            Proof, not promises
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
-            Join <span className="heading-accent">1,500+</span> founders and teams
-            running their business on Eskai
+            It already runs a <span className="heading-accent">real business</span>
           </h2>
           <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
-            From solo makers to growing companies across the world — people are
-            replacing costly SaaS stacks with one persistent, self-hosted agent
-            that never sleeps.
+            Eskai isn&apos;t a demo — it runs the day-to-day of BioThrive, a farm-input
+            company. The first configured devices are going out now, and the first
+            owners work directly with us.
           </p>
         </div>
 
-        {/* Big stat cards */}
+        {/* Proof cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {stats.map((s) => (
+          {proofs.map((p) => (
             <div
-              key={s.label}
+              key={p.label}
               className="group rounded-xl glass glass-hover p-6 text-center space-y-3"
             >
               <div className="w-12 h-12 mx-auto rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:bg-brand-500/20 transition-all duration-300">
-                <s.icon className={`w-6 h-6 ${s.color}`} />
+                <p.icon className={`w-6 h-6 ${p.color}`} />
               </div>
-              <div className={`text-3xl font-bold ${s.color}`}>
-                {s.end ? <UserCounter end={s.end} suffix={s.suffix ?? ""} /> : s.value}
-              </div>
-              <div className="font-semibold text-white">{s.label}</div>
-              <div className="text-sm text-dark-400 leading-relaxed">{s.sub}</div>
+              <div className={`text-2xl font-bold ${p.color}`}>{p.value}</div>
+              <div className="font-semibold text-white">{p.label}</div>
+              <div className="text-sm text-dark-400 leading-relaxed">{p.sub}</div>
             </div>
           ))}
         </div>
 
-        {/* Avatars + industries */}
-        <div className="max-w-4xl mx-auto glass rounded-2xl p-8 sm:p-10 border border-dark-700/30 text-center space-y-8">
-          <div className="flex items-center justify-center -space-x-3">
-            {avatars.map((a) => (
-              <div
-                key={a.initials}
-                className={`w-12 h-12 rounded-full bg-gradient-to-br ${a.gradient} flex items-center justify-center text-white text-sm font-bold ring-4 ring-dark-950`}
-              >
-                {a.initials}
-              </div>
-            ))}
-            <div className="w-12 h-12 rounded-full bg-dark-800 border border-dark-700 flex items-center justify-center text-xs font-bold text-dark-300 ring-4 ring-dark-950">
-              +1.5k
-            </div>
-          </div>
-
-          <div>
-            <p className="text-sm text-dark-400 mb-4">
-              Trusted by builders across industries
+        {/* Real story + your story */}
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 mb-16">
+          {/* Real quote */}
+          <div className="glass rounded-2xl p-8 border border-dark-700/30 flex flex-col">
+            <Quote className="w-7 h-7 text-brand-500/30 mb-4" />
+            <p className="text-dark-200 leading-relaxed flex-1">
+              &ldquo;By the next morning Eskai had written{" "}
+              <span className="text-yellow-300">20 social posts</span>,{" "}
+              <span className="text-yellow-300">16 video scripts</span> and a{" "}
+              <span className="text-blue-400">four-week calendar</span> — in a
+              finished Word document, in my inbox.&rdquo;
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              {industries.map((ind) => (
-                <span
-                  key={ind.label}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-dark-700 text-sm text-dark-200 hover:border-brand-500/30 hover:text-brand-300 transition-all duration-200"
-                >
-                  <ind.icon className="w-4 h-4 text-brand-400" />
-                  {ind.label}
-                </span>
-              ))}
+            <div className="mt-6 pt-5 border-t border-dark-700/30 flex items-center justify-between gap-4 flex-wrap">
+              <div>
+                <div className="font-semibold text-white">The BioThrive launch week</div>
+                <div className="text-sm text-dark-400">Run entirely by Eskai</div>
+              </div>
+              <a
+                href="#real-story"
+                className="text-sm text-brand-400 hover:text-brand-300 transition-colors whitespace-nowrap"
+              >
+                Read the full story →
+              </a>
             </div>
           </div>
 
-          <a
-            href="#apply"
-            data-track-cta
-            data-track-source="already-using"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all duration-200 glow hover:glow-sm"
-          >
-            Get Early Access
-            <ArrowRight className="w-4 h-4" />
-          </a>
+          {/* Early owner slot */}
+          <div className="glass rounded-2xl p-8 border border-brand-500/25 flex flex-col">
+            <span className="inline-flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20 text-xs font-semibold mb-4">
+              First batch
+            </span>
+            <h3 className="text-lg font-semibold text-white mb-3 flex-1">
+              Your story could be the first one on this page.
+            </h3>
+            <p className="text-sm text-dark-400 leading-relaxed mb-6">
+              We&apos;re configuring the first devices now. Owners in this batch get
+              founder-level attention, their setup tuned to their business — and
+              when the results come in, we tell that story here with their name on
+              it.
+            </p>
+            <a
+              href="#apply"
+              data-track-cta
+              data-track-source="already-using"
+              className="inline-flex w-fit items-center justify-center gap-2 px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all duration-200 glow hover:glow-sm"
+            >
+              Reserve Yours
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+
+        {/* Industries */}
+        <div className="max-w-4xl mx-auto glass rounded-2xl p-8 sm:p-10 border border-dark-700/30 text-center">
+          <p className="text-sm text-dark-400 mb-4">
+            Built for businesses of every kind
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {industries.map((ind) => (
+              <span
+                key={ind.label}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-dark-700 text-sm text-dark-200 hover:border-brand-500/30 hover:text-brand-300 transition-all duration-200"
+              >
+                <ind.icon className="w-4 h-4 text-brand-400" />
+                {ind.label}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

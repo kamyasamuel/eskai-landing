@@ -1,31 +1,31 @@
 "use client"
 
-import { Quote, TrendingUp, Target, Clock, CheckCircle } from "lucide-react"
+import { CalendarCheck, Clock, FileCheck, Quote, Wallet } from "lucide-react"
 
 const stats = [
-  { icon: CheckCircle, label: "Directives Completed", value: "87%", color: "text-green-400" },
-  { icon: TrendingUp, label: "Strategy Cycles Run", value: "2 dream cycles", color: "text-blue-400" },
-  { icon: Target, label: "Marketing Assets", value: "20 posts + 16 scripts", color: "text-yellow-300" },
-  { icon: Clock, label: "Delivery Time", value: "Under 24 hours", color: "text-brand-400" },
+  { icon: FileCheck, label: "What came back", value: "20 posts + 16 scripts", color: "text-yellow-300" },
+  { icon: CalendarCheck, label: "A 4-week content calendar", value: "Planned & dated", color: "text-blue-400" },
+  { icon: Clock, label: "Time it took", value: "Under 24 hours", color: "text-brand-400" },
+  { icon: Wallet, label: "Cost of an agency", value: "$0 — done in-house", color: "text-green-400" },
 ]
 
 export default function CaseStudy() {
   return (
-    <section className="py-24 relative">
+    <section id="real-story" className="py-24 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-dark-900/20 to-dark-950" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="eyebrow eyebrow-centered">
-            Proof of Concept
+            A Real Story
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
-            Built by a <span className="heading-accent">founder,</span> for founders
+            Asked on Monday. <span className="heading-accent">Delivered by Tuesday.</span>
           </h2>
           <div className="heading-underline" />
           <p className="text-dark-400 text-lg">
-            Eskai wasn't built in a lab. It was built running a real business — <span className="text-brand-400">BioThrive</span>.
-            Here's what Eskai delivered in its first week working alongside Kamya.
+            Eskai runs a real business every day — <span className="text-brand-400">BioThrive</span>,
+            a farm-input company. Here&apos;s what happened the first week it was put to work.
           </p>
         </div>
 
@@ -51,23 +51,23 @@ export default function CaseStudy() {
           <Quote className="w-8 h-8 text-brand-500/30 mb-4" />
           <div className="space-y-6 text-dark-300 leading-relaxed">
             <p className="text-lg font-medium text-dark-100">
-              &ldquo;I defined my business, assigned roles to my team, issued directives, and within
-              <span className="text-green-400"> 24 hours</span> Eskai had produced a complete marketing content plan — <span className="text-yellow-300">20 X posts</span>,
-              <span className="text-yellow-300"> 16 TikTok scripts</span>, a <span className="text-blue-400">4-week calendar</span>, and a <span className="text-brand-400">KPI framework</span> — formatted in a
-              professional <span className="text-green-400">DOCX</span> with proper tables and sent directly to my email.&rdquo;
+              &ldquo;I typed what I needed into a chat: a launch plan for my product. By the next
+              morning Eskai had written <span className="text-yellow-300">20 social posts</span>,{" "}
+              <span className="text-yellow-300">16 video scripts</span> and a{" "}
+              <span className="text-blue-400">four-week calendar</span> — in a finished Word
+              document, in my inbox.&rdquo;
             </p>
             <p>
-              <span className="text-brand-400">BioThrive</span> — a biological fertilizer and fungicide — needed a launch strategy.
-              Instead of hiring an agency (which would take weeks and cost thousands), Kamya
-              turned to Eskai. The result: a complete <span className="text-blue-400">go-to-market</span> content plan, reviewed,
-              revised, and approved within <span className="text-green-400">48 hours</span>.
+              <span className="text-brand-400">BioThrive</span> — a biological fertilizer and
+              fungicide — needed a launch plan. An agency quoted weeks and thousands of dollars.
+              Instead, the request went into Eskai in plain language, and the work came back
+              <span className="text-green-400"> formatted, dated and ready to use</span>.
             </p>
             <p>
-              The <span className="text-blue-400">Dream Cycle</span> ran twice — first producing a lean strategy based on available
-              data, then improving with each iteration. When a formatting issue was flagged in the
-              <span className="text-yellow-300"> DOCX</span>, Eskai diagnosed the root cause (plain paragraphs instead of real tables),
-              rebuilt the entire document with proper Word tables, and the fix was approved
-              immediately.
+              The first attempt wasn&apos;t perfect: the document came out as plain paragraphs
+              instead of proper Word tables. Eskai <span className="text-blue-400">spotted the
+              problem itself</span>, rebuilt the whole document with real tables, and the corrected
+              version was approved straight away. Nobody had to explain it twice.
             </p>
           </div>
           <div className="mt-8 pt-6 border-t border-dark-700/30 flex items-center gap-4">

@@ -55,7 +55,7 @@ export default function Navbar() {
               href="#apply"
               className="text-sm px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium transition-all duration-200 glow-sm"
             >
-              Get Early Access
+              Reserve Yours
             </a>
           </div>
 
@@ -96,7 +96,7 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className="block w-fit mx-auto px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium transition-all"
             >
-              Get Early Access
+              Reserve Yours
             </a>
           </div>
         </div>
