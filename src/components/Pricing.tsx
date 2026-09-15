@@ -54,7 +54,7 @@ const tiers: Tier[] = [
     forWho: "For a growing business — a team that needs the work tracked.",
     price: 599,
     priceNote: "≈ UGX 2.2M",
-    badges: ["Comes ready to use", "Most popular"],
+    badges: ["Most popular"],
     carePlan: "+$29/mo · optional",
     running: "Your own AI key, or about $30–80/mo in credits",
     features: [
@@ -133,18 +133,18 @@ export default function Pricing() {
         </div>
 
         {/* Tier cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-6 md:grid-cols-3">
           {tiers.map((tier) => (
             <div
               key={tier.name}
               className={`relative rounded-2xl p-6 sm:p-8 flex flex-col ${
                 tier.highlighted
-                  ? "glass border-brand-500/30 shadow-lg shadow-brand-500/5"
+                  ? "glass border-brand-500/30 ring-1 ring-brand-500/40 shadow-lg shadow-brand-500/5"
                   : "glass border-dark-700/30"
               }`}
             >
-              {/* Badges */}
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex gap-2">
+              {/* Badges — inline so every card's top edge lines up */}
+              <div className="flex flex-wrap gap-2 mb-5 min-h-[26px]">
                 {tier.badges.map((badge, bi) => (
                   <span
                     key={bi}
@@ -154,23 +154,24 @@ export default function Pricing() {
                         : "bg-brand-500/10 text-brand-400 border border-brand-500/20"
                     }`}
                   >
-                    {bi === 0 && <Cpu className="w-3 h-3" />}
-                    {tier.highlighted && bi === tier.badges.length - 1 && (
+                    {tier.highlighted && bi === tier.badges.length - 1 ? (
                       <Star className="w-3 h-3" />
+                    ) : (
+                      <Cpu className="w-3 h-3" />
                     )}
                     {badge}
                   </span>
                 ))}
               </div>
 
-              {/* Header */}
-              <div className="mb-6">
+              {/* Header — fixed height so price rows align across cards */}
+              <div className="mb-4 min-h-[72px]">
                 <h3 className="text-lg font-semibold text-white">{tier.name}</h3>
                 <p className="text-sm text-dark-400 mt-1">{tier.forWho}</p>
               </div>
 
-              {/* Price */}
-              <div className="mb-6">
+              {/* Price — fixed height so feature lists start at the same y */}
+              <div className="mb-6 min-h-[52px] flex items-center">
                 {tier.price ? (
                   <div className="flex items-baseline gap-1 flex-wrap">
                     <span className="text-3xl font-bold text-white">

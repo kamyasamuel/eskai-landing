@@ -64,7 +64,7 @@ export default function HowYouGetIt() {
                   Step {i + 1}
                 </span>
               </div>
-              <h3 className="text-lg font-semibold text-white">{step.title}</h3>
+              <h3 className="text-lg font-semibold text-white min-h-[56px] leading-snug">{step.title}</h3>
               <p className="text-sm text-dark-400 leading-relaxed">{step.desc}</p>
             </div>
           ))}

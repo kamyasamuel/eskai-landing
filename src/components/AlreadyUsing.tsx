@@ -98,17 +98,19 @@ export default function AlreadyUsing() {
         {/* Proof cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {proofs.map((p) => (
-            <div
-              key={p.label}
-              className="group rounded-xl glass glass-hover p-6 text-center space-y-3"
-            >
-              <div className="w-12 h-12 mx-auto rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:bg-brand-500/20 transition-all duration-300">
-                <p.icon className={`w-6 h-6 ${p.color}`} />
+              <div
+                key={p.label}
+                className="group rounded-xl glass glass-hover p-6 text-center space-y-3 flex flex-col items-center"
+              >
+                <div className="w-12 h-12 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center group-hover:bg-brand-500/20 transition-all duration-300 shrink-0">
+                  <p.icon className={`w-6 h-6 ${p.color}`} />
+                </div>
+                <div className="min-h-[4rem] flex items-center justify-center">
+                  <div className={`text-2xl font-bold ${p.color} leading-tight`}>{p.value}</div>
+                </div>
+                <div className="font-semibold text-white">{p.label}</div>
+                <div className="text-sm text-dark-400 leading-relaxed flex-1">{p.sub}</div>
               </div>
-              <div className={`text-2xl font-bold ${p.color}`}>{p.value}</div>
-              <div className="font-semibold text-white">{p.label}</div>
-              <div className="text-sm text-dark-400 leading-relaxed">{p.sub}</div>
-            </div>
           ))}
         </div>
 
