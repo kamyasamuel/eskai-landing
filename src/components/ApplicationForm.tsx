@@ -232,7 +232,7 @@ export default function ApplicationForm() {
       <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-brand-950/10 to-dark-950" />
 
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-4">
+        <div className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto mb-12 space-y-4">
           <span className="eyebrow eyebrow-centered">
             Reserve Yours
           </span>
