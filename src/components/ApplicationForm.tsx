@@ -207,16 +207,16 @@ export default function ApplicationForm() {
   if (submitted) {
     return (
       <section id="apply" className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-brand-950/10 to-dark-950" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-50/70 via-white to-slate-50 dark:from-dark-950 dark:to-dark-950" />
         <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="glass rounded-2xl p-12 space-y-6">
             <div className="w-16 h-16 rounded-full bg-brand-500/10 border border-brand-500/20 flex items-center justify-center mx-auto">
-              <CheckCircle className="w-8 h-8 text-brand-400" />
+              <CheckCircle className="w-8 h-8 text-brand-600 dark:text-brand-400" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
               Got it. <span className="heading-accent">We&apos;ll be in touch.</span>
             </h2>
-            <p className="text-dark-400 text-lg">
+            <p className="text-slate-500 dark:text-dark-400 text-lg">
               Thank you — your details are with us. We&apos;ll get back to you within 48 hours on
               WhatsApp or email to confirm your Eskai, arrange delivery, and answer anything you
               want to ask.
@@ -229,28 +229,28 @@ export default function ApplicationForm() {
 
   return (
     <section id="apply" className="py-24 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-brand-950/10 to-dark-950" />
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-50/70 via-white to-slate-50 dark:from-dark-950 dark:to-dark-950" />
 
       <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto mb-12 space-y-4">
           <span className="eyebrow eyebrow-centered">
             Reserve Yours
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-snug tracking-tight">
             Tell us what you&apos;d like <span className="heading-accent">it to do.</span>
           </h2>
           <div className="heading-underline" />
-          <p className="text-dark-400 text-lg">
+          <p className="text-slate-500 dark:text-dark-400 text-lg">
             We ship in small batches so every Eskai can be set up properly. Answer a few plain
             questions — no technical detail needed — and we&apos;ll come back to you within 48
             hours to arrange everything.
           </p>
         </div>
 
-        <div className="glass rounded-2xl p-6 sm:p-10 border border-dark-700/30">
+        <div className="glass rounded-2xl p-6 sm:p-10 border border-slate-200 dark:border-dark-700/30">
           {/* Error banner */}
           {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-400 whitespace-pre-line">
+            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-sm text-red-600 dark:text-red-400 whitespace-pre-line">
               {error}
             </div>
           )}
@@ -263,14 +263,14 @@ export default function ApplicationForm() {
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
                     step >= s
                       ? "bg-brand-600 text-white"
-                      : "bg-dark-800 text-dark-500"
+                      : "bg-slate-100 dark:bg-dark-800 text-slate-400 dark:text-dark-500"
                   }`}
                 >
                   {s}
                 </div>
                 <div
                   className={`h-px flex-1 transition-all duration-300 ${
-                    step > s ? "bg-brand-600" : "bg-dark-700"
+                    step > s ? "bg-brand-600" : "bg-slate-200 dark:bg-dark-700"
                   }`}
                 />
               </div>
@@ -281,30 +281,30 @@ export default function ApplicationForm() {
             {/* Step 1 — Basic Info */}
             {step === 1 && (
               <div className="space-y-5 animate-fade-in">
-                <h3 className="text-xl font-semibold text-white">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
                   About <span className="heading-accent">you</span>
                 </h3>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Full Name *</label>
+                    <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">Full Name *</label>
                     <input
                       type="text"
                       required
                       value={form.fullName}
                       onChange={(e) => update("fullName", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                       maxLength={200} placeholder="Kamya Samuel"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Email *</label>
+                    <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">Email *</label>
                     <input
                       type="email"
                       required
                       value={form.email}
                       onChange={(e) => update("email", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                       maxLength={254} placeholder="kamya@eskaen.com"
                     />
                   </div>
@@ -312,22 +312,22 @@ export default function ApplicationForm() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Phone / WhatsApp</label>
+                    <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">Phone / WhatsApp</label>
                     <input
                       type="tel"
                       value={form.phone}
                       onChange={(e) => update("phone", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                       maxLength={50} placeholder="+256 700 000 000"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Where are you? (city & country)</label>
+                    <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">Where are you? (city & country)</label>
                     <input
                       type="text"
                       value={form.location}
                       onChange={(e) => update("location", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                       maxLength={120} placeholder="Kampala, Uganda"
                     />
                   </div>
@@ -335,21 +335,21 @@ export default function ApplicationForm() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">Business / Organization <span className="text-dark-500">(optional)</span></label>
+                    <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">Business / Organization <span className="text-slate-400 dark:text-dark-500">(optional)</span></label>
                     <input
                       type="text"
                       value={form.company}
                       onChange={(e) => update("company", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                       maxLength={200} placeholder="Eskaen Technologies"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm text-dark-300 font-medium">How many people work with you?</label>
+                    <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">How many people work with you?</label>
                     <select
                       value={form.employees}
                       onChange={(e) => update("employees", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                     >
                       <option value="">Select...</option>
                       <option value="1">Just me</option>
@@ -362,12 +362,12 @@ export default function ApplicationForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm text-dark-300 font-medium">What do you do? <span className="text-dark-500">(optional)</span></label>
+                  <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">What do you do? <span className="text-slate-400 dark:text-dark-500">(optional)</span></label>
                   <input
                     type="text"
                     value={form.role}
                     onChange={(e) => update("role", e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                     maxLength={200} placeholder="I run a shop / a farm / a clinic / a consultancy…"
                   />
                 </div>
@@ -377,10 +377,10 @@ export default function ApplicationForm() {
             {/* Step 2 — Interests */}
             {step === 2 && (
               <div className="space-y-5 animate-fade-in">
-                <h3 className="text-xl font-semibold text-white">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
                   What do you need <span className="heading-accent">help with?</span>
                 </h3>
-                <p className="text-sm text-dark-400">
+                <p className="text-sm text-slate-500 dark:text-dark-400">
                   Pick everything that sounds like your week — you can change your mind later.
                 </p>
 
@@ -392,8 +392,8 @@ export default function ApplicationForm() {
                       onClick={() => toggleInterest(item)}
                       className={`text-left px-4 py-3 rounded-xl border transition-all duration-200 text-sm ${
                         form.interest.includes(item)
-                          ? "bg-brand-600/10 border-brand-500/30 text-brand-300"
-                          : "bg-dark-800 border-dark-700 text-dark-400 hover:border-dark-600"
+                          ? "bg-brand-600/10 border-brand-500/30 text-brand-700 dark:text-brand-300"
+                          : "bg-slate-100 dark:bg-dark-800 border-slate-300 dark:border-dark-700 text-slate-500 dark:text-dark-400 hover:border-slate-300 dark:hover:border-dark-600"
                       }`}
                     >
                       {item}
@@ -402,7 +402,7 @@ export default function ApplicationForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm text-dark-300 font-medium">
+                  <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">
                     Which one are you thinking about?
                   </label>
                   <div className="grid sm:grid-cols-2 gap-3">
@@ -413,8 +413,8 @@ export default function ApplicationForm() {
                         onClick={() => update("plan", form.plan === item ? "" : item)}
                         className={`text-left px-4 py-3 rounded-xl border transition-all duration-200 text-sm ${
                           form.plan === item
-                            ? "bg-brand-600/10 border-brand-500/30 text-brand-300"
-                            : "bg-dark-800 border-dark-700 text-dark-400 hover:border-dark-600"
+                            ? "bg-brand-600/10 border-brand-500/30 text-brand-700 dark:text-brand-300"
+                            : "bg-slate-100 dark:bg-dark-800 border-slate-300 dark:border-dark-700 text-slate-500 dark:text-dark-400 hover:border-slate-300 dark:hover:border-dark-600"
                         }`}
                       >
                         {item}
@@ -424,7 +424,7 @@ export default function ApplicationForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm text-dark-300 font-medium">
+                  <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">
                     What would you like it to do? *
                   </label>
                   <textarea
@@ -432,7 +432,7 @@ export default function ApplicationForm() {
                     value={form.useCase}
                     onChange={(e) => update("useCase", e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
                     maxLength={2000} placeholder="In your own words — e.g. 'I run a shop and spend my evenings writing invoices and chasing suppliers. I'd like it to handle that.'"
                   />
                 </div>
@@ -442,12 +442,12 @@ export default function ApplicationForm() {
             {/* Step 3 — Tools & Final */}
             {step === 3 && (
               <div className="space-y-5 animate-fade-in">
-                <h3 className="text-xl font-semibold text-white">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-white">
                   <span className="heading-accent">Last bit</span> — then we&apos;re done
                 </h3>
 
                 <div className="space-y-2">
-                  <label className="text-sm text-dark-300 font-medium">
+                  <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">
                     How would you prefer to pay?
                   </label>
                   <div className="grid sm:grid-cols-2 gap-3">
@@ -458,8 +458,8 @@ export default function ApplicationForm() {
                         onClick={() => update("payment", form.payment === item ? "" : item)}
                         className={`text-left px-4 py-3 rounded-xl border transition-all duration-200 text-sm ${
                           form.payment === item
-                            ? "bg-brand-600/10 border-brand-500/30 text-brand-300"
-                            : "bg-dark-800 border-dark-700 text-dark-400 hover:border-dark-600"
+                            ? "bg-brand-600/10 border-brand-500/30 text-brand-700 dark:text-brand-300"
+                            : "bg-slate-100 dark:bg-dark-800 border-slate-300 dark:border-dark-700 text-slate-500 dark:text-dark-400 hover:border-slate-300 dark:hover:border-dark-600"
                         }`}
                       >
                         {item}
@@ -469,27 +469,27 @@ export default function ApplicationForm() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm text-dark-300 font-medium">
-                    Anything you already use that it should work with? <span className="text-dark-500">(optional)</span>
+                  <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">
+                    Anything you already use that it should work with? <span className="text-slate-400 dark:text-dark-500">(optional)</span>
                   </label>
                   <textarea
                     value={form.currentTools}
                     onChange={(e) => update("currentTools", e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
                     maxLength={1000} placeholder="e.g., Excel, WhatsApp, QuickBooks, a supplier portal, paper records…"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm text-dark-300 font-medium">
+                  <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">
                     How did you hear about Eskai?
                   </label>
                   <input
                     type="text"
                     value={form.referral}
                     onChange={(e) => update("referral", e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-dark-700 text-white placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
                     maxLength={200} placeholder="Twitter, friend, article, etc."
                   />
                 </div>
@@ -499,9 +499,9 @@ export default function ApplicationForm() {
                     type="checkbox"
                     checked={form.agree}
                     onChange={(e) => update("agree", e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded border-dark-600 bg-dark-800 text-brand-600 focus:ring-brand-500/20"
+                    className="mt-1 w-4 h-4 rounded border-slate-300 dark:border-dark-600 bg-slate-100 dark:bg-dark-800 text-brand-600 focus:ring-brand-500/20"
                   />
-                  <span className="text-sm text-dark-400 group-hover:text-dark-300 transition-colors">
+                  <span className="text-sm text-slate-500 dark:text-dark-400 group-hover:text-dark-300 transition-colors">
                     I agree to the Eskai terms and privacy policy. I understand Eskai ships
                     in small batches, and I&apos;ll share feedback to help shape it. *
                   </span>
@@ -510,12 +510,12 @@ export default function ApplicationForm() {
             )}
 
             {/* Navigation buttons */}
-            <div className="flex items-center justify-between pt-4 border-t border-dark-700/30">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-dark-700/30">
               {step > 1 ? (
                 <button
                   type="button"
                   onClick={() => setStep(step - 1)}
-                  className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm text-dark-300 hover:text-white bg-dark-800 hover:bg-dark-700 transition-all"
+                  className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm text-slate-600 dark:text-dark-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-dark-800 hover:bg-slate-200 dark:hover:bg-dark-700 transition-all"
                 >
                   Back
                 </button>

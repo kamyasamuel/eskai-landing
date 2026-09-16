@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import "./globals.css"
 import TrackingProvider from "@/components/TrackingProvider"
+import ThemeProvider from "@/components/ThemeProvider"
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://eskai.eskaen.com"
 
@@ -49,9 +50,19 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Set theme class before paint to avoid a dark→light flash. Default: light. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('eskai-theme');if(t==='dark'){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark';}else{document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light';}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body>
-        <TrackingProvider>{children}</TrackingProvider>
+        <ThemeProvider>
+          <TrackingProvider>{children}</TrackingProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -32,17 +32,17 @@ const promises = [
 export default function HowYouGetIt() {
   return (
     <section id="how-you-get-it" className="py-24 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-950 via-dark-900/50 to-dark-950" />
+      <div className="absolute inset-0 bg-gradient-to-b from-brand-50/70 via-white to-slate-50 dark:from-dark-950 dark:via-dark-900/50 dark:to-dark-950" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="eyebrow eyebrow-centered">How You Get It</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-snug tracking-tight">
             Four steps, and <span className="heading-accent">none of them are yours to figure out.</span>
           </h2>
           <div className="heading-underline" />
-          <p className="text-dark-400 text-lg">
+          <p className="text-slate-500 dark:text-dark-400 text-lg">
             You don&apos;t buy software and hope it works. We hand you a device that&apos;s already
             set up, with someone a phone call away if you need a hand.
           </p>
@@ -58,25 +58,25 @@ export default function HowYouGetIt() {
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-500/10 to-emerald-500/10 border border-brand-500/20 flex items-center justify-center shrink-0 group-hover:bg-brand-500/20 transition-all duration-300">
-                  <step.icon className="w-5 h-5 text-brand-400" />
+                  <step.icon className="w-5 h-5 text-brand-600 dark:text-brand-400" />
                 </div>
-                <span className="text-xs uppercase tracking-wider text-dark-500 font-semibold">
+                <span className="text-xs uppercase tracking-wider text-slate-400 dark:text-dark-500 font-semibold">
                   Step {i + 1}
                 </span>
               </div>
-              <h3 className="text-lg font-semibold text-white min-h-[56px] leading-snug">{step.title}</h3>
-              <p className="text-sm text-dark-400 leading-relaxed">{step.desc}</p>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white min-h-[56px] leading-snug">{step.title}</h3>
+              <p className="text-sm text-slate-500 dark:text-dark-400 leading-relaxed">{step.desc}</p>
             </div>
           ))}
         </div>
 
         {/* Promises */}
-        <div className="mt-10 max-w-4xl mx-auto glass rounded-2xl p-6 border border-dark-700/30">
+        <div className="mt-10 max-w-4xl mx-auto glass rounded-2xl p-6 border border-slate-200 dark:border-dark-700/30">
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {promises.map((promise) => (
               <span
                 key={promise.text}
-                className="flex items-center gap-2 text-sm text-dark-300"
+                className="flex items-center gap-2 text-sm text-slate-600 dark:text-dark-300"
               >
                 <promise.icon className="w-4 h-4 text-brand-500" />
                 {promise.text}

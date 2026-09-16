@@ -115,17 +115,17 @@ const costParts = [
 export default function Pricing() {
   return (
     <section id="pricing" className="py-24 relative">
-      <div className="absolute inset-0 bg-dark-900/30" />
+      <div className="absolute inset-0 bg-slate-50/60 dark:bg-dark-900/30" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="eyebrow eyebrow-centered">Pricing</span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white leading-snug tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white leading-snug tracking-tight">
             Buy it once. <span className="heading-accent">Keep it forever.</span>
           </h2>
           <div className="heading-underline" />
-          <p className="text-dark-400 text-lg">
+          <p className="text-slate-500 dark:text-dark-400 text-lg">
             Every Eskai is shipped on a device we configure for you — it arrives ready to work.
             There is no monthly subscription. After the one-time price, you only pay for the AI
             tokens it actually uses.
@@ -140,7 +140,7 @@ export default function Pricing() {
               className={`relative rounded-2xl p-6 sm:p-8 flex flex-col ${
                 tier.highlighted
                   ? "glass border-brand-500/30 ring-1 ring-brand-500/40 shadow-lg shadow-brand-500/5"
-                  : "glass border-dark-700/30"
+                  : "glass border-slate-200 dark:border-dark-700/30"
               }`}
             >
               {/* Badges — inline so every card's top edge lines up */}
@@ -151,7 +151,7 @@ export default function Pricing() {
                     className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
                       tier.highlighted && bi === tier.badges.length - 1
                         ? "bg-brand-600 text-white"
-                        : "bg-brand-500/10 text-brand-400 border border-brand-500/20"
+                        : "bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20"
                     }`}
                   >
                     {tier.highlighted && bi === tier.badges.length - 1 ? (
@@ -166,30 +166,30 @@ export default function Pricing() {
 
               {/* Header — fixed height so price rows align across cards */}
               <div className="mb-4 min-h-[72px]">
-                <h3 className="text-lg font-semibold text-white">{tier.name}</h3>
-                <p className="text-sm text-dark-400 mt-1">{tier.forWho}</p>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{tier.name}</h3>
+                <p className="text-sm text-slate-500 dark:text-dark-400 mt-1">{tier.forWho}</p>
               </div>
 
               {/* Price — fixed height so feature lists start at the same y */}
               <div className="mb-6 min-h-[52px] flex items-center">
                 {tier.price ? (
                   <div className="flex items-baseline gap-1 flex-wrap">
-                    <span className="text-3xl font-bold text-white">
-                      <span className="text-brand-400">$</span>
+                    <span className="text-3xl font-bold text-slate-900 dark:text-white">
+                      <span className="text-brand-600 dark:text-brand-400">$</span>
                       {tier.price}
                     </span>
-                    <span className="text-dark-400 text-sm">one-time</span>
+                    <span className="text-slate-500 dark:text-dark-400 text-sm">one-time</span>
                     {tier.priceNote && (
-                      <span className="text-dark-500 text-xs w-full">{tier.priceNote}</span>
+                      <span className="text-slate-400 dark:text-dark-500 text-xs w-full">{tier.priceNote}</span>
                     )}
                   </div>
                 ) : (
                   <div className="flex items-baseline gap-1 flex-wrap">
-                    <span className="text-xl font-bold text-white">
-                      <span className="text-brand-400">Custom</span>
+                    <span className="text-xl font-bold text-slate-900 dark:text-white">
+                      <span className="text-brand-600 dark:text-brand-400">Custom</span>
                     </span>
                     {tier.priceNote && (
-                      <span className="text-dark-400 text-sm">{tier.priceNote}</span>
+                      <span className="text-slate-500 dark:text-dark-400 text-sm">{tier.priceNote}</span>
                     )}
                   </div>
                 )}
@@ -198,7 +198,7 @@ export default function Pricing() {
               {/* Features */}
               <ul className="space-y-3 mb-6 flex-1">
                 {tier.features.map((feat, fi) => (
-                  <li key={fi} className="flex items-start gap-2 text-sm text-dark-300">
+                  <li key={fi} className="flex items-start gap-2 text-sm text-slate-600 dark:text-dark-300">
                     <Check className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -206,14 +206,14 @@ export default function Pricing() {
               </ul>
 
               {/* Running costs */}
-              <div className="space-y-2 mb-6 pt-5 border-t border-dark-700/30">
-                <div className="flex items-start gap-2 text-xs text-dark-400">
+              <div className="space-y-2 mb-6 pt-5 border-t border-slate-200 dark:border-dark-700/30">
+                <div className="flex items-start gap-2 text-xs text-slate-500 dark:text-dark-400">
                   <ShieldCheck className="w-3.5 h-3.5 text-brand-500 shrink-0 mt-0.5" />
                   <span>
-                    <span className="text-dark-300">Care Plan</span> {tier.carePlan}
+                    <span className="text-slate-600 dark:text-dark-300">Care Plan</span> {tier.carePlan}
                   </span>
                 </div>
-                <div className="flex items-start gap-2 text-xs text-dark-400">
+                <div className="flex items-start gap-2 text-xs text-slate-500 dark:text-dark-400">
                   <Coins className="w-3.5 h-3.5 text-brand-500 shrink-0 mt-0.5" />
                   <span>{tier.running}</span>
                 </div>
@@ -225,7 +225,7 @@ export default function Pricing() {
                 className={`inline-flex items-center justify-center gap-2 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
                   tier.highlighted
                     ? "bg-brand-600 hover:bg-brand-500 text-white glow-sm"
-                    : "glass glass-hover text-dark-200"
+                    : "glass glass-hover text-slate-800 dark:text-dark-200"
                 }`}
               >
                 {tier.cta}
@@ -235,8 +235,8 @@ export default function Pricing() {
           ))}
         </div>
 {/* How the cost works */}
-        <div className="mt-10 glass rounded-2xl p-6 sm:p-8 border border-dark-700/30">
-          <h3 className="text-xl font-semibold text-white text-center mb-8">
+        <div className="mt-10 glass rounded-2xl p-6 sm:p-8 border border-slate-200 dark:border-dark-700/30">
+          <h3 className="text-xl font-semibold text-slate-900 dark:text-white text-center mb-8">
             What you actually pay
           </h3>
 
@@ -244,19 +244,19 @@ export default function Pricing() {
             {costParts.map((part) => (
               <div key={part.title} className="space-y-3">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-500/10 to-emerald-500/10 border border-brand-500/20 flex items-center justify-center">
-                  <part.icon className="w-5 h-5 text-brand-400" />
+                  <part.icon className="w-5 h-5 text-brand-600 dark:text-brand-400" />
                 </div>
-                <h4 className="font-semibold text-white">{part.title}</h4>
-                <p className="text-sm text-dark-400 leading-relaxed">{part.desc}</p>
+                <h4 className="font-semibold text-slate-900 dark:text-white">{part.title}</h4>
+                <p className="text-sm text-slate-500 dark:text-dark-400 leading-relaxed">{part.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="h-px bg-gradient-to-r from-transparent via-dark-700 to-transparent my-8" />
+          <div className="h-px bg-gradient-to-r from-transparent via-slate-300 dark:via-dark-700 to-transparent my-8" />
 
           <div className="flex items-start gap-3 max-w-3xl mx-auto">
             <Wallet className="w-4 h-4 text-brand-500 shrink-0 mt-1" />
-            <p className="text-sm text-dark-400">
+            <p className="text-sm text-slate-500 dark:text-dark-400">
               Stop topping up whenever you like. Your device, your information and everything it
               has learned stay yours — it keeps working offline, with no subscription and nothing
               to cancel. If you ever want help, we&apos;re on WhatsApp.
@@ -266,11 +266,11 @@ export default function Pricing() {
 
         {/* Affordability */}
         <div className="text-center mt-8">
-          <p className="text-sm text-dark-500">
+          <p className="text-sm text-slate-400 dark:text-dark-500">
             Pay with mobile money, card or bank transfer · Pay in 3 available · 14-day money-back
             · In Kampala we deliver and set it up with you, and we ship worldwide.
           </p>
-          <p className="text-xs text-dark-600 mt-2">
+          <p className="text-xs text-slate-400 dark:text-dark-600 mt-2">
             The one-time price covers the device, configuration, setup and delivery — no licence
             fees, no hidden extras.
           </p>
