@@ -35,10 +35,10 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/android-chrome-512x512.png",
-        width: 512,
-        height: 512,
-        alt: "Eskai logo",
+        url: "/eskai-og.png",
+        width: 1200,
+        height: 630,
+        alt: "Eskai — Your Own AI Assistant, Delivered Ready to Use",
       },
     ],
   },
