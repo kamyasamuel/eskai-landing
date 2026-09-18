@@ -34,7 +34,7 @@ const proofs: Proof[] = [
     icon: FileCheck,
     value: "20 posts + 16 scripts",
     label: "Real work, delivered",
-    sub: "Produced for BioThrive — a real farm-input business — in one overnight run",
+    sub: "Produced for BioThrive — our farm-input product — in one overnight run",
     color: "text-yellow-600 dark:text-yellow-300",
   },
   {
@@ -89,8 +89,9 @@ export default function AlreadyUsing() {
           </h2>
           <div className="heading-underline" />
           <p className="text-slate-500 dark:text-dark-400 text-lg">
-            Eskai isn&apos;t a demo — it runs the day-to-day of BioThrive, a farm-input
-            company. The first configured devices are going out now, and the first
+            Eskai isn&apos;t a demo — it runs the day-to-day and all of the R&amp;D at
+            Eskaen Technologies. BioThrive, our farm-input product, is what it runs in
+            production. The first configured devices are going out now, and the first
             owners work directly with us.
           </p>
         </div>

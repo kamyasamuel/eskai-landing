@@ -24,8 +24,9 @@ export default function CaseStudy() {
           </h2>
           <div className="heading-underline" />
           <p className="text-slate-500 dark:text-dark-400 text-lg">
-            Eskai runs a real business every day — <span className="text-brand-600 dark:text-brand-400">BioThrive</span>,
-            a farm-input company. Here&apos;s what happened the first week it was put to work.
+            Eskai runs the day-to-day and all of the R&amp;D at Eskaen Technologies. The
+            story below is about <span className="text-brand-600 dark:text-brand-400">BioThrive</span>,
+            our farm-input product. Here&apos;s what happened the first week it was put to work.
           </p>
         </div>
 
