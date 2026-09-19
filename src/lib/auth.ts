@@ -3,7 +3,38 @@ import { v4 as uuidv4 } from "uuid"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
-const JWT_SECRET = process.env.JWT_SECRET || "eskai-dev-secret-change-in-production"
+const DEV_JWT_SECRET = 'eskai-dev-secret-change-in-production'
+const MIN_JWT_SECRET_LENGTH = 32
+
+let cachedJwtSecret: string | null = null
+
+/**
+ * Resolve the JWT signing secret.
+ *
+ * Fails closed in production. A missing, short, or default-valued secret means
+ * anyone who can read this source can forge an admin token, so we refuse to
+ * sign or verify rather than run insecurely.
+ */
+function getJwtSecret(): string {
+  if (cachedJwtSecret) return cachedJwtSecret
+  const configured = (process.env.JWT_SECRET || '').trim()
+  const isUsable =
+    configured.length >= MIN_JWT_SECRET_LENGTH && configured !== DEV_JWT_SECRET
+
+  if (!isUsable) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(
+        'JWT_SECRET is missing, too short, or still the development default. ' +
+          'Refusing to sign or verify tokens. Generate one with: openssl rand -base64 32'
+      )
+    }
+    cachedJwtSecret = configured || DEV_JWT_SECRET
+    return cachedJwtSecret
+  }
+
+  cachedJwtSecret = configured
+  return cachedJwtSecret
+}
 const BCRYPT_ROUNDS = 12
 const API_KEY_PREFIX = "esk"
 
@@ -20,14 +51,14 @@ export interface JwtPayload {
 export function generateJwt(user: { id: string; email: string; role: string }): string {
   return jwt.sign(
     { sub: user.id, email: user.email, role: user.role },
-    JWT_SECRET,
+    getJwtSecret(),
     { expiresIn: "24h" }
   )
 }
 
 export function verifyJwt(token: string): JwtPayload | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as JwtPayload
+    return jwt.verify(token, getJwtSecret()) as JwtPayload
   } catch {
     return null
   }

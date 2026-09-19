@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
-import { readJsonBody } from "@/lib/middleware"
+import { readJsonBody, withApiAuth, withRateLimit } from "@/lib/middleware"
 import { v4 as uuidv4 } from "uuid"
 import { applicationSchema } from "@/lib/validation"
 
@@ -9,7 +9,7 @@ import { applicationSchema } from "@/lib/validation"
  * 
  * Legacy applications endpoint — kept for backward compatibility.
  */
-export async function POST(request: NextRequest) {
+async function handleCreate(request: NextRequest) {
   try {
     const bodyResult = await readJsonBody<unknown>(request)
     if ("error" in bodyResult) return bodyResult.error
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+async function handleList(request: NextRequest) {
   try {
     const db = getDb()
     const rows = db
@@ -91,3 +91,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
+
+// Public submission path (the marketing form posts here) - rate limited.
+export const POST = withRateLimit(handleCreate, {
+  maxRequests: 5,
+  windowMs: 600000,
+  bucket: 'apply-legacy',
+})
+
+// This returned every applicant's name, email and phone to anonymous callers.
+// It now requires a key with read:applications.
+export const GET = withApiAuth(handleList, ['read:applications'])

@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
-import { readJsonBody } from "@/lib/middleware"
+import { readJsonBody, withRateLimit } from "@/lib/middleware"
 import { verifyPassword, generateJwt } from "@/lib/auth"
 import { loginSchema } from "@/lib/validation"
 import { v4 as uuidv4 } from "uuid"
 import bcrypt from "bcryptjs"
 
-export async function POST(request: NextRequest) {
+async function handleLogin(request: NextRequest) {
   try {
     const bodyResult = await readJsonBody<unknown>(request)
     if ("error" in bodyResult) return bodyResult.error
@@ -51,47 +51,23 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// Login is rate limited to blunt credential-stuffing / brute-force attempts.
+export const POST = withRateLimit(handleLogin, {
+  maxRequests: 10,
+  windowMs: 300000,
+  bucket: 'login',
+})
+
 /**
- * Seed endpoint to create the initial admin user.
- * POST /api/auth/login?seed=1 with body: { email, password, name }
+ * The former PUT /api/auth/login?seed=1 bootstrap path has been REMOVED.
+ *
+ * It created an admin user for any supplied email address, so an anonymous
+ * caller could mint their own admin account and then log in. Bootstrap now
+ * lives only at the token-protected POST /api/seed.
  */
-export async function PUT(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    if (searchParams.get("seed") !== "1") {
-      return NextResponse.json({ error: "Use POST for login, or add ?seed=1 to create admin" }, { status: 400 })
-    }
-
-    const bodyResult = await readJsonBody<Record<string, unknown>>(request)
-    if ("error" in bodyResult) return bodyResult.error
-
-    const body = bodyResult.data
-    const { email, password, name } = body
-
-    if (!email || !password || !name) {
-      return NextResponse.json({ error: "email, password, and name are required" }, { status: 400 })
-    }
-
-    const emailStr = String(email)
-    const passwordStr = String(password)
-    const nameStr = String(name)
-
-    const db = getDb()
-    const existing = db.prepare("SELECT id FROM admin_users WHERE email = ?").get(emailStr)
-    if (existing) {
-      return NextResponse.json({ error: "Admin user already exists" }, { status: 409 })
-    }
-
-    const id = uuidv4()
-    const passwordHash = bcrypt.hashSync(passwordStr, 12)
-
-    db.prepare(
-      "INSERT INTO admin_users (id, email, password_hash, name, role) VALUES (?, ?, ?, ?, ?)"
-    ).run(id, emailStr, passwordHash, nameStr, "admin")
-
-    return NextResponse.json({ success: true, id, email: emailStr, name: nameStr }, { status: 201 })
-  } catch (error) {
-    console.error("Seed error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
-  }
+export async function PUT() {
+  return NextResponse.json(
+    { error: 'This endpoint has been removed. Use POST /api/seed with a valid seed token.' },
+    { status: 405 }
+  )
 }

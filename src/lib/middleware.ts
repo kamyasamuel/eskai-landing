@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { timingSafeEqual } from 'node:crypto'
 import { getDb } from "@/lib/db"
 import { validateApiKey, verifyJwt, type JwtPayload } from "@/lib/auth"
 
@@ -150,6 +151,8 @@ export function withJwtAuth(
 interface RateLimitConfig {
   maxRequests: number
   windowMs: number
+  /** Optional bucket name so different endpoints do not share a counter. */
+  bucket?: string
 }
 
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
@@ -159,16 +162,22 @@ export function withRateLimit(
   config: RateLimitConfig = { maxRequests: 100, windowMs: 60000 }
 ): ApiHandler<Record<string, unknown>> {
   return async (request: NextRequest) => {
+    // cf-connecting-ip is the only trustworthy source behind Cloudflare;
+    // x-forwarded-for can be supplied by the caller.
     const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      request.headers.get("cf-connecting-ip") ||
       request.headers.get("x-real-ip") ||
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       "127.0.0.1"
 
+    const bucket = config.bucket || new URL(request.url).pathname
+    const key = bucket + ":" + ip
+
     const now = Date.now()
-    const entry = rateLimitStore.get(ip)
+    const entry = rateLimitStore.get(key)
 
     if (!entry || now > entry.resetAt) {
-      rateLimitStore.set(ip, { count: 1, resetAt: now + config.windowMs })
+      rateLimitStore.set(key, { count: 1, resetAt: now + config.windowMs })
     } else {
       entry.count++
       if (entry.count > config.maxRequests) {
@@ -217,5 +226,54 @@ export function withRequestLog(
     }
 
     return response
+  }
+}
+
+// --- withSeedAuth -------------------------------------------------------
+//
+// Guards the one-time bootstrap endpoints (/api/seed). These create an admin
+// user and a full-scope API key, so they must never be reachable anonymously.
+//
+// Fail-closed: if SEED_TOKEN is unconfigured the endpoint is disabled entirely
+// (503) rather than left open. Supply the token as either
+// `X-Seed-Token: <token>` or `Authorization: Bearer <token>`.
+
+const MIN_SEED_TOKEN_LENGTH = 32
+
+function constantTimeEquals(a: string, b: string): boolean {
+  const bufA = Buffer.from(a, 'utf8')
+  const bufB = Buffer.from(b, 'utf8')
+  if (bufA.length !== bufB.length) return false
+  return timingSafeEqual(bufA, bufB)
+}
+
+export function withSeedAuth(
+  handler: ApiHandler<Record<string, unknown>>
+): ApiHandler<Record<string, unknown>> {
+  return async (request: NextRequest) => {
+    const configured = (process.env.SEED_TOKEN || '').trim()
+
+    if (configured.length < MIN_SEED_TOKEN_LENGTH) {
+      return NextResponse.json(
+        {
+          error:
+            'Seeding is disabled. Set a SEED_TOKEN of at least 32 characters to enable the bootstrap endpoint.',
+        },
+        { status: 503 }
+      )
+    }
+
+    const authHeader = request.headers.get('authorization') || ''
+    const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : ''
+    const provided = (request.headers.get('x-seed-token') || bearer).trim()
+
+    if (!provided || !constantTimeEquals(provided, configured)) {
+      return NextResponse.json(
+        { error: 'Unauthorized. A valid seed token is required.' },
+        { status: 401 }
+      )
+    }
+
+    return handler(request, {})
   }
 }

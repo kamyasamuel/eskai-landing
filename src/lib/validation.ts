@@ -19,30 +19,30 @@ export const applicationUpdateSchema = z.object({
 })
 
 export const pageViewSchema = z.object({
-  sessionId: z.string().min(1),
-  path: z.string().min(1),
-  referrer: z.string().optional().default(""),
-  userAgent: z.string().optional().default(""),
-  country: z.string().optional().default(""),
-  city: z.string().optional().default(""),
-  browser: z.string().optional().default(""),
-  os: z.string().optional().default(""),
-  device: z.string().optional().default(""),
-  durationSeconds: z.number().int().min(0).optional().default(0),
-  pageTitle: z.string().optional().default(""),
+  sessionId: z.string().min(1).max(100),
+  path: z.string().min(1).max(500),
+  referrer: z.string().max(2000).optional().default(""),
+  userAgent: z.string().max(1000).optional().default(""),
+  country: z.string().max(100).optional().default(""),
+  city: z.string().max(100).optional().default(""),
+  browser: z.string().max(100).optional().default(""),
+  os: z.string().max(100).optional().default(""),
+  device: z.string().max(100).optional().default(""),
+  durationSeconds: z.number().int().min(0).max(43200).optional().default(0),
+  pageTitle: z.string().max(300).optional().default(""),
 })
 
 export const eventSchema = z.object({
-  sessionId: z.string().min(1),
-  eventName: z.string().min(1),
+  sessionId: z.string().min(1).max(100),
+  eventName: z.string().min(1).max(100),
   eventProperties: z.record(z.string(), z.any()).optional(),
-  pagePath: z.string().optional().default(""),
+  pagePath: z.string().max(500).optional().default(""),
 })
 
 export const sessionHeartbeatSchema = z.object({
-  sessionId: z.string().min(1),
-  path: z.string().min(1),
-  durationSeconds: z.number().int().min(0),
+  sessionId: z.string().min(1).max(100),
+  path: z.string().min(1).max(500),
+  durationSeconds: z.number().int().min(0).max(43200),
 })
 
 export const createApiKeySchema = z.object({

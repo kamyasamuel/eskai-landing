@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
-import { readJsonBody } from "@/lib/middleware"
+import { readJsonBody, withRateLimit } from "@/lib/middleware"
 import { pageViewSchema } from "@/lib/validation"
 
 /**
@@ -9,7 +9,7 @@ import { pageViewSchema } from "@/lib/validation"
  * Legacy tracking endpoint — kept for backward compatibility.
  * Uses Zod validation and enriched fields.
  */
-export async function POST(request: NextRequest) {
+async function handleLegacyTrack(request: NextRequest) {
   try {
     const bodyResult = await readJsonBody<Record<string, unknown>>(request)
     if ("error" in bodyResult) return bodyResult.error
@@ -41,3 +41,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
+
+export const POST = withRateLimit(handleLegacyTrack, {
+  maxRequests: 60,
+  windowMs: 60000,
+  bucket: 'track-legacy',
+})

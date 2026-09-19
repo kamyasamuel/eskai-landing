@@ -7,6 +7,11 @@ services:
         - BUILDKIT_INLINE_CACHE=1
     environment:
       - DOCKER_BUILDKIT=1
+      # Passed through explicitly rather than via env_file: .env sets DB_PATH to
+      # a relative path, which would override the container's /app/data/eskai.db.
+      - JWT_SECRET=${JWT_SECRET:-}
+      - SEED_TOKEN=${SEED_TOKEN:-}
+      - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://eskai.eskaen.com}
     image: eskai-landing:latest
     ports:
       - "8080:80"

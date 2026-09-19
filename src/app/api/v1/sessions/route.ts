@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
-import { readJsonBody } from "@/lib/middleware"
+import { readJsonBody, withRateLimit } from "@/lib/middleware"
 import { sessionHeartbeatSchema } from "@/lib/validation"
 
 /**
@@ -8,7 +8,7 @@ import { sessionHeartbeatSchema } from "@/lib/validation"
  * Session heartbeat — updates session duration for active page views.
  * Called periodically by the client to keep session duration accurate.
  */
-export async function POST(request: NextRequest) {
+async function handleHeartbeat(request: NextRequest) {
   try {
     const bodyResult = await readJsonBody<unknown>(request)
     if ("error" in bodyResult) return bodyResult.error
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
            LIMIT 1
          )`
       )
-      .run(durationSeconds, sessionId, path, sessionId, path)
+      .run(Math.min(durationSeconds, 43200), sessionId, path, sessionId, path)
 
     return NextResponse.json({
       success: true,
@@ -49,3 +49,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
+
+export const POST = withRateLimit(handleHeartbeat, {
+  maxRequests: 60,
+  windowMs: 60000,
+  bucket: 'heartbeat',
+})

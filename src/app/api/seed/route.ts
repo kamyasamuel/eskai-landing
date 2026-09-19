@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getDb } from "@/lib/db"
-import { readJsonBody } from "@/lib/middleware"
+import { readJsonBody, withSeedAuth, withRateLimit } from "@/lib/middleware"
 import { v4 as uuidv4 } from "uuid"
 import bcrypt from "bcryptjs"
 import { createApiKey } from "@/lib/auth"
@@ -12,7 +12,7 @@ import { createApiKey } from "@/lib/auth"
  *
  * Body: { email, password, name }
  */
-export async function POST(request: NextRequest) {
+async function handleSeed(request: NextRequest) {
   try {
     const bodyResult = await readJsonBody<Record<string, unknown>>(request)
     if ("error" in bodyResult) return bodyResult.error
@@ -83,3 +83,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
+
+/**
+ * POST /api/seed
+ *
+ * Token-protected bootstrap. Requires SEED_TOKEN (>= 32 chars) via
+ * `X-Seed-Token` or `Authorization: Bearer <token>`. Disabled entirely when
+ * SEED_TOKEN is unconfigured.
+ */
+export const POST = withRateLimit(withSeedAuth(handleSeed), {
+  maxRequests: 10,
+  windowMs: 600000,
+  bucket: 'seed',
+})

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { withApiAuth, readJsonBody } from "@/lib/middleware"
+import { withApiAuth, withRateLimit, readJsonBody } from "@/lib/middleware"
 import { getDb } from "@/lib/db"
 import { paginationSchema, applicationSchema } from "@/lib/validation"
 import { v4 as uuidv4 } from "uuid"
@@ -219,6 +219,10 @@ async function handleCreateApplication(request: NextRequest) {
   }
 }
 
-export const POST = handleCreateApplication
-export const GET = withApiAuth(handleGetApplications, ["read:applications"])
+export const POST = withRateLimit(handleCreateApplication, {
+  maxRequests: 5,
+  windowMs: 600000,
+  bucket: 'apply-v1',
+})
+export const GET = withApiAuth(handleGetApplications, ['read:applications'])
 export const PATCH = withApiAuth(handleBulkUpdate, ["write:applications"])

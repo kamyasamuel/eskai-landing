@@ -102,23 +102,63 @@ function formatValidationMessage(
   return `${headline}\n${lines.join("\n")}`
 }
 
+// Required fields per step. Step 2's use case is required by the server, so the
+// user must not be able to skip past step 2 without filling it.
+function validateStepValues(step: number, form: FormData): Record<string, string> {
+  const errors: Record<string, string> = {}
+
+  if (step === 1) {
+    if (!form.fullName.trim()) errors.fullName = 'Please enter your full name.'
+    if (!form.email.trim()) errors.email = 'Please enter your email address.'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim()))
+      errors.email = 'That email address does not look right.'
+  }
+
+  if (step === 2) {
+    if (!form.useCase.trim())
+      errors.useCase = 'Tell us in a few words what you would like it to do.'
+  }
+
+  if (step === 3) {
+    if (!form.agree) errors.agree = 'Please accept the terms to continue.'
+  }
+
+  return errors
+}
+
+function firstStepWithError(form: FormData): number {
+  for (const step of [1, 2, 3]) {
+    if (Object.keys(validateStepValues(step, form)).length > 0) return step
+  }
+  return 0
+}
+
 export default function ApplicationForm() {
   const [form, setForm] = useState<FormData>(initialForm)
   const [step, setStep] = useState(1)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState("")
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+  const [alreadyApplied, setAlreadyApplied] = useState(false)
   const startedRef = useRef(false)
 
   const markStarted = () => {
     if (startedRef.current) return
     startedRef.current = true
     trackEvent("form_start", { step: 1 })
+    trackEvent("step_view", { step: 1 })
   }
 
   const update = (field: keyof FormData, value: any) => {
     markStarted()
     setForm((prev) => ({ ...prev, [field]: value }))
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev
+      const next = { ...prev }
+      delete next[field]
+      return next
+    })
   }
 
   const toggleInterest = (item: string) => {
@@ -130,10 +170,50 @@ export default function ApplicationForm() {
     }))
   }
 
+  const goNext = () => {
+    markStarted()
+    const errs = validateStepValues(step, form)
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs)
+      setError(Object.values(errs).join(' '))
+      trackEvent('form_error', { step, fields: Object.keys(errs), stage: 'next' })
+      return
+    }
+    setFieldErrors({})
+    setError('')
+    const next = Math.min(step + 1, 3)
+    setStep(next)
+    trackEvent('step_view', { step: next })
+  }
+
+  const goBack = () => {
+    setFieldErrors({})
+    setError('')
+    const prev = Math.max(step - 1, 1)
+    setStep(prev)
+    trackEvent('step_view', { step: prev })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!form.agree) return
 
+    // Validate every step before sending. Previously only the terms checkbox
+    // gated submission, so the form could be submitted from step 3 with the
+    // required use case (rendered on step 2) still empty. The server rejected
+    // it and named a field the user could not see, with no way back.
+    const badStep = firstStepWithError(form)
+    if (badStep !== 0) {
+      const errs = validateStepValues(badStep, form)
+      setFieldErrors(errs)
+      setError(Object.values(errs).join(" "))
+      if (badStep !== step) setStep(badStep)
+      trackEvent("form_error", { step: badStep, fields: Object.keys(errs), stage: "submit" })
+      return
+    }
+
+    if (submitting) return
+
+    setFieldErrors({})
     setSubmitting(true)
     setError("")
 
@@ -158,6 +238,18 @@ export default function ApplicationForm() {
       })
 
       if (!res.ok) {
+        // Duplicate email is a normal outcome, not a failure. Showing a raw
+        // error here caused people to retry the same submission repeatedly.
+        if (res.status === 409) {
+          trackEvent("form_submit", {
+            success: false,
+            reason: "duplicate",
+            interests: form.interest.length,
+          })
+          setAlreadyApplied(true)
+          return
+        }
+
         const contentType = res.headers.get("content-type") || ""
         let message = "Submission failed. Please try again."
         let details: Record<string, string[]> | undefined
@@ -202,6 +294,28 @@ export default function ApplicationForm() {
     } finally {
       setSubmitting(false)
     }
+  }
+
+  if (alreadyApplied) {
+    return (
+      <section id="apply" className="py-24 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-50/70 via-white to-slate-50 dark:from-dark-950 dark:to-dark-950" />
+        <div className="relative max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="glass rounded-2xl p-12 space-y-6">
+            <div className="w-16 h-16 rounded-full bg-brand-500/10 border border-brand-500/20 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-8 h-8 text-brand-600 dark:text-brand-400" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+              You&apos;re already on the list.
+            </h2>
+            <p className="text-slate-500 dark:text-dark-400 text-lg">
+              We already have an application for that email address, so there is nothing
+              more to do. We&apos;ll be in touch within 48 hours on WhatsApp or email.
+            </p>
+          </div>
+        </div>
+      </section>
+    )
   }
 
   if (submitted) {
@@ -293,9 +407,13 @@ export default function ApplicationForm() {
                       required
                       value={form.fullName}
                       onChange={(e) => update("fullName", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className={`w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all ${fieldErrors.fullName ? 'border-red-500/60' : 'border-slate-300 dark:border-dark-700'}`}
                       maxLength={200} placeholder="Kamya Samuel"
                     />
+                    {fieldErrors.fullName && (
+                      <p className="text-xs text-red-600 dark:text-red-400">{fieldErrors.fullName}</p>
+                    )}
+
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm text-slate-600 dark:text-dark-300 font-medium">Email *</label>
@@ -304,9 +422,13 @@ export default function ApplicationForm() {
                       required
                       value={form.email}
                       onChange={(e) => update("email", e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all"
+                      className={`w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all ${fieldErrors.email ? 'border-red-500/60' : 'border-slate-300 dark:border-dark-700'}`}
                       maxLength={254} placeholder="kamya@eskaen.com"
                     />
+                    {fieldErrors.email && (
+                      <p className="text-xs text-red-600 dark:text-red-400">{fieldErrors.email}</p>
+                    )}
+
                   </div>
                 </div>
 
@@ -432,9 +554,13 @@ export default function ApplicationForm() {
                     value={form.useCase}
                     onChange={(e) => update("useCase", e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none"
+                    className={`w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-dark-700 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-dark-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/20 transition-all resize-none ${fieldErrors.useCase ? 'border-red-500/60' : 'border-slate-300 dark:border-dark-700'}`}
                     maxLength={2000} placeholder="In your own words — e.g. 'I run a shop and spend my evenings writing invoices and chasing suppliers. I'd like it to handle that.'"
                   />
+                  {fieldErrors.useCase && (
+                    <p className="text-xs text-red-600 dark:text-red-400">{fieldErrors.useCase}</p>
+                  )}
+
                 </div>
               </div>
             )}
@@ -506,6 +632,9 @@ export default function ApplicationForm() {
                     in small batches, and I&apos;ll share feedback to help shape it. *
                   </span>
                 </label>
+                {fieldErrors.agree && (
+                  <p className="text-xs text-red-600 dark:text-red-400">{fieldErrors.agree}</p>
+                )}
               </div>
             )}
 
@@ -514,7 +643,7 @@ export default function ApplicationForm() {
               {step > 1 ? (
                 <button
                   type="button"
-                  onClick={() => setStep(step - 1)}
+                  onClick={goBack}
                   className="px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl text-sm text-slate-600 dark:text-dark-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-dark-800 hover:bg-slate-200 dark:hover:bg-dark-700 transition-all"
                 >
                   Back
@@ -526,10 +655,7 @@ export default function ApplicationForm() {
               {step < 3 ? (
                 <button
                   type="button"
-                  onClick={() => {
-                    markStarted()
-                    setStep(step + 1)
-                  }}
+                  onClick={goNext}
                   className="px-4 py-2 sm:px-6 sm:py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold transition-all"
                 >
                   Continue
