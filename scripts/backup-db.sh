@@ -3,6 +3,9 @@
 # Installed via cron: see scripts/install-backup-cron.sh
 set -euo pipefail
 
+# Cron runs with a minimal environment; be explicit about where the tools live.
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 CONTAINER="${ESKAI_CONTAINER:-eskai-landing-landing-1}"
 BACKUP_DIR="${ESKAI_BACKUP_DIR:-/home/admin/eskai-landing/backups}"
 RETENTION_DAYS="${ESKAI_BACKUP_RETENTION_DAYS:-30}"
